@@ -181,6 +181,10 @@ ggsave('treating/Red Alerts/Output/Figures/6_israel_ranges.pdf', width = 8.27 , 
 # ggsave('treating/Red Alerts/Output/Figures/israel_temporal_groups.pdf',width = 8.27 , height = 11.69, units = "in", dpi = 300)
 # 
 
+# filtering out arab cities
+cities = cities %>% 
+  filter(Religion_Yishuv!=2)
+
 
 # temporal distance + ranges map
 ggplot() + 

@@ -1,0 +1,7 @@
+/cleaning/Red Alerts:
+
+- /Code/1_filtering_red_alerts.R: transforms the Red Alerts dataset from area level to locality level and filters only rocket attacks.
+  - input: /raw/Red Alerts/Output/area_codes.csv
+           /raw/Red Alerts/Output/red_alerts.csv
+  - output: Output/rocket_alerts.csv (filters observation based on dates until the 2015 election)
+            Output/all.rocket_alerts.csv (does not filter any observation)

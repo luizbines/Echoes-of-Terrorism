@@ -1,0 +1,38 @@
+\begin{table}
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={+ p \num{< 0.1}, * p \num{< 0.05}, ** p \num{< 0.01}, *** p \num{< 0.001}},
+note{ }={NRA 2015 stands for No Red Alerts until the 2015 Election.},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+colspec={Q[]Q[]Q[]Q[]Q[]Q[]Q[]},
+column{1}={halign=l,},
+column{2}={halign=c,},
+column{3}={halign=c,},
+column{4}={halign=c,},
+column{5}={halign=c,},
+column{6}={halign=c,},
+column{7}={halign=c,},
+}                     %% tabularray inner close
+\toprule
+& (1) & (2) & (3) & (4) & (5) & (6) \\ \midrule %% TinyTableHeader
+Red Alert 6 Days Before * Pro Likud * Post    & \num{0.041}**  & \num{0.038}+    & \num{-0.007}   & \num{-0.008}     & \num{0.017}+   & \num{0.018}    \\
+& (\num{0.015})  & (\num{0.022})   & (\num{0.012})  & (\num{0.017})    & (\num{0.009})  & (\num{0.013})  \\
+Red Alert 200+ Days Before * Pro Likud * Post & \num{0.005}    & \num{0.004}     & \num{-0.024}+  & \num{-0.035}*    & \num{-0.009}   & \num{-0.007}   \\
+& (\num{0.013})  & (\num{0.018})   & (\num{0.013})  & (\num{0.014})    & (\num{0.009})  & (\num{0.012})  \\
+Red Alert 6 Days Before * Post                & \num{0.005}    & \num{0.006}     & \num{0.012}*   & \num{0.010}      & \num{-0.007}   & \num{-0.007}   \\
+& (\num{0.005})  & (\num{0.007})   & (\num{0.005})  & (\num{0.007})    & (\num{0.006})  & (\num{0.009})  \\
+Red Alert 200+ Days Before * Post             & \num{0.000}    & \num{-0.001}    & \num{-0.005}   & \num{0.004}      & \num{0.009}    & \num{0.007}    \\
+& (\num{0.005})  & (\num{0.008})   & (\num{0.011})  & (\num{0.009})    & (\num{0.007})  & (\num{0.009})  \\
+Intercept                                     & \num{0.059}*** & \num{-8.068}*** & \num{0.155}*** & \num{-17.481}*** & \num{0.761}*** & \num{9.134}*** \\
+& (\num{0.003})  & (\num{1.491})   & (\num{0.028})  & (\num{0.982})    & (\num{0.009})  & (\num{0.808})  \\
+Observations                                  & 306             & 305              & 306             & 305               & 306             & 305             \\
+Control Variables                             & No              & Yes              & No              & Yes               & No              & Yes             \\
+Locality Fixed Effects                        & No              & Yes              & No              & Yes               & No              & Yes             \\
+Clustered Errors                              & Yes             & Yes              & Yes             & Yes               & Yes             & Yes             \\
+Control Group                                 & NRA 2015        & NRA 2015         & NRA 2015        & NRA 2015          & NRA 2015        & NRA 2015        \\
+Dependent Variable                            & Likud           & Likud            & Right Wing      & Right Wing        & Turnout         & Turnout         \\
+\bottomrule
+\end{talltblr}
+\end{table}

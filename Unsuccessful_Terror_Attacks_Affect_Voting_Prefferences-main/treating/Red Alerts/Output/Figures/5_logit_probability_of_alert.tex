@@ -1,0 +1,40 @@
+\begin{table}
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={+ p \num{< 0.1}, * p \num{< 0.05}, ** p \num{< 0.01}, *** p \num{< 0.001}},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+colspec={Q[]Q[]Q[]Q[]Q[]},
+column{1}={halign=l,},
+column{2}={halign=c,},
+column{3}={halign=c,},
+column{4}={halign=c,},
+column{5}={halign=c,},
+}                     %% tabularray inner close
+\toprule
+& (1) & (2) & (3) & (4) \\ \midrule %% TinyTableHeader
+Quantity of Previous Red Alerts        & \num{-1.011}*** & \num{-0.920}*** & \num{12.913}   & \num{-0.259}*** \\
+& (\num{0.002})   & (\num{0.002})   & (\num{33.473}) & (\num{0.003})   \\
+Quantity of Previous Red Alerts * 2015 &                  &                  & \num{0.498}    &                  \\
+&                  &                  & (\num{36.729}) &                  \\
+Quantity of Previous Red Alerts * 2016 &                  &                  & \num{-14.286}  &                  \\
+&                  &                  & (\num{33.473}) &                  \\
+Quantity of Previous Red Alerts * 2017 &                  &                  & \num{-13.060}  &                  \\
+&                  &                  & (\num{33.473}) &                  \\
+Quantity of Previous Red Alerts * 2018 &                  &                  & \num{-12.995}  &                  \\
+&                  &                  & (\num{33.473}) &                  \\
+Quantity of Previous Red Alerts * 2019 &                  &                  & \num{-12.547}  &                  \\
+&                  &                  & (\num{33.473}) &                  \\
+Quantity of Previous Red Alerts * 2020 &                  &                  & \num{-12.384}  &                  \\
+&                  &                  & (\num{33.473}) &                  \\
+Quantity of Previous Red Alerts * 2021 &                  &                  & \num{-12.679}  &                  \\
+&                  &                  & (\num{33.473}) &                  \\
+Quantity of Previous Red Alerts * 2022 &                  &                  & \num{-12.932}  &                  \\
+&                  &                  & (\num{33.473}) &                  \\
+Period                                 & 2014-2022        & 2014-2021        & 2014-2022       & 2014-2021        \\
+Year Fixed Effects                     & No               & No               & Yes             & Yes              \\
+Observations                           & 1100631          & 970326           & 1100631         & 970326           \\
+\bottomrule
+\end{talltblr}
+\end{table}

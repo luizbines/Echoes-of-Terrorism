@@ -1,0 +1,34 @@
+\begin{table}
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={+ p \num{< 0.1}, * p \num{< 0.05}, ** p \num{< 0.01}, *** p \num{< 0.001}},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+colspec={Q[]Q[]Q[]Q[]Q[]Q[]Q[]Q[]Q[]Q[]Q[]},
+column{1}={halign=l,},
+column{2}={halign=c,},
+column{3}={halign=c,},
+column{4}={halign=c,},
+column{5}={halign=c,},
+column{6}={halign=c,},
+column{7}={halign=c,},
+column{8}={halign=c,},
+column{9}={halign=c,},
+column{10}={halign=c,},
+column{11}={halign=c,},
+hline{8}={1,2,3,4,5,6,7,8,9,10,11}{solid, 0.05em, black},
+}                     %% tabularray inner close
+\toprule
+& Peace & War & Siren & Terrorism & Ceasefire & Hamas & Elections & Likud & Netanyahu & Government \\ \midrule %% TinyTableHeader
+Red Alert         & \num{6.096}*** & \num{23.007}*** & \num{34.435}*** & \num{19.820}*** & \num{37.858}*** & \num{27.021}*** & \num{-3.546}  & \num{0.187}   & \num{5.313}   & \num{4.630}   \\
+& (\num{1.832})  & (\num{2.539})   & (\num{2.330})   & (\num{4.208})   & (\num{2.556})   & (\num{2.299})   & (\num{4.260}) & (\num{3.660}) & (\num{3.341}) & (\num{3.402}) \\
+Red Alert - lag 1 & \num{-3.125}+  & \num{2.698}     & \num{-0.979}    & \num{5.227}     & \num{0.326}     & \num{2.272}     & \num{-3.522}  & \num{-1.286}  & \num{0.154}   & \num{8.043}*  \\
+& (\num{1.826})  & (\num{2.532})   & (\num{2.323})   & (\num{4.196})   & (\num{2.549})   & (\num{2.292})   & (\num{4.248}) & (\num{3.650}) & (\num{3.331}) & (\num{3.393}) \\
+Red Alert - lag 2 & \num{-0.153}   & \num{-4.216}+   & \num{-1.220}    & \num{-3.238}    & \num{0.672}     & \num{-0.984}    & \num{-2.224}  & \num{-2.784}  & \num{0.435}   & \num{0.235}   \\
+& (\num{1.823})  & (\num{2.527})   & (\num{2.318})   & (\num{4.187})   & (\num{2.544})   & (\num{2.287})   & (\num{4.239}) & (\num{3.642}) & (\num{3.324}) & (\num{3.386}) \\
+Num.Obs.          & \num{648}      & \num{648}       & \num{648}       & \num{648}       & \num{648}       & \num{648}       & \num{648}     & \num{648}     & \num{648}     & \num{648}     \\
+R2                & \num{0.435}    & \num{0.440}     & \num{0.325}     & \num{0.222}     & \num{0.309}     & \num{0.270}     & \num{0.148}   & \num{0.306}   & \num{0.534}   & \num{0.385}   \\
+\bottomrule
+\end{talltblr}
+\end{table}

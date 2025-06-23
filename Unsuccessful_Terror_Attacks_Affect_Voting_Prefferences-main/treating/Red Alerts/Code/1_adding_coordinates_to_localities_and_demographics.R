@@ -3,9 +3,8 @@
   # 2: merges red alerts and likud_percentage observations based on where they are
   # 3: until now, observations were geographical points. Here, they are merged with israel's SF.
 # this way, we are able to properly calculate the distance between each city (polygon) and Gaza.
-
-
 # Then, based on localities names and coordinates, electoral localities are added to each red alert observation
+
 # Luiz Bines
 # 2024
 
@@ -28,7 +27,7 @@ library(stringi)
 library(stringdist)
 
 # Directory
-wd = 'C:/Users/luizb/Desktop/Dissertation/Dissertation/Red-Alerts-and-Votes/'
+wd = 'C:/Users/luizb/Desktop/Echoes-of-Terrorism/Unsuccessful_Terror_Attacks_Affect_Voting_Prefferences-main/'
 setwd(wd);
 
 
@@ -146,6 +145,17 @@ israel_demographics = israel_demographics %>%
 
 ##### FILTERING #####
 
+# NAs
+  # rocket_alerts
+is.na(rocket_alerts$lat) %>% sum
+  # 95 out of 20159
+  # 0.47%
+
+  # electoral results
+is.na(likud_percentage$lat) %>% sum
+  # 10 out of 1183
+  # 0.88%
+
 # excluding NA coordinates
 rocket_alerts = rocket_alerts[!is.na(rocket_alerts$lat),]
 likud_percentage = likud_percentage[!is.na(likud_percentage$lat),]
@@ -172,8 +182,10 @@ all_rocket_alerts = all_rocket_alerts %>%
       locality, loc, date, lat, long)
   )
 
-##### ASSIGNING EACH RED ALERT OBSERVATION TO AN ELECTORAL LOCALITY #####
 
+
+
+##### ASSIGNING EACH RED ALERT OBSERVATION TO AN ELECTORAL LOCALITY #####
 
   # First: by perfect merge
 rocket_alerts = rocket_alerts %>%
@@ -193,7 +205,7 @@ all_rocket_alerts = all_rocket_alerts %>%
   )
 
 
-  # Second: by smallest distance to electoral locality
+  # Smallest distance to electoral locality
 rocket_alerts_sf <- st_as_sf(rocket_alerts, coords = c("long", "lat"), crs = 4326, remove = FALSE)
 likud_percentage_sf <- st_as_sf(likud_percentage, coords = c("long", "lat"), crs = 4326, remove = FALSE)
 all_rocket_alerts_sf <- st_as_sf(all_rocket_alerts, coords = c("long", "lat"), crs = 4326, remove = FALSE)
@@ -227,7 +239,7 @@ distances_all <- st_distance(all_rocket_alerts_sf, likud_percentage_sf[nearest_a
 #                           SEMEL_YISHUV),
 #     date = as.Date(date)
 #   ) %>%
-#   select(-nearest_SEMEL_YISHUV) 
+#   select(-nearest_SEMEL_YISHUV)
 
 
 

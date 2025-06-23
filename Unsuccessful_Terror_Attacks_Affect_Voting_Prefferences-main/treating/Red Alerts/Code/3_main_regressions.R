@@ -17,7 +17,7 @@ library(knitr)
 
 
 # Directory
-wd = 'C:/Users/luizb/Desktop/Dissertation/Dissertation/Red-Alerts-and-Votes/'
+wd = 'C:/Users/luizb/Desktop/Echoes-of-Terrorism/Unsuccessful_Terror_Attacks_Affect_Voting_Prefferences-main/'
 setwd(wd);
 
 ##### IMPORTING #####
@@ -208,7 +208,7 @@ modelsummary(
     reg_2_turnout
     ),
              # output = 'treating/Red Alerts/Output/Figures/3_likud_right_wing_turnout_temporal_results.tex',
-             output = 'latex_tabular',
+             # output = 'latex_tabular',
              coef_map = c('year_election::2015:temporal_group::temporal_distance == 6' = 'Red Alert 6 Days Before * 2015 Election',
                           'year_election::2015:temporal_group::temporal_distance > 149' = 'Red Alert 149+ Days Before * 2015 Election',
                           'year_election::2009:temporal_group::temporal_distance == 6' = 'Red Alert 6 Days Before * 2009 Election',

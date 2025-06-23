@@ -14,7 +14,7 @@ library(broom)
 
 
 # Directory
-wd = 'C:/Users/luizb/Desktop/Dissertation/Dissertation/Red-Alerts-and-Votes/'
+wd = 'C:/Users/luizb/Desktop/Echoes-of-Terrorism/Unsuccessful_Terror_Attacks_Affect_Voting_Prefferences-main/'
 setwd(wd);
 
 ##### IMPORTING #####
@@ -191,8 +191,8 @@ modelsummary(
     reg_1_turnout,
     reg_2_turnout
   ),
-  # output = 'treating/Red Alerts/Output/Figures/APPENDIX_likud_right_wing_turnout_temporal_results_ARAB_CITIES.tex',
-  output = 'latex_tabular',
+  output = 'treating/Red Alerts/Output/Figures/Robustness/ARAB_CITIES_regressions.tex',
+  # output = 'latex_tabular',
   coef_map = c('year_election::2015:temporal_group::temporal_distance == 6' = 'Red Alert 6 Days Before * 2015 Election',
                'year_election::2015:temporal_group::temporal_distance > 149' = 'Red Alert 149+ Days Before * 2015 Election',
                'year_election::2009:temporal_group::temporal_distance == 6' = 'Red Alert 6 Days Before * 2009 Election',

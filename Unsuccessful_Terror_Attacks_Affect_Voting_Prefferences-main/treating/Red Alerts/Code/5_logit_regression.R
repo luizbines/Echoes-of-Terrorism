@@ -12,7 +12,7 @@ library(glmnet)
 library(modelsummary)
 
 # Directory
-wd = 'C:/Users/luizb/Desktop/Dissertation/Dissertation/Red-Alerts-and-Votes/'
+wd = 'C:/Users/luizb/Desktop/Echoes-of-Terrorism/Unsuccessful_Terror_Attacks_Affect_Voting_Prefferences-main/'
 setwd(wd);
 
 # Importing
@@ -89,8 +89,8 @@ model_4 <- glm(future_red_alert_within_year ~ quantity_of_alarms + factor(year),
 
 # Results Table
 modelsummary(list(model_1, model_2, model_3, model_4), 
-             output = 'latex_tabular',
-             # output = 'treating/Red Alerts/Output/Figures/5_logit_probability_of_alert.tex',
+             # output = 'latex_tabular',
+             output = 'treating/Red Alerts/Output/Figures/5_logit_probability_of_alert.tex',
              # coef_rename = c("quantity_of_alarms" = "Quantity of Previous Red Alerts")
              coef_map = c('quantity_of_alarms' = 'Quantity of Previous Red Alerts',
                           'quantity_of_alarms:factor(year)2014' = 'Quantity of Previous Red Alerts * 2014',

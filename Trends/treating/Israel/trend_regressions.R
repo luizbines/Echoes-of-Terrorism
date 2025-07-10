@@ -14,7 +14,7 @@ library(purrr)
 library(modelsummary)
 
 # Directory
-wd <- 'C:/Users/luizb/Desktop/Dissertation/Dissertation/'
+wd <- 'C:/Users/luizb/Desktop/Echoes-of-Terrorism/'
 setwd(wd);
 
 
@@ -114,8 +114,8 @@ modelsummary(
     'Elections' = elections_reg, 'Likud' = likud_reg, 'Netanyahu' = netanyahu_reg,
     'Government' = government_reg
   ),
-  # output = 'Trends/treating/Israel/output/trends_table.tex',
-  output = 'latex_tabular',
+  output = 'Trends/treating/Israel/output/trends_table.tex',
+  # output = 'latex_tabular',
   coef_map = c('alert' = 'Red Alert',
                'lag_alert_1' = 'Red Alert - lag 1',
                'lag_alert_2' = 'Red Alert - lag 2'),

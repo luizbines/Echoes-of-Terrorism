@@ -15,7 +15,7 @@ library(tibble)
 library(ggplot2)
 
 # Directory
-wd = 'C:/Users/luizb/Desktop/Dissertation/Dissertation/Red-Alerts-and-Votes/'
+wd = 'C:/Users/luizb/Desktop/Echoes-of-Terrorism/Unsuccessful_Terror_Attacks_Affect_Voting_Prefferences-main/'
 setwd(wd);
 
 ##### IMPORTING #####

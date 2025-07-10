@@ -14,27 +14,38 @@ library(lubridate)
 
 
 # Directory
-wd <- 'C:/Users/luizb/Desktop/Dissertation/Dissertation/'
+wd <- 'C:/Users/luizb/Desktop/Echoes-of-Terrorism/'
 setwd(wd);
 
 
 # Importing
-red_alerts <- read.csv('Red-Alerts-and-Votes/treating/Red Alerts/Output/1_ALL_red_alerts_with_coordinates_and_electoral_localities.csv')[,-1]
+red_alerts <- read.csv('Unsuccessful_Terror_Attacks_Affect_Voting_Prefferences-main/treating/Red Alerts/Output/1_ALL_red_alerts_with_coordinates_and_electoral_localities.csv')[,-1]
 
 il_districts <- read_sf('Trends/raw/Israel/il_shp/il.shp') %>% 
   select(name,geometry) %>% 
   rename(district = name)
 
+gaza_sf = read_sf('Unsuccessful_Terror_Attacks_Affect_Voting_Prefferences-main/raw/Israel/Gaza/gaza.shp')[1,1]
+
 trends <- read.csv('Trends/raw/Google Trends/trends_by_district_keywords_monthly.csv')
 
-israel_demographics <- read.csv('Red-Alerts-and-Votes/treating/Red Alerts/Output/1_israel_demographics.csv') %>% 
+israel_demographics <- read.csv('Unsuccessful_Terror_Attacks_Affect_Voting_Prefferences-main/treating/Red Alerts/Output/1_israel_demographics.csv') %>%
   select(SEMEL_YISHUV,Pop_Total, year, lat, long)
 
 
-israel_geometry = st_read("Red-Alerts-and-Votes/raw/Israel/Demographics/statisticalareas_demography2013.gdb") %>%
+israel_geometry = st_read("Unsuccessful_Terror_Attacks_Affect_Voting_Prefferences-main/raw/Israel/Demographics/statisticalareas_demography2013.gdb")
+
+
+# Cleaning Israel Shapefile
+israel_geometry <- israel_geometry %>%
   group_by(SEMEL_YISHUV) %>%
   summarise(
-    Shape = st_union(na.omit(Shape))
+    Shape = st_union(Shape),
+    Shape_Area = sum(Shape_Area, na.rm = TRUE),
+    Pop_Total = sum(Pop_Total, na.rm = TRUE),
+    SHEM_YISHUV = first(SHEM_YISHUV),
+    SHEM_YISHUV_ENGLISH = first(SHEM_YISHUV_ENGLISH),
+    .groups = "drop"
   )
 
 # Pivoting trends
@@ -47,7 +58,6 @@ trends <- trends %>%
   ) %>% 
   select(-date)
 
-
 ##### Assigning districts to red alerts #####
 
 # Creating "alert" variable"
@@ -57,7 +67,7 @@ red_alerts <- red_alerts %>%
          # creating year and month variables
          year = year(date),
          month = month(date)
-         ) %>% 
+  ) %>% 
   # maximum one alert per locality-month-year
   distinct(SEMEL_YISHUV, year, month, .keep_all = TRUE)
 
@@ -90,7 +100,7 @@ israel_demographics <- israel_demographics %>%
   ) %>% 
   select(-Shape) %>% 
   st_as_sf()
-  
+
 
 sf::sf_use_s2(FALSE)
 
@@ -108,10 +118,10 @@ pop_district_year <- israel_demographics %>%
   as.data.frame() %>% 
   distinct(district, year, SEMEL_YISHUV, .keep_all = TRUE) %>%  
   group_by(district, year) %>%
-  summarise(Pop_Total_District = sum(Pop_Total, na.rm = TRUE), .groups = "drop")  
-  
+  summarise(Pop_Total_District = sum(Pop_Total.x, na.rm = TRUE), .groups = "drop")  
 
-  
+
+
 # Creating alerts by districts dataset
 districts_alerts <- red_alerts %>% 
   # adding population per district for each year
@@ -130,12 +140,12 @@ districts_alerts <- red_alerts %>%
   summarise(
     # alerts are calculated as the ratio of the district population that was affected
     alert = sum(alert * Pop_Total) / Pop_Total_District
-    ) %>% 
+  ) %>% 
   # one observation per district-day
   distinct(district, month, year, alert)
 
-  
-  # alternative: binary alert
+
+# alternative: binary alert
 # districts_alerts <- red_alerts %>% 
 #   group_by(district, date) %>% 
 #   summarise(
@@ -168,7 +178,7 @@ merged_data <- trends %>% as.data.frame() %>%
     districts_alerts %>% select(-geometry),
     by = c('District','year','month'),
     all.x = T
-    ) %>% 
+  ) %>% 
   mutate(
     alert = ifelse(is.na(alert),
                    0,

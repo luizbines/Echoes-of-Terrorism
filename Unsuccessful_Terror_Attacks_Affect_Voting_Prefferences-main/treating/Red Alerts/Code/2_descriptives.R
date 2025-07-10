@@ -40,10 +40,10 @@ all_red_alerts = read.csv('treating/Red Alerts/Output/1_ALL_red_alerts_with_coor
 ##### PREPARING FOR REGRESSIONS #####
 
 
-# RESTRICTING: 75-150KM FROM GAZA
-likud_percentage = likud_percentage %>% filter(distance > 75 & distance < 150)
-right_wing_percentage = right_wing_percentage %>% filter(distance > 75 & distance < 150)
-turnout_percentage = turnout_percentage %>% filter(distance > 75 & distance < 150)
+# # RESTRICTING: 75-150KM FROM GAZA
+# likud_percentage = likud_percentage %>% filter(distance > 75 & distance < 150)
+# right_wing_percentage = right_wing_percentage %>% filter(distance > 75 & distance < 150)
+# turnout_percentage = turnout_percentage %>% filter(distance > 75 & distance < 150)
 
 
 
@@ -302,7 +302,7 @@ descriptive_statistics <- likud_percentage_regs %>%
 
   # filtering 2013 and 2015
   filter(year == 2013 | year == 2015) %>% 
-  # filtering arab cities
+  # filtering out arab cities
   filter(Religion_yishuv_Code != 2) %>% 
 
   # merging with right wing percentage dataset
@@ -310,6 +310,7 @@ descriptive_statistics <- likud_percentage_regs %>%
           filter(Religion_yishuv_Code !=2) %>% 
           select(SEMEL_YISHUV,year,right_wing_percentage),
         by = c('SEMEL_YISHUV','year')) %>% 
+  # merging turnout dataset
   merge(turnout_percentage_regs %>% 
           filter(Religion_yishuv_Code != 2) %>% 
           select(SEMEL_YISHUV,year,turnout_percentage),
@@ -351,7 +352,7 @@ descriptive_statistics <- likud_percentage_regs %>%
 control_group <- descriptive_statistics %>%
   filter(group == "No Red Alert")
 
-# Function to calculate difference and SE
+# Function to calculate difference and SE of the difference
 calculate_diff_se <- function(avg1, sd1, n1, avg2, sd2, n2) {
   diff <- avg2 - avg1
   se_diff <- sqrt((sd1^2 / n1) + (sd2^2 / n2))
@@ -387,8 +388,8 @@ for (group_name in c("Last Red Alert 149+ Days Before 2015 Election",
     
     # Calculating differences in mean and SD
     diff_se <- calculate_diff_se(
-      control_group[[var]][1], control_group[[var_sd]][1], n1,
-      group_data[[var]][1], group_data[[var_sd]][1], n2
+      as.numeric(control_group[[var]][1]), as.numeric(control_group[[var_sd]][1]), n1,
+      as.numeric(group_data[[var]][1]), as.numeric(group_data[[var_sd]][1]), n2
     )
     
     # Storing results
@@ -398,8 +399,11 @@ for (group_name in c("Last Red Alert 149+ Days Before 2015 Election",
 
 # Creating results dataframe
 results_df <- do.call(rbind, results)
-results_df <- as.data.frame(results_df)
+results_df <- as.data.frame(results_df, stringsAsFactors = F)
 colnames(results_df) <- c("Group", "Variable", "Difference", "SE")
+
+results_df$Difference = as.numeric(as.character(results_df$Difference))
+results_df$SE = as.numeric(as.character(results_df$SE))
 
 
 # Function to determine significance level
@@ -435,6 +439,7 @@ no_red_alerts_descriptives = descriptive_statistics %>%
   filter(Election == 2013 & group == 'No Red Alert')
 
 
+
 #### LATEX DESCRIPTIVE STATISTICS TABLE ####
 # HTML descriptive statistics table
 statistics_table <- descriptive_statistics %>% filter(Election==2013) %>%
@@ -453,6 +458,9 @@ statistics_table <- descriptive_statistics %>% filter(Election==2013) %>%
     `Diff (vs No Red Alerts)_6days`
   )
 
+
+
+
 # Adjusting names
 colnames(statistics_table) <- c(
   "Statistic",
@@ -462,6 +470,17 @@ colnames(statistics_table) <- c(
   "Last Red Alert 6 Days Before (2013)",
   "Diff (vs No Red Alerts)"
 )
+
+
+# Correcting Diff SE using actual SE calculated in the results_df dataset
+for (i in 1:8) {
+  row_st <- 2 * i
+  
+  # Attributing values
+  statistics_table[row_st, 4] <- results_df$`SE_Last Red Alert 149+ Days Before 2015 Election`[i]
+  statistics_table[row_st, 6] <- results_df$`SE_Last Red Alert 6 Days Before 2015 Election`[i]
+}
+
 
 # Exhibiting 
 statistics_table %>%

@@ -45,8 +45,11 @@ israel = israel %>%
     Pop_Total = sum(Pop_Total, na.rm = T),
     Shape = st_union(Shape),
     Shape_Area = sum(Shape_Area),
-    Religion_Yishuv = first(Religion_Yishuv)
+    Religion_Yishuv = first(Religion_Yishuv),
+    .groups = "drop"
+    
   ) 
+
 
 
 israel = st_transform(israel, st_crs(gaza_sf))
@@ -66,19 +69,17 @@ israel = israel %>%
 
 rm(distance)
 
-# fixing cases where two cities have the same name but one is not populated
-filtered_israel = israel %>%
-  group_by(SEMEL_YISHUV) %>%
-  filter(Pop_Total > 0)
 
-cities <- merge(likud_percentage %>% filter(year == 2013) %>% 
-                       select('semel_map', 'treated', 'loc', 'temporal_group'),
-                     filtered_israel %>% as.data.frame(),
-                     by.x = 'semel_map',
-                     by.y = 'SEMEL_YISHUV',
+# Creating sample dataset to plot
+cities <- merge(likud_percentage %>% filter(year == 2013) %>%
+                       select('SEMEL_YISHUV', 'treated', 'loc', 'temporal_group'),
+                     israel %>% as.data.frame() %>%
+                  select('SEMEL_YISHUV','Shape','Religion_Yishuv'),
+                     by = 'SEMEL_YISHUV',
                      all.x = T,
-                     all.y = T
+                     all.y = F
                      )
+
 
 
 gaza_sf$temporal_group <- "Gaza Strip"
@@ -182,7 +183,7 @@ ggsave('treating/Red Alerts/Output/Figures/6_israel_ranges.pdf', width = 8.27 , 
 # 
 
 # filtering out arab cities
-cities = cities %>% 
+cities_no_arabs = cities %>% 
   filter(Religion_Yishuv!=2)
 
 
@@ -193,9 +194,9 @@ ggplot() +
           fill = "purple4", alpha = 0.15,
           color = 'orange', lwd = 1,
           linetype = "dashed") +
-  geom_sf(data = cities[!is.na(cities$temporal_group) ,]$Shape,
-          aes(fill = cities[!is.na(cities$temporal_group) ,]$temporal_group,
-              color = cities[!is.na(cities$temporal_group) ,]$temporal_group), lwd = 0) +
+  geom_sf(data = cities_no_arabs$Shape,
+          aes(fill = cities_no_arabs$temporal_group,
+              color = cities_no_arabs$temporal_group), lwd = 0) +
   
   geom_sf(data = gaza_sf, fill = 'orange', color = 'orange', lwd = 0) +
   

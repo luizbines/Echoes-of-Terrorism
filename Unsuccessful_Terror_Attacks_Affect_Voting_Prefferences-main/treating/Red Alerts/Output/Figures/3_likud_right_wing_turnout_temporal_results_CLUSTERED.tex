@@ -1,0 +1,35 @@
+\begin{table}
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={+ p \num{< 0.1}, * p \num{< 0.05}, ** p \num{< 0.01}, *** p \num{< 0.001}},
+note{ }={NRA 2015 stands for No Red Alerts until the 2015 Election.},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+colspec={Q[]Q[]Q[]Q[]Q[]Q[]Q[]},
+hline{2}={1-7}{solid, black, 0.05em},
+hline{1}={1-7}{solid, black, 0.1em},
+hline{19}={1-7}{solid, black, 0.1em},
+column{2-7}={}{halign=c},
+column{1}={}{halign=l},
+}                     %% tabularray inner close
+& (1) & (2) & (3) & (4) & (5) & (6) \\
+Red Alert 6 Days Before * 2015 Election & \num{0.026}** & \num{0.026}** & \num{-0.019}* & \num{-0.018}+ & \num{-0.000} & \num{-0.001} \\
+& (\num{0.009}) & (\num{0.009}) & (\num{0.009}) & (\num{0.009}) & (\num{0.005}) & (\num{0.005}) \\
+Red Alert 149+ Days Before * 2015 Election & \num{0.002} & \num{0.003} & \num{-0.020}* & \num{-0.022}** & \num{0.002} & \num{0.002} \\
+& (\num{0.008}) & (\num{0.008}) & (\num{0.008}) & (\num{0.009}) & (\num{0.004}) & (\num{0.004}) \\
+Red Alert 6 Days Before * 2009 Election & \num{0.008} & \num{0.007} & \num{-0.030}* & \num{-0.028}* & \num{-0.001} & \num{-0.001} \\
+& (\num{0.009}) & (\num{0.009}) & (\num{0.012}) & (\num{0.012}) & (\num{0.007}) & (\num{0.007}) \\
+Red Alert 149+ Days Before * 2009 Election & \num{0.012} & \num{0.012} & \num{-0.025}* & \num{-0.025}* & \num{0.006} & \num{0.006} \\
+& (\num{0.008}) & (\num{0.008}) & (\num{0.012}) & (\num{0.011}) & (\num{0.006}) & (\num{0.006}) \\
+Red Alert 6 Days Before * 2006 Election & \num{0.017} & \num{0.016} & \num{-0.029}** & \num{-0.030}** & \num{0.035}* & \num{0.036}* \\
+& (\num{0.011}) & (\num{0.011}) & (\num{0.011}) & (\num{0.011}) & (\num{0.016}) & (\num{0.016}) \\
+Red Alert 149+ Days Before * 2006 Election & \num{0.016} & \num{0.016} & \num{-0.014} & \num{-0.012} & \num{0.004} & \num{0.003} \\
+& (\num{0.010}) & (\num{0.010}) & (\num{0.011}) & (\num{0.010}) & (\num{0.015}) & (\num{0.015}) \\
+Dependent Variable & Likud & Likud & Right Wing (excluding Likud) & Right Wing (excluding Likud) & Turnout & Turnout \\
+Control Variables & No & Yes & No & Yes & No & Yes \\
+Locality Fixed Effects & Yes & Yes & Yes & Yes & Yes & Yes \\
+Control Group & NRA 2015 & NRA 2015 & NRA 2015 & NRA 2015 & NRA 2015 & NRA 2015 \\
+Observations & 1324 & 1324 & 1324 & 1324 & 1324 & 1324 \\
+\end{talltblr}
+\end{table}

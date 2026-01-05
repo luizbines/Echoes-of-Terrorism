@@ -1,0 +1,26 @@
+\begin{table}
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={+ p \num{< 0.1}, * p \num{< 0.05}, ** p \num{< 0.01}, *** p \num{< 0.001}},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+colspec={Q[]Q[]Q[]Q[]Q[]},
+hline{2}={1-5}{solid, black, 0.05em},
+hline{8}={1-5}{solid, black, 0.05em},
+hline{1}={1-5}{solid, black, 0.1em},
+hline{10}={1-5}{solid, black, 0.1em},
+column{2-5}={}{halign=c},
+column{1}={}{halign=l},
+}                     %% tabularray inner close
+& annexation & sovereignty & settlements & palestinian\_state \\
+Red Alert & \num{1.941} & \num{2.768} & \num{1.406} & \num{2.977} \\
+& (\num{2.291}) & (\num{3.752}) & (\num{5.843}) & (\num{3.177}) \\
+Red Alert - lag 1 & \num{1.816} & \num{-2.316} & \num{-3.098} & \num{-1.976} \\
+& (\num{2.282}) & (\num{3.736}) & (\num{5.830}) & (\num{3.163}) \\
+Red Alert - lag 2 & \num{-1.319} & \num{2.818} & \num{-7.316} & \num{3.500} \\
+& (\num{2.278}) & (\num{3.730}) & (\num{5.811}) & (\num{3.152}) \\
+Num.Obs. & \num{648} & \num{648} & \num{324} & \num{324} \\
+R2 & \num{0.215} & \num{0.171} & \num{0.137} & \num{0.044} \\
+\end{talltblr}
+\end{table}

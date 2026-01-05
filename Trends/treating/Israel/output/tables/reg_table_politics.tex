@@ -1,0 +1,26 @@
+\begin{table}
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={+ p \num{< 0.1}, * p \num{< 0.05}, ** p \num{< 0.01}, *** p \num{< 0.001}},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+colspec={Q[]Q[]Q[]Q[]Q[]},
+hline{2}={1-5}{solid, black, 0.05em},
+hline{8}={1-5}{solid, black, 0.05em},
+hline{1}={1-5}{solid, black, 0.1em},
+hline{10}={1-5}{solid, black, 0.1em},
+column{2-5}={}{halign=c},
+column{1}={}{halign=l},
+}                     %% tabularray inner close
+& elections & likud & netanyahu & government \\
+Red Alert & \num{4.327} & \num{1.261} & \num{4.699} & \num{3.234} \\
+& (\num{4.095}) & (\num{3.481}) & (\num{3.135}) & (\num{3.189}) \\
+Red Alert - lag 1 & \num{-1.243} & \num{-1.598} & \num{-0.494} & \num{4.998} \\
+& (\num{4.077}) & (\num{3.466}) & (\num{3.122}) & (\num{3.175}) \\
+Red Alert - lag 2 & \num{-3.117} & \num{-2.558} & \num{-0.139} & \num{-0.963} \\
+& (\num{4.070}) & (\num{3.460}) & (\num{3.116}) & (\num{3.170}) \\
+Num.Obs. & \num{648} & \num{648} & \num{648} & \num{648} \\
+R2 & \num{0.150} & \num{0.298} & \num{0.534} & \num{0.380} \\
+\end{talltblr}
+\end{table}

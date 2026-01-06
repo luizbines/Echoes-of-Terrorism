@@ -125,7 +125,8 @@ parties_percentages = parties_percentages %>%
 
 start_date <- as.Date("2014-07-24")
 end_date <- as.Date("2015-03-17")
-last_date <- as.Date("2022-12-31")
+# just until 2021 to avoid censorship (as explained in the appendix)
+last_date <- as.Date("2021-12-31")
 
 
 dates <- seq.Date(start_date, end_date, by = "day")
@@ -133,11 +134,8 @@ all_dates <- seq.Date(start_date, last_date, by = "day")
 
 # one observation for each city-day
 cities_grid <- expand.grid(SEMEL_YISHUV = unique(parties_percentages$SEMEL_YISHUV),
-                           date = dates) %>% 
-  merge(
-    parties_percentages %>% dplyr::select(SEMEL_YISHUV,distance),
-    by = "SEMEL_YISHUV",
-    all.x = TRUE) %>%
+                           date = dates) %>%
+  # merging with red alerts dataset to get a city-day-alert dummy
   merge(
     red_alerts %>% dplyr::select(SEMEL_YISHUV, date, alert) %>% distinct(),
     by = c("SEMEL_YISHUV", "date"),
@@ -150,12 +148,7 @@ cities_grid <- expand.grid(SEMEL_YISHUV = unique(parties_percentages$SEMEL_YISHU
 
 all_years_cities_grid <- expand.grid(SEMEL_YISHUV = unique(parties_percentages$SEMEL_YISHUV),
                                      date = all_dates) %>%
-  merge(parties_percentages %>% select(SEMEL_YISHUV,distance), by = "SEMEL_YISHUV", all.x = TRUE)
-
-
-
-all_years_cities_grid <- merge(all_years_cities_grid,
-                               all_red_alerts %>% dplyr::select(SEMEL_YISHUV, date, alert) %>% distinct(),
+  merge(all_red_alerts %>% dplyr::select(SEMEL_YISHUV, date, alert) %>% distinct(),
                                by = c("SEMEL_YISHUV", "date"),
                                all.x = T,
                                all.y = F) %>% 

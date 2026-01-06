@@ -12,7 +12,7 @@ library(glmnet)
 library(modelsummary)
 
 # Directory
-wd = 'C:/Users/luizb/Desktop/Echoes-of-Terrorism/Unsuccessful_Terror_Attacks_Affect_Voting_Prefferences-main/'
+wd = '/home/luiz/Documentos/GitHub/Echoes-of-Terrorism/Unsuccessful_Terror_Attacks_Affect_Voting_Prefferences-main/'
 setwd(wd);
 
 # Importing
@@ -175,28 +175,5 @@ ggplot(pred_data_within_year, aes(x = quantity_of_alarms, y = future_red_alert_w
 ggsave('treating/Red Alerts/Output/Figures/5_logit_probability_of_alert_1_year.pdf')
 
 
-
-# Old model
-# ### ALTERNATIVE MODEL ###
-# # Probability of Red Alert in up to 1 year considering the number of previous Red Alerts
-#
-# # Create a dummy variable for future red alert within 1 year
-# all_years_cities_grid <- all_years_cities_grid %>%
-#   arrange(SEMEL_YISHUV, date) %>%
-#   group_by(SEMEL_YISHUV) %>%
-#   mutate(future_red_alert_within_year = ifelse(
-#     sapply(date, function(x) any(alert[date > x & date <= x + 365] == 1)),
-#     1,
-#     0
-#   )) %>%
-#   ungroup()
-
-
-# # Logit model: Probability of Red Alert within 1 year considering the number of previous Red Alerts
-# # excluding 2022
-# model_2 <- glm(future_red_alert_within_year ~ quantity_of_alarms,
-#                family = binomial(link = "logit"),
-#                data = all_years_cities_grid %>% filter(year < 2022))
-# 
 
 

@@ -20,6 +20,7 @@ library(stringi)
 library(stringdist)
 library(purrr)
 library(kableExtra)
+library(tidyverse)
 
 # Directory
 wd = '/home/luiz/Documentos/GitHub/Echoes-of-Terrorism/Unsuccessful_Terror_Attacks_Affect_Voting_Prefferences-main/'
@@ -71,7 +72,6 @@ red_alerts_grouped <- red_alerts %>%
   pivot_wider(names_from = temporal_group,
               values_from = number_of_red_alerts,
               values_fill = list(number_of_red_alerts = 0))
-
 
 
 # --- MERGE VOTING DATA WITH RED ALERTS ---

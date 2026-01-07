@@ -14,50 +14,100 @@ setwd(wd)
 
 # --- 1. THE COMPLETE 2015 PARTY LIST ---
 parties_2015_list <- c(
-  "zionist_union" = "אמת", "yahadut_hatora" = "ג", "joint_list" = "ודעם",
-  "economy_party" = "ז", "democratura" = "זך", "peoples_team" = "זץ",
-  "habait_hayehudi" = "טב", "rent_with_dignity" = "י", "social_leadership" = "יז",
-  "protect_children" = "יך", "hope_for_change" = "יץ", "kulanu" = "כ",
-  "israel_beiteinu" = "ל", "likud" = "מחל", "meretz" = "מרצ",
-  "ubizchutan" = "נז", "or_party" = "ני", "perach_party" = "נץ",
-  "arab_list" = "ע", "yesh_atid" = "פה", "pirate_party" = "ף",
-  "na_nach" = "ףץ", "aleh_yarok" = "קנ", "yahad" = "קץ",
-  "the_greens" = "רק", "shas" = "שס"
+  "likud" = "מחל",
+  "zionist_union" = "אמת",
+  "joint_list" = "ודעם",
+  "yesh_atid" = "פה",
+  "kulanu" = "כ",
+  "habait_hayehudi" = "טב",
+  "shas" = "שס",
+  "israel_beiteinu" = "ל",
+  "yahadut_hatora" = "ג",
+  "meretz" = "מרצ",
+  "yahad" = "קץ", # Although yahad is a right-wing party, it did not run in 2013
+  "aleh_yarok" = "קנ",
+  "arab_list" = "ע",
+  "the_greens" = "רק",
+  "na_nach" = "ףץ",
+  "ubizchutan" = "נז",
+  "hope_for_change" = "יץ",
+  "pirate_party" = "ף",
+  "perach_party" = "נץ",
+  "peoples_team" = "זץ", 
+  "or_party" = "ני",
+  "rent_with_dignity" = "י", 
+  "economy_party" = "ז", 
+  "democratura" = "זך",
+  "social_leadership" = "יז",
+  "protect_children" = "יך"
+
 )
 
+# Here, we only care about parties that either ran in 2015 
+# or merged into another party that ran in 2015
 get_mapping <- function(year) {
   if (year == "2006") {
     return(list(
-      "zionist_union" = "אמת", "joint_list" = c("ד", "ו", "עם"),
-      "likud" = "מחל", "habait_hayehudi" = "טב", "shas" = "שס", 
-      "israel_beiteinu" = "ל", "yahadut_hatora" = "ג",
-      "right_wing" = c("שס", "ל", "טב", "ג"), # Note that Likud is excluded
-      "coalition_2015" = c("שס", "טב", "ג")   # from right_wing and coalision (for all years)
+      "zionist_union"   = "אמת",            # HaAvoda-Meimad in 2006
+      "joint_list"      = c("ד", "עם", "ו"), # Balad (ד), Ra'am-Ta'al (עם) and Hadash (ו)
+      "habait_hayehudi" = "טב",             # Ichud Leumi-Mafdal
+      "yahad"           = "כ",              # Marzel became Otzma, which joined Yahad em 2015
+      "likud"           = "מחל",            
+      "israel_beiteinu" = "ל",               
+      "shas"            = "שס",              
+      "yahadut_hatora"  = "ג",               
+      "meretz"          = "מרצ",             
+      "aleh_yarok"      = "קנ",              
+      "the_greens"      = "רק",
+      "right_wing" = c("שס", "ל", "טב", "ג"), # Note that Likud is excluded from 
+      "coalition_2015" = c("שס", "טב", "ג")   # both right_wing and coalision (for all years)
     ))
   }
   if (year == "2009") {
     return(list(
-      "zionist_union" = "אמת", "joint_list" = c("ד", "ו", "עם"),
-      "likud" = "מחל", "shas" = "שס", "israel_beiteinu" = "ל", 
-      "yahadut_hatora" = "ג", "habait_hayehudi" = c("ב", "ט"),
+      "zionist_union"   = "אמת",           # HaAvoda in 2009
+      "joint_list"      = c("ד", "ו", "עם"), # Balad (ד), Hadash (ו) and Ra'am-Ta'al (עם)
+      "habait_hayehudi" = c("ב", "ט"),      # Mafdal (ב) and Ichud Leumi (ט) in 2009
+      "likud"           = "מחל",           
+      "israel_beiteinu" = "ל",              
+      "shas"            = "שס",             
+      "yahadut_hatora"  = "ג",              
+      "meretz"          = "מרצ",            
+      "aleh_yarok"      = "קנ",             
+      "the_greens"      = "רק",             
+      "or_party"        = "אר",              # Or changed its symbol to 'ני' in 2015
       "right_wing" = c("שס", "ל", "ג", "ב", "ט"),
-      "coalition_2015" = c("שס", "ב", "ט", "ג") 
+      "coalition_2015" = c("שס", "ב", "ט", "ג")
     ))
   }
   if (year == "2013") {
     return(list(
-      "zionist_union" = c("אמת", "צפ"), "joint_list" = c("ד", "ו", "עם"),
-      "likud" = "מחל", "israel_beiteinu" = "מחל",
-      "habait_hayehudi" = "טב", "shas" = "שס", "yahadut_hatora" = "ג",
-      "yesh_atid" = "פה", "meretz" = "מרץ",
+      "zionist_union"   = c("אמת", "צפ"),
+      "joint_list"      = c("ד", "ו", "עם"),
+      "likud"           = "מחל", 
+      "israel_beiteinu" = "מחל",
+      "habait_hayehudi" = "טב", 
+      "shas"            = "שס", 
+      "yahadut_hatora"  = "ג",
+      "yesh_atid"       = "פה", 
+      "meretz"          = "מרץ",
+      "yahad"           = "נץ", # In 2015 another unrelated party (perach_party) used this symbol
+      "aleh_yarok"      = "קנ",
+      "the_greens"      = "רק",
+      "pirate_party"    = "פ",
+      "na_nach"         = "פץ",
+      "economy_party"   = "פי",
+      "hope_for_change" = "הק",
+      "or_party"        = "ני",
+      "democratura"     = "זך",
       "right_wing" = c("שס", "טב", "ג"),
-      "coalition_2015" = c("שס", "טב", "ג") # Likud removed
+      "coalition_2015" = c("שס", "טב", "ג") 
     ))
   }
   if (year == "2015") {
     return(list(
       "right_wing" = c("שס", "טב", "ג", "ל"),
-      "coalition_2015" = c("כ", "טב", "שס", "ג") # Likud (מחל) removed
+      "coalition_2015" = c("כ", "טב", "שס", "ג") 
     ))
   }
   if (year %in% c("2019", "2019_2", "2020", "2021", "2022")) {

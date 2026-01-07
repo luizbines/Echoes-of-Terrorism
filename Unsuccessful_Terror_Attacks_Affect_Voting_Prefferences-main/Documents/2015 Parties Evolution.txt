@@ -1,0 +1,72 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{geometry}
+
+\geometry{a4paper, margin=1in}
+
+\begin{document}
+
+\section*{Israeli Party Transformations (2006--2015)}
+
+\begin{longtable}{lcccc>{\raggedright\arraybackslash}p{5.5cm}}
+\toprule
+\textbf{Party (2015)} & \textbf{2015} & \textbf{2013} & \textbf{2009} & \textbf{2006} & \textbf{Observations} \\
+\midrule
+Likud & מחל & מחל & מחל & מחל & Ran in a joint list with Israel Beiteinu in 2013. \\
+\addlinespace
+Zionist Union & אמת & אמת & אמת & אמת & 2015 alliance between Labor (אמת) and Hatnuah (previously צפ). \\
+\addlinespace
+Joint List & ודעם & ו, ד, עם & ו, ד, עם & ו, ד, com & 2015 merger of Hadash (ו), Balad (ד), and Ra'am-Ta'al (עם). \\
+\addlinespace
+Yesh Atid & פה & פה & -- & -- & First appeared in the 2013 elections. \\
+\addlinespace
+Kulanu & כ & -- & -- & -- & New list created for the 2015 elections. \\
+\addlinespace
+Habait Hayehudi & טב & טב & ב / ט & טב & Split into symbols ב and ט in 2009; unified in other years. \\
+\addlinespace
+Shas & שס & שס & שס & שס & Maintained the same symbol across all tracked years. \\
+\addlinespace
+Israel Beiteinu & ל & מחל & ל & ל & Ran within the Likud list in 2013. \\
+\addlinespace
+Yahadut Hatora & ג & ג & ג & ג & Unified Haredi list symbol remains constant. \\
+\addlinespace
+Meretz & מרצ & מרצ & מרצ & מרצ & Maintained the same symbol across all tracked years. \\
+\addlinespace
+Yahad & קץ & נץ & קץ & ף & Reused symbol קץ (from Leader) and absorbed Netz (from Otzma). \\
+\addlinespace
+Aleh Yarok & קנ & קנ & קנ & קנ & Maintained the same symbol across all tracked years. \\
+\addlinespace
+The Greens & רק & רק & רק & רק & Maintained the same symbol across all tracked years. \\
+\addlinespace
+Na Nach & ףץ & פץ & -- & -- & Symbol פץ in 2013; updated to final letter form ףץ in 2015. \\
+\addlinespace
+Hope for Change & יץ & הק & -- & -- & Ran as symbol הק in 2013. \\
+\addlinespace
+Pirate Party & ף & פ & -- & -- & Symbol פ in 2013; updated to final letter form ף in 2015. \\
+\addlinespace
+Economy Party & ז & פי & -- & -- & 2015 successor to the 2013 Kalkala list (פי). \\
+\addlinespace
+Or Party & ני & ני & אר & -- & Symbol changed from אר (2009) to ני (2013). \\
+\addlinespace
+Democratura & זך & זך & זך & זך & Reused symbol previously held by Gil (2006/09) and Dor Bonei (2013). \\
+\addlinespace
+Arab List & ע & הי & -- & -- & Reused symbol הי from the 2013 Moreshet Avot list. \\
+\addlinespace
+Perach Party & נץ & -- & -- & -- & Reused symbol נץ from the 2013 Otzma LeYisrael list. \\
+\addlinespace
+Ubizchutan & נז & -- & -- & -- & New list created for the 2015 elections. \\
+\addlinespace
+Peoples Team & זץ & -- & -- & -- & New list created for the 2015 elections. \\
+\addlinespace
+Rent with Dignity & י & -- & -- & -- & New list created for the 2015 elections. \\
+\addlinespace
+Social Leadership & יז & -- & -- & -- & New list created for the 2015 elections. \\
+\addlinespace
+Protect Children & יך & -- & -- & -- & New list created for the 2015 elections. \\
+\bottomrule
+\end{longtable}
+
+\end{document}

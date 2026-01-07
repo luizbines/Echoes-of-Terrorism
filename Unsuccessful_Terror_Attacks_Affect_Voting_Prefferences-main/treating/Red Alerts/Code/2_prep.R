@@ -74,38 +74,43 @@ red_alerts_grouped <- red_alerts %>%
 
 
 
-# Merging voting dataset with red alerts dataset
-# Then, adding treatment dummy
+# --- MERGE VOTING DATA WITH RED ALERTS ---
+# This section identifies "treated" locations and calculates the intensity/timing of alerts.
 parties_percentages = parties_percentages %>% 
+  # Create a binary 'treated' flag: 1 if the location (SEMEL_YISHUV) appears in the red alerts list
   mutate(
-    treated = ifelse(SEMEL_YISHUV %in% red_alerts[red_alerts$alarm == 1,]$SEMEL_YISHUV,
-                     1,0)) %>% 
+    treated = ifelse(SEMEL_YISHUV %in% red_alerts[red_alerts$alarm == 1,]$SEMEL_YISHUV, 1, 0)
+  ) %>% 
+  # Join with aggregated alert statistics
   left_join(
     red_alerts %>%
       group_by(SEMEL_YISHUV) %>%
       summarise(
-        # adding temporal distance variable
+        # Capture the closest alert in time to the election
         temporal_distance = min(temporal_distance),
-        # # adding number of red alerts variable
+        # Count total alert occurrences per location
         number_of_red_alerts = length(SEMEL_YISHUV),
       ),
     by = "SEMEL_YISHUV"
   ) %>% 
+  # Categorize temporal distance into groups (Near-election vs. Far vs. None)
   mutate(
     temporal_group = cut(temporal_distance, 
                          breaks = c(-Inf, 6, Inf), 
                          labels = c("temporal_distance == 6", "temporal_distance > 149"),
                          include.lowest = TRUE) %>% as.character(),
-    temporal_group = ifelse(is.na(temporal_group),'no_red_alert',temporal_group)
+    # Assign a specific label for locations with no alerts
+    temporal_group = ifelse(is.na(temporal_group), 'no_red_alert', temporal_group)
   )
 
-# Merging with israel_panel
+# --- INTEGRATE DEMOGRAPHIC CONTROL VARIABLES ---
+# Merging with the 'israel_panel' dataset to add socioeconomic and geographic indicators.
 parties_percentages = parties_percentages %>%
   mutate(
-    # since there were 2 elections in 2019 (2019, 2019_2), we need to create a new
-    # year variable for merging
+    # Create 'year_x' to handle duplicate election cycles in a single year (April/Sept 2019)
     year_x = substr(year, 1, 4) %>% as.integer()
   ) %>%
+  # Perform a left join to bring in control variables
   merge(
     israel_panel %>% select('SEMEL_YISHUV',
                             'year',
@@ -114,12 +119,45 @@ parties_percentages = parties_percentages %>%
                             'density',
                             'Shape_Area',
                             'Pop_Total'
-                            ),
+    ),
     by.x = c('year_x', 'SEMEL_YISHUV'),
     by.y = c('year', 'SEMEL_YISHUV'),
     all.x = T,
     all.y = F
+  ) %>% 
+  # --- DATA CLEANING & CATEGORIZATION ---
+  mutate(
+    # Replace NA counts with 0 and zero-out alerts for years before the study period (pre-2015)
+    number_of_red_alerts = ifelse(is.na(number_of_red_alerts), 0, number_of_red_alerts),
+    number_of_red_alerts = ifelse(year < 2015, 0, number_of_red_alerts),
+    
+    # Bucket the number of alerts into ordinal categories for non-linear analysis
+    red_alert_number_category = cut(number_of_red_alerts,
+                                    breaks = c(-Inf, 0, 2, 5, Inf), 
+                                    labels = c("No Alerts", "1-2 Alerts", "3-5 Alerts", "6+ Alerts"))
+  ) %>%
+  # --- IMPUTING MISSING VALUES ---
+  # Fill missing Religion codes using the first available value for that specific location
+  group_by(SEMEL_YISHUV) %>%
+  mutate(Religion_yishuv_Code = ifelse(is.na(Religion_yishuv_Code),
+                                       first(Religion_yishuv_Code[!is.na(Religion_yishuv_Code)]),
+                                       Religion_yishuv_Code),
+         
+  ) %>%
+  ungroup() %>% 
+  # creating time to treatment variable
+  mutate(
+    
+    time_to_treatment = case_when(
+      year == 2006 ~ -3,
+      year == 2009 ~ -2,
+      year == 2013 ~ -1,
+      year == 2015 ~ 0,
+      TRUE ~ NA_real_ 
+    )
+    
   )
+
 
 ##### PREPARING FOR PROBABILITY OF RED ALERT REGRESSIONS #####
 

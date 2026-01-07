@@ -87,7 +87,7 @@ groups <- list(
 # --- Function to Run Regressions ---
 run_feols <- function(var) {
   fml <- as.formula(paste(var, "~ alert + lag_alert_1 + lag_alert_2 | District + as.factor(year)"))
-  feols(fml, data = trends, se = 'standard')
+  feols(fml, data = trends, cluster = 'District')
 }
 
 # Run all regressions
@@ -105,19 +105,6 @@ walk2(groups, names(groups), ~ {
     gof_map = c("nobs", "r.squared")
   )
 })
-
-# target_group <- "security"
-# 
-# modelsummary(
-#   all_regs[groups[[target_group]]], 
-#   output = "html",
-#   coef_map = c('alert' = 'Red Alert',
-#                'lag_alert_1' = 'Red Alert - lag 1',
-#                'lag_alert_2' = 'Red Alert - lag 2'),
-#   stars = TRUE,
-#   gof_map = c("nobs", "r.squared"),
-#   title = paste("Group:", target_group)
-# )
 
 
 all_vars <- unlist(groups)

@@ -23,17 +23,6 @@ descriptive_statistics <- parties_percentages_panel %>%
   # filtering out arab cities
   filter(Religion_yishuv_Code != 2) %>% 
   
-  # # merging with right wing percentage dataset
-  # merge(right_wing_percentage_panel %>% 
-  #         filter(Religion_yishuv_Code !=2) %>% 
-  #         select(SEMEL_YISHUV,year,right_wing_percentage),
-  #       by = c('SEMEL_YISHUV','year')) %>% 
-  # # merging turnout dataset
-  # merge(turnout_percentage_panel %>% 
-  #         filter(Religion_yishuv_Code != 2) %>% 
-  #         select(SEMEL_YISHUV,year,turnout_percentage),
-  #       by = c('SEMEL_YISHUV','year')) %>% 
-  # defining groups
   mutate(group = case_when(
     temporal_group == 'no_red_alert' ~ 'No Red Alert',
     temporal_group == 'temporal_distance > 149' ~ 'Last Red Alert 149+ Days Before 2015 Election',
@@ -207,4 +196,4 @@ final_table = statistics_table %>%
 
 print(final_table)
 
-save_kable(final_table, file = "treating/Red Alerts/Output/Figures/2_descriptives_table.pdf")
+save_kable(final_table, file = "treating/Red Alerts/Output/Figures/3_descriptives_table.pdf")

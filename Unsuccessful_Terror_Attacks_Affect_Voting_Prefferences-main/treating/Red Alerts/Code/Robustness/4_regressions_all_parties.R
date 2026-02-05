@@ -5,6 +5,24 @@
 library(tidyverse)
 library(fixest)
 library(modelsummary)
+library(Hmisc)
+
+
+
+# Directory
+wd = '/home/luiz/Documentos/GitHub/Echoes-of-Terrorism/Unsuccessful_Terror_Attacks_Affect_Voting_Prefferences-main/'
+setwd(wd);
+
+# Importing
+parties_percentages_panel = read_csv('treating/Red Alerts/Output/2_parties_percentages_panel.csv')
+
+
+# filtering years
+parties_percentages_panel = parties_percentages_panel %>% 
+  filter(year <= 2015) %>% 
+  mutate(year = as.integer(year)) %>% 
+  rename(year_election = year)
+
 
 # 1. Prepare the Data ---------------------------------------------------------
 
@@ -47,12 +65,12 @@ all_party_vars <- grep("_percentage", names(data_reg), value = TRUE)
 
 # 3. Run Regressions ----------------------------------------------------------
 # Multi-LHS estimation (runs all parties in one command)
-regs_base <- feols(.[all_party_vars] ~ i(year_election, temporal_group, 
-                                         ref = '2013', 
-                                         ref2 = 'no_red_alert') | 
-                     as.factor(SEMEL_YISHUV) + as.factor(year_election), 
-                   data = data_reg, 
-                   se = 'standard')
+# regs_base <- feols(.[all_party_vars] ~ i(year_election, temporal_group, 
+#                                          ref = '2013', 
+#                                          ref2 = 'no_red_alert') | 
+#                      as.factor(SEMEL_YISHUV) + as.factor(year_election), 
+#                    data = data_reg, 
+#                    se = 'standard')
 
 regs_ctrl <- feols(.[all_party_vars] ~ i(year_election, temporal_group, 
                                          ref = '2013', 
@@ -69,11 +87,12 @@ combined_models <- list()
 for(i in seq_along(all_party_vars)){
   # Get current party name
   p_name <- all_party_vars[i]
-  clean_name <- str_remove(p_name, "_percentage")
+  clean_name <- str_remove(p_name, "_percentage") %>% str_replace_all("_", " ") %>% str_to_title()
   
   # Extract by integer index
-  combined_models[[paste(clean_name, "(Base)")]] <- regs_base[[i]]
-  combined_models[[paste(clean_name, "(Ctrl)")]] <- regs_ctrl[[i]]
+  # combined_models[[paste(clean_name, "(Base)")]] <- regs_base[[i]]
+  # combined_models[[paste(clean_name, "(Ctrl)")]] <- regs_ctrl[[i]]
+  combined_models[[clean_name]] <- regs_ctrl[[i]]
 }
 
 # 5. Export Vertical Table ----------------------------------------------------
@@ -82,6 +101,7 @@ modelsummary(
   output = 'treating/Red Alerts/Output/Figures/all_parties_results.tex',
   shape = model ~ term, 
   stars = TRUE,
+  title = 'Differences-in-Differences Estimates: Red Alert Impact on Political Parties',
   coef_map = c(
     'year_election::2015:temporal_group::temporal_distance == 6' = '2015: 6 Days Before',
     'year_election::2015:temporal_group::temporal_distance > 149' = '2015: 149+ Days Before',
@@ -90,6 +110,8 @@ modelsummary(
     'year_election::2006:temporal_group::temporal_distance == 6' = '2006: 6 Days Before',
     'year_election::2006:temporal_group::temporal_distance > 149' = '2006: 149+ Days Before'
   ),
-  gof_omit = 'IC|Log|Adj|Within|Pseudo|FE',
-  notes = "Standard errors in parentheses. Models include Locality and Year Fixed Effects."
+  notes = "Standard errors, clustered at the locality level, are reported in parentheses. 
+  All models incorporate locality and year fixed effects, along with controls for demographic density, population size, and nighttime luminosity. 
+  The sample is restricted to parties that contested both the 2013 and 2015 elections, including those that merged or demerged during this period. We exclude Yisrael Beiteinu because of its joint list with Likud in 2013.",
+  gof_omit = 'IC|Log|Adj|Within|Pseudo|FE'
 )

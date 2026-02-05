@@ -28,23 +28,6 @@ parties_percentages_panel = read_csv('treating/Red Alerts/Output/2_parties_perce
 ##### REGRESSIONS #####
 
 
-
-
-# # excluding localities that did not exist in 2006 or 2009
-# parties_percentages_panel <- parties_percentages_panel %>%
-#   rename(year_election = year) %>%
-#   group_by(SEMEL_YISHUV) %>%
-#   filter(
-#     any(year_election == 2006 & !is.na(likud_percentage)) &
-#       any(year_election == 2009 & !is.na(likud_percentage))
-#   ) %>%
-#   ungroup() %>%
-#   mutate(
-#     year_election = as.factor(year_election)
-#   )
-
-
-
 # filtering years
 parties_percentages_panel = parties_percentages_panel %>% 
   filter(year <= 2015) %>% 

@@ -1,199 +1,138 @@
-#### CREATING DESCRIPTIVE STATISTICS TABLE #####
+#### CREATING DESCRIPTIVE STATISTICS TABLE (ROBUST VERSION) #####
 
-# Library
-library(tidyr)
+# Libraries
 library(dplyr)
-library(ggplot2)
-library(purrr)
-library(webshot2)
+library(tidyr)
+library(fixest)       # For fast regressions with clusters
+library(modelsummary)  # For automatic and elegant tables
 library(kableExtra)
 
 # Directory
 wd = '/home/luiz/Documentos/GitHub/Echoes-of-Terrorism/Unsuccessful_Terror_Attacks_Affect_Voting_Prefferences-main/'
-setwd(wd);
+setwd(wd)
 
+## 1. DATA IMPORT AND CLEANING ##
+parties_percentages_panel = read.csv('treating/Red Alerts/Output/2_parties_percentages_panel.csv')
 
-## IMPORTING ##
-parties_percentages_panel =  read.csv('treating/Red Alerts/Output/2_parties_percentages_panel.csv')
-
-descriptive_statistics <- parties_percentages_panel %>%
-  
-  # filtering 2013 and 2015
-  filter(year == 2013 | year == 2015) %>% 
-  # filtering out arab cities
-  filter(Religion_yishuv_Code != 2) %>% 
-  
+df_clean <- parties_percentages_panel %>%
+  filter(year == 2013) %>% # Focus on 2013 baseline
+  filter(Religion_yishuv_Code != 2) %>%
   mutate(group = case_when(
-    temporal_group == 'no_red_alert' ~ 'No Red Alert',
-    temporal_group == 'temporal_distance > 149' ~ 'Last Red Alert 149+ Days Before 2015 Election',
-    temporal_group == 'temporal_distance == 6' ~ 'Last Red Alert 6 Days Before 2015 Election',
+    temporal_group == 'no_red_alert' ~ 'Control',
+    temporal_group == 'temporal_distance > 149' ~ 'Treat_149',
+    temporal_group == 'temporal_distance == 6' ~ 'Treat_6',
     TRUE ~ NA_character_
   )) %>%
-  mutate(Election = year) %>%
-  group_by(group, Election) %>%
-  # Statistics:
-  summarise(
-    'Likud % (Average)' = mean(likud_percentage * 100, na.rm = TRUE),
-    'Likud % (SD)' = sd(likud_percentage * 100, na.rm = TRUE),
-    'Right Wing % (Average)' = mean(right_wing_percentage * 100, na.rm = TRUE),
-    'Right Wing % (SD)' = sd(right_wing_percentage * 100, na.rm = TRUE),
-    'Turnout % (Average)' = mean(turnout_percentage * 100, na.rm = TRUE),
-    'Turnout % (SD)' = sd(turnout_percentage * 100, na.rm = TRUE),    
-    'Night Lights (0-63) (Average)' = mean(ntl, na.rm = TRUE),
-    'Night Lights (0-63) (SD)' = sd(ntl, na.rm = TRUE),
-    'Population Size (Average)' = mean(Pop_Total, na.rm = TRUE),
-    'Population Size (SD)' = sd(Pop_Total, na.rm = TRUE),
-    'Population Density (per km2) (Average)' = mean(density, na.rm = TRUE),
-    'Population Density (per km2) (SD)' = sd(density, na.rm = TRUE),
-    'Area (km2) (Average)' = mean(Shape_Area, na.rm = TRUE),
-    'Area (km2) (SD)' = sd(Shape_Area, na.rm = TRUE),
-    'Distance to Gaza (km) (Average)' = mean(distance, na.rm = TRUE),
-    'Distance to Gaza (km) (SD)' = sd(distance, na.rm = TRUE),
-    'N' = n()
-    
-  ) %>%
-  arrange(group, Election)
-
-
-# Filtering control group "No Red Alert"
-control_group <- descriptive_statistics %>%
-  filter(group == "No Red Alert")
-
-# Function to calculate difference and SE of the difference
-calculate_diff_se <- function(avg1, sd1, n1, avg2, sd2, n2) {
-  diff <- avg2 - avg1
-  se_diff <- sqrt((sd1^2 / n1) + (sd2^2 / n2))
-  return(c(diff, se_diff))
-}
-
-# Creating results list
-results <- list()
-
-# Interest variables
-variables <- c("Likud % (Average)", "Right Wing % (Average)", "Turnout % (Average)",
-               "Night Lights (0-63) (Average)", "Population Size (Average)",
-               "Population Density (per km2) (Average)", "Area (km2) (Average)",
-               "Distance to Gaza (km) (Average)")
-
-# Iterating for treatment groups
-for (group_name in c("Last Red Alert 149+ Days Before 2015 Election", 
-                     "Last Red Alert 6 Days Before 2015 Election")) {
-  
-  # Filtering treatment group data
-  group_data <- descriptive_statistics %>%
-    filter(group == group_name)
-  
-  
-  # Sample size for control and treatment group
-  n1 <- control_group$N[1]
-  n2 <- group_data$N[1]
-  
-  
-  for (var in variables) {
-    # Correcting variable' SD
-    var_sd <- gsub(" \\(Average\\)", " (SD)", var)
-    
-    # Calculating differences in mean and SD
-    diff_se <- calculate_diff_se(
-      as.numeric(control_group[[var]][1]), as.numeric(control_group[[var_sd]][1]), n1,
-      as.numeric(group_data[[var]][1]), as.numeric(group_data[[var_sd]][1]), n2
-    )
-    
-    # Storing results
-    results[[length(results) + 1]] <- c(group_name, var, diff_se[1], diff_se[2])
-  }
-}
-
-# Creating results dataframe
-results_df <- do.call(rbind, results)
-results_df <- as.data.frame(results_df, stringsAsFactors = F)
-colnames(results_df) <- c("Group", "Variable", "Difference", "SE")
-
-results_df$Difference = as.numeric(as.character(results_df$Difference))
-results_df$SE = as.numeric(as.character(results_df$SE))
-
-
-# Function to determine significance level
-get_significance_level <- function(diff, se) {
-  z_value <- abs(diff / se)
-  
-  # Significance levels
-  if (z_value > 3.291) {
-    return("0.1%")  # p < 0.001
-  } else if (z_value > 2.576) {
-    return("1%")    # p < 0.01
-  } else if (z_value > 1.96) {
-    return("5%")    # p < 0.05
-  } else if (z_value > 1.645) {
-    return("10%")   # p < 0.1
-  } else {
-    return("")      # Not significant
-  }
-}
-
-# Adding significance column
-results_df$Significance <- mapply(get_significance_level, as.numeric(results_df$Difference), as.numeric(results_df$SE))
-
-
-# Adjusting dataframe
-results_df = results_df %>% pivot_wider(
-  names_from = Group,
-  values_from = c(Difference, SE, Significance),
-  names_sep = "_"
-)
-
-no_red_alerts_descriptives = descriptive_statistics %>% 
-  filter(Election == 2013 & group == 'No Red Alert')
-
-
-
-#### LATEX DESCRIPTIVE STATISTICS TABLE ####
-# HTML descriptive statistics table
-statistics_table <- descriptive_statistics %>% filter(Election==2013) %>%
-  pivot_longer(cols = -c(group, Election), names_to = "Statistic", values_to = "Value") %>%
-  pivot_wider(names_from = group, values_from = Value) %>%
+  filter(!is.na(group)) %>%
+  # Preparing variables (multiplying by 100 where percentage)
   mutate(
-    `Diff (vs No Red Alerts)` = `Last Red Alert 149+ Days Before 2015 Election` - `No Red Alert`,
-    `Diff (vs No Red Alerts)_6days` = `Last Red Alert 6 Days Before 2015 Election` - `No Red Alert`
-  ) %>%
-  select(
-    Statistic,
-    `No Red Alert`,
-    `Last Red Alert 149+ Days Before 2015 Election`,
-    `Diff (vs No Red Alerts)`,
-    `Last Red Alert 6 Days Before 2015 Election`,
-    `Diff (vs No Red Alerts)_6days`
+    likud = likud_percentage * 100,
+    right_wing = right_wing_percentage * 100,
+    turnout = turnout_percentage * 100,
+    ntl = ntl,
+    pop = Pop_Total,
+    density = density,
+    area = Shape_Area,
+    dist = distance
   )
 
+# 2. VARIABLE DEFINITION
+var_list <- c("likud", "right_wing", "turnout", "ntl", "pop", "density", "area", "dist")
+var_labels <- c("Likud %", "Right Wing %", "Turnout %", "Night Lights", 
+                "Population", "Density", "Area (km2)", "Dist. Gaza (km)")
 
+## 3. STATISTICS CALCULATION WITH CLUSTER (SEMEL_YISHUV) ##
+# This function calculates the control mean and treatment differences using OLS
+# OLS: Var ~ Group, with clustered standard errors equivalent to robust Wald t-test.
 
-
-# Adjusting names
-colnames(statistics_table) <- c(
-  "Statistic",
-  "No Red Alerts (2013)",
-  "Last Red Alert 149+ Days Before (2013)",
-  "Diff (vs No Red Alerts)",
-  "Last Red Alert 6 Days Before (2013)",
-  "Diff (vs No Red Alerts)"
-)
-
-
-# Correcting Diff SE using actual SE calculated in the results_df dataset
-for (i in 1:8) {
-  row_st <- 2 * i
+get_stats <- function(var) {
+  # Regression with cluster by city
+  formula <- as.formula(paste(var, "~ group"))
+  mod <- feols(formula, data = df_clean, cluster = ~SEMEL_YISHUV)
   
-  # Attributing values
-  statistics_table[row_st, 4] <- results_df$`SE_Last Red Alert 149+ Days Before 2015 Election`[i]
-  statistics_table[row_st, 6] <- results_df$`SE_Last Red Alert 6 Days Before 2015 Election`[i]
+  # Extract coefficients and p-values
+  sum_mod <- summary(mod)
+  
+  # Means by group
+  means <- df_clean %>%
+    group_by(group) %>%
+    summarise(m = mean(!!sym(var), na.rm = TRUE), sd = sd(!!sym(var), na.rm = TRUE))
+  
+  # Organizing table row with p-values
+  data.frame(
+    Variable = var,
+    Mean_Control = means$m[means$group == "Control"],
+    SD_Control = means$sd[means$group == "Control"],
+    Diff_149 = sum_mod$coeftable["groupTreat_149", "Estimate"],
+    SE_149 = sum_mod$coeftable["groupTreat_149", "Std. Error"],
+    P_149 = sum_mod$coeftable["groupTreat_149", "Pr(>|t|)"],
+    Diff_6 = sum_mod$coeftable["groupTreat_6", "Estimate"],
+    SE_6 = sum_mod$coeftable["groupTreat_6", "Std. Error"],
+    P_6 = sum_mod$coeftable["groupTreat_6", "Pr(>|t|)"]
+  )
 }
 
+# Function to add significance stars
+add_stars <- function(p_value) {
+  if (is.na(p_value)) return("")
+  if (p_value < 0.01) return("***")
+  if (p_value < 0.05) return("**")
+  if (p_value < 0.10) return("*")
+  return("")
+}
 
-# Exhibiting 
-final_table = statistics_table %>%
-  kable("html", digits = 2, align = 'c', caption = "Table 1: Descriptive Statistics by Groups of Interest for 2013") %>%
-  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover"))
+# Apply to all variables
+final_stats <- lapply(var_list, get_stats) %>% bind_rows()
 
-print(final_table)
+## 4. FORMATTING FOR LATEX / OVERLEAF ##
+# Create alternating rows: one for statistic, another for SE/SD
 
-save_kable(final_table, file = "treating/Red Alerts/Output/Figures/3_descriptives_table.pdf")
+table_rows <- final_stats %>%
+  mutate(across(c(Mean_Control, SD_Control, Diff_149, SE_149, Diff_6, SE_6), ~ round(., 2))) %>%
+  mutate(
+    stars_149 = sapply(P_149, add_stars),
+    stars_6 = sapply(P_6, add_stars)
+  )
+
+# Create dataframe with duplicated rows (statistic + SE)
+table_latex <- data.frame()
+for(i in 1:nrow(table_rows)) {
+  # Row with statistics
+  row_stat <- data.frame(
+    Variable = var_labels[i],
+    Control = as.character(table_rows$Mean_Control[i]),
+    `Diff. Treat 149d` = paste0(table_rows$Diff_149[i], table_rows$stars_149[i]),
+    `Diff. Treat 6d` = paste0(table_rows$Diff_6[i], table_rows$stars_6[i]),
+    check.names = FALSE
+  )
+  
+  # Row with SE/SD
+  row_se <- data.frame(
+    Variable = "",
+    Control = paste0("(", table_rows$SD_Control[i], ")"),
+    `Diff. Treat 149d` = paste0("(", table_rows$SE_149[i], ")"),
+    `Diff. Treat 6d` = paste0("(", table_rows$SE_6[i], ")"),
+    check.names = FALSE
+  )
+  
+  table_latex <- rbind(table_latex, row_stat, row_se)
+}
+
+rownames(table_latex) <- NULL
+
+# Generate final table with KableExtra
+final_kable <- kable(table_latex, 
+                     format = "latex",
+                     booktabs = TRUE, 
+                     caption = "Descriptive Statistics by Groups of Interest for 2013",
+                     align = "lccc",
+                     escape = FALSE) %>%
+  kable_styling(latex_options = c("hold_position")) %>%
+  add_footnote("Standard deviations (Control) and standard errors (Treatment differences), clustered at the locality level, are reported in parentheses below the estimates. Significance levels: *** p<0.01, ** p<0.05, * p<0.10. Diff. Treat 149d: Difference in means between localities whose last red alert was more than 149 days before the 2015 election and the Control group. Diff. Treat 6d: Difference in means between localities whose last red alert was exactly 6 days before the 2015 election and the Control group.", 
+               notation = "none")
+
+# Display in console to copy
+print(final_kable)
+
+# Save .tex file for Overleaf
+writeLines(as.character(final_kable), "treating/Red Alerts/Output/Figures/3_descriptives_table.tex")

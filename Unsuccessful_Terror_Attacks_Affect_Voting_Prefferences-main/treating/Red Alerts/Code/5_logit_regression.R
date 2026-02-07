@@ -9,6 +9,7 @@ library(lubridate)
 library(zoo)
 library(tidyverse)
 library(glmnet)
+library(fixest)
 library(modelsummary)
 
 # Directory
@@ -59,52 +60,52 @@ all_years_cities_grid <- all_years_cities_grid %>%
 
 # Logit model: 
 # Probability of future Red Alert considering the number of previous Red Alerts
-model_1 <- glm(future_red_alert ~ quantity_of_alarms, 
-             family = binomial(link = "logit"), 
-             data = all_years_cities_grid)
-
+model_1 <- feglm(future_red_alert ~ quantity_of_alarms, 
+                 data = all_years_cities_grid, 
+                 family = "logit", 
+                 cluster = ~SEMEL_YISHUV)
 
 ### Alternative models ###
 
 
 # Filtering 2021 and 2022
-model_2 <- glm(future_red_alert ~ quantity_of_alarms,
-               family = binomial(link = "logit"),
-               data = all_years_cities_grid %>% filter(year<2022))
-
+model_2 <- feglm(future_red_alert ~ quantity_of_alarms,
+                 data = all_years_cities_grid %>% filter(year<2022),
+                 family = "logit",
+                 cluster = ~SEMEL_YISHUV)
 
 
 # Model with interaction
-model_3 <- glm(future_red_alert ~ quantity_of_alarms * factor(year),
-               family = binomial(link = "logit"),
-               data = all_years_cities_grid)
+model_3 <- feglm(future_red_alert ~ quantity_of_alarms*i(year, ref = 2014), 
+                 data = all_years_cities_grid, 
+                 family = "logit", 
+                 cluster = ~SEMEL_YISHUV)
 
 
 # Probability of Red Alert within 1 year considering the number of previous Red Alerts
 # excluding 2022
-model_4 <- glm(future_red_alert_within_year ~ quantity_of_alarms + factor(year),
-               family = binomial(link = "logit"),
-               data = all_years_cities_grid %>% filter(year < 2022))
-
+model_4 <- feglm(future_red_alert_within_year ~ quantity_of_alarms | factor(year), 
+                 data = all_years_cities_grid %>% filter(year < 2022), 
+                 family = "logit", 
+                 cluster = ~SEMEL_YISHUV)
 
 # Results Table
 modelsummary(list(model_1, model_2, model_3, model_4), 
+             stars = TRUE,
              # output = 'latex_tabular',
              output = 'treating/Red Alerts/Output/Figures/5_logit_probability_of_alert.tex',
              # coef_rename = c("quantity_of_alarms" = "Quantity of Previous Red Alerts")
              coef_map = c('quantity_of_alarms' = 'Quantity of Previous Red Alerts',
-                          'quantity_of_alarms:factor(year)2014' = 'Quantity of Previous Red Alerts * 2014',
-                          'quantity_of_alarms:factor(year)2015' = 'Quantity of Previous Red Alerts * 2015',
-                          'quantity_of_alarms:factor(year)2016' = 'Quantity of Previous Red Alerts * 2016',
-                          'quantity_of_alarms:factor(year)2017' = 'Quantity of Previous Red Alerts * 2017',
-                          'quantity_of_alarms:factor(year)2018' = 'Quantity of Previous Red Alerts * 2018',
-                          'quantity_of_alarms:factor(year)2019' = 'Quantity of Previous Red Alerts * 2019',
-                          'quantity_of_alarms:factor(year)2020' = 'Quantity of Previous Red Alerts * 2020',
-                          'quantity_of_alarms:factor(year)2021' = 'Quantity of Previous Red Alerts * 2021',
-                          'quantity_of_alarms:factor(year)2022' = 'Quantity of Previous Red Alerts * 2022'
+                          'quantity_of_alarms:year::2015' = 'Quantity of Previous Red Alerts * 2015',
+                          'quantity_of_alarms:year::2016' = 'Quantity of Previous Red Alerts * 2016',
+                          'quantity_of_alarms:year::2017' = 'Quantity of Previous Red Alerts * 2017',
+                          'quantity_of_alarms:year::2018' = 'Quantity of Previous Red Alerts * 2018',
+                          'quantity_of_alarms:year::2019' = 'Quantity of Previous Red Alerts * 2019',
+                          'quantity_of_alarms:year::2020' = 'Quantity of Previous Red Alerts * 2020',
+                          'quantity_of_alarms:year::2021' = 'Quantity of Previous Red Alerts * 2021',
+                          'quantity_of_alarms:year::2022' = 'Quantity of Previous Red Alerts * 2022'
                           ),
              gof_omit= '',
-             stars = TRUE, 
              add_rows = 
                data.frame('VARIABLES' = c('Period',
                                           'Year Fixed Effects',
@@ -113,22 +114,22 @@ modelsummary(list(model_1, model_2, model_3, model_4),
                '1' = c(
                  '2014-2022',
                  'No',
-                 nrow(model_1$data)
-               ),
+                 model_1$nobs
+                 ),
                '2' = c(
                  '2014-2021',
                  'No',
-                 nrow(model_2$data)
+                 model_2$nobs
                ),
                '3' = c(
                  '2014-2022',
                  'Yes',
-                 nrow(model_3$data)
+                 model_3$nobs
                ),
                '4' = c(
                  '2014-2021',
                  'Yes',
-                 nrow(model_4$data)
+                 model_4$nobs
                )
                )
 )

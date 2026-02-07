@@ -25,8 +25,7 @@ setwd(wd);
 parties_percentages_panel = read_csv('treating/Red Alerts/Output/2_parties_percentages_panel.csv')
 
 
-##### REGRESSIONS #####
-
+### FILTERING ###
 
 # filtering years
 parties_percentages_panel = parties_percentages_panel %>% 
@@ -36,8 +35,7 @@ parties_percentages_panel = parties_percentages_panel %>%
 
 
 
-
-####### REGRESSIONS #########
+##### REGRESSIONS #####
 
 
 #### LIKUD ####

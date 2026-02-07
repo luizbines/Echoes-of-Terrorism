@@ -15,7 +15,7 @@ library(tibble)
 library(ggplot2)
 
 # Directory
-wd = 'C:/Users/luizb/Desktop/Echoes-of-Terrorism/Unsuccessful_Terror_Attacks_Affect_Voting_Prefferences-main/'
+wd = '/home/luiz/Documentos/GitHub/Echoes-of-Terrorism/Unsuccessful_Terror_Attacks_Affect_Voting_Prefferences-main/'
 setwd(wd);
 
 ##### IMPORTING #####
@@ -107,7 +107,7 @@ ggplot(coef_data_likud, aes(x = year_position, y = estimate, color = temporal_gr
   scale_y_continuous(labels = scales::percent)  
 
 
-ggsave('treating/Red Alerts/Output/Figures/4_event_study_likud.pdf', 
+ggsave('treating/Red Alerts/Output/Figures/6_event_study_likud.pdf', 
        width = 8.5,
        height = 5.5)
 
@@ -194,7 +194,7 @@ ggplot(coef_data_right_wing, aes(x = year_position, y = estimate, color = tempor
   scale_y_continuous(labels = scales::percent)
 
 
-ggsave('treating/Red Alerts/Output/Figures/4_event_study_right_wing.pdf', 
+ggsave('treating/Red Alerts/Output/Figures/6_event_study_right_wing.pdf', 
        width = 8.5,
        height = 5.5)
 
@@ -280,9 +280,6 @@ ggplot(coef_data_turnout, aes(x = year_position, y = estimate, color = temporal_
   scale_y_continuous(labels = scales::percent)  
 
 
-ggsave('treating/Red Alerts/Output/Figures/4_event_study_turnout.pdf', 
+ggsave('treating/Red Alerts/Output/Figures/6_event_study_turnout.pdf', 
        width = 8.5,
        height = 5.5)
-
-
-

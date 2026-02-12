@@ -78,7 +78,7 @@ regs_ctrl <- feols(.[all_party_vars] ~ i(year_election, temporal_group,
                      density + Pop_Total + ntl | 
                      as.factor(SEMEL_YISHUV) + as.factor(year_election), 
                    data = data_reg, 
-                   se = 'standard')
+                   cluster = ~SEMEL_YISHUV)
 
 # 4. Organize for modelsummary ------------------------------------------------
 # We use numeric indexing to avoid the "integer scalar" error
@@ -115,3 +115,4 @@ modelsummary(
   The sample is restricted to parties that contested both the 2013 and 2015 elections, including those that merged or demerged during this period. We exclude Yisrael Beiteinu because of its joint list with Likud in 2013.",
   gof_omit = 'IC|Log|Adj|Within|Pseudo|FE'
 )
+

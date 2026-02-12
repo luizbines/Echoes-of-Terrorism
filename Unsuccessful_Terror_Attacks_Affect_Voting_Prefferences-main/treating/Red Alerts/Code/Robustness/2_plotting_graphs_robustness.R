@@ -14,8 +14,8 @@ library(tidyverse)
 library(broom)
 
 
-# Directory
-wd = 'C:/Users/luizb/Desktop/Echoes-of-Terrorism/Unsuccessful_Terror_Attacks_Affect_Voting_Prefferences-main/'
+# Directory 
+wd = '/home/luiz/Documentos/GitHub//Echoes-of-Terrorism/Unsuccessful_Terror_Attacks_Affect_Voting_Prefferences-main/'
 setwd(wd);
 
 ##### IMPORTING #####
@@ -73,7 +73,7 @@ reg_1_likud =
                              ref2 = 'no_red_alert')| 
           as.factor(SEMEL_YISHUV) + as.factor(year_election),
         data = election_percentages %>% filter(Religion_yishuv_Code != 2),
-        se = 'iid')
+        cluster = ~SEMEL_YISHUV)
 
 
 # Creating a data frame from the regression results
@@ -161,7 +161,7 @@ reg_1_right_wing = feols(right_wing_percentage ~ i(year_election, temporal_group
                                                    ref = '2013', ref2 = 'no_red_alert')| 
                            as.factor(SEMEL_YISHUV) + as.factor(year_election),
                     data = election_percentages %>% filter(Religion_yishuv_Code != 2),
-                    se = 'iid')
+                    cluster = ~SEMEL_YISHUV)
 
 
 
@@ -251,8 +251,7 @@ reg_1_turnout = feols(turnout_percentage ~ i(year_election, temporal_group, ref 
                                              ref2 = 'no_red_alert')|
                         as.factor(SEMEL_YISHUV) + as.factor(year_election),
                          data = election_percentages %>% filter(Religion_yishuv_Code != 2),
-                         se = 'iid')
-
+                      cluster = ~SEMEL_YISHUV)
 
 
 

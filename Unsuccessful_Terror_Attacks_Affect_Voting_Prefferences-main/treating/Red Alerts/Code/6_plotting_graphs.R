@@ -33,7 +33,7 @@ election_percentages = election_percentages %>% filter(year <= 2015)
 reg_1_likud = feols(likud_percentage ~ i(year_election, temporal_group, ref = '2013', ref2 = 'no_red_alert')| 
                       as.factor(SEMEL_YISHUV) + as.factor(year_election),
                            data = election_percentages %>% filter(Religion_yishuv_Code != 2),
-                           se = 'iid')
+                    cluster = ~SEMEL_YISHUV)
 
 
 
@@ -119,7 +119,7 @@ ggsave('treating/Red Alerts/Output/Figures/6_event_study_likud.pdf',
 reg_1_right_wing = feols(right_wing_percentage ~ i(year_election, temporal_group, ref = '2013', ref2 = 'no_red_alert')| 
                            as.factor(SEMEL_YISHUV) + as.factor(year_election),
                     data = election_percentages %>% filter(Religion_yishuv_Code != 2),
-                    se = 'iid')
+                    cluster = ~SEMEL_YISHUV)
 
 
 
@@ -205,8 +205,7 @@ ggsave('treating/Red Alerts/Output/Figures/6_event_study_right_wing.pdf',
 reg_1_turnout = feols(turnout_percentage ~ i(year_election, temporal_group, ref = '2013', ref2 = 'no_red_alert') |
                         as.factor(SEMEL_YISHUV) + as.factor(year_election),
                          data = election_percentages %>% filter(Religion_yishuv_Code != 2),
-                         se = 'iid')
-
+                      cluster = ~SEMEL_YISHUV)
 
 
 # Creating a data frame from the regression results

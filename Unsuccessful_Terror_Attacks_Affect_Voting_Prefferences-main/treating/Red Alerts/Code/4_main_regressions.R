@@ -193,7 +193,7 @@ modelsummary(
                                      'Yes',
                                      'Yes',
                                      'NRA 2015',
-                                     summary(reg_1_likud)$nobs
+                                     summary(reg_2_likud)$nobs
                                    ),
                                    
                                    '3' = c(
@@ -225,7 +225,7 @@ modelsummary(
                                      'Yes',
                                      'Yes',
                                      'NRA 2015',
-                                     summary(reg_1_right_wing)$nobs
+                                     summary(reg_2_right_wing)$nobs
                                    ),
                                    
                                    '7' = c(
@@ -241,7 +241,7 @@ modelsummary(
                                      'Yes',
                                      'Yes',
                                      'NRA 2015',
-                                     summary(reg_1_turnout)$nobs
+                                     summary(reg_2_turnout)$nobs
                                    )
              )
 )

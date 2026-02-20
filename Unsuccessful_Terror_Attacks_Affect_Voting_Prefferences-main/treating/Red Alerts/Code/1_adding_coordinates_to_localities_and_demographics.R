@@ -178,13 +178,12 @@ parties_percentages %>%
 # Removing NAs
 parties_percentages = parties_percentages %>% filter(!is.na(parties_percentages$distance))
 
-# filtering Red Alerts based on distance from the Gaza Strip
+# Filtering Red Alerts based on distance from the Gaza Strip
 parties_percentages = parties_percentages %>% 
   filter(distance >= 75) %>% 
   filter(distance <= 150)
 
 
-##### FILTERING #####
 
 # Keeping only relevant variables
 rocket_alerts = rocket_alerts %>% 
@@ -240,6 +239,7 @@ all_rocket_alerts$distance <- joined_data_all_rockets$distance
 rocket_alerts = rocket_alerts %>%
   filter(distance >= 75) %>%
   filter(distance <= 150)
+
 
 
 ##### EXPORTING #####

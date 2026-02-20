@@ -56,24 +56,6 @@ all_red_alerts = all_red_alerts %>%
 
 
 
-# Counting red alerts at each temporal group
-red_alerts_grouped <- red_alerts %>%
-  mutate(
-    temporal_group = cut(temporal_distance,
-                         breaks = c(-Inf, 6, Inf),
-                         labels = c("number_of_alerts_6_days", "number_of_alerts_149_days"),
-                         include.lowest = TRUE) %>% as.character(),
-    temporal_group = ifelse(is.na(temporal_group), 'no_red_alert', temporal_group)
-  ) %>%
-  group_by(SEMEL_YISHUV, temporal_group) %>%
-  summarise(number_of_red_alerts = n(), .groups = 'drop') %>%
-  
-  # Creating one variable for each temporal group
-  pivot_wider(names_from = temporal_group,
-              values_from = number_of_red_alerts,
-              values_fill = list(number_of_red_alerts = 0))
-
-
 # --- MERGE VOTING DATA WITH RED ALERTS ---
 # This section identifies "treated" locations and calculates the intensity/timing of alerts.
 parties_percentages = parties_percentages %>% 
@@ -90,6 +72,10 @@ parties_percentages = parties_percentages %>%
         temporal_distance = min(temporal_distance),
         # Count total alert occurrences per location
         number_of_red_alerts = length(SEMEL_YISHUV),
+        # Count alerts within 6 days of the election
+        alerts_6_days = sum(temporal_distance <= 6, na.rm = TRUE),
+        # Count alerts more than 149 days before the election
+        alerts_149_plus = sum(temporal_distance > 149, na.rm = TRUE),
       ),
     by = "SEMEL_YISHUV"
   ) %>% 
@@ -102,6 +88,12 @@ parties_percentages = parties_percentages %>%
     # Assign a specific label for locations with no alerts
     temporal_group = ifelse(is.na(temporal_group), 'no_red_alert', temporal_group)
   )
+
+
+
+# Checking whether any location had alerts in both temporal groups (6 days and 149+ days)
+parties_percentages %>% filter(alerts_149_plus != 0 & alerts_6_days != 0) %>% nrow() 
+# 0 locations had alerts in both groups, so we can treat them as mutually exclusive categories
 
 # --- INTEGRATE DEMOGRAPHIC CONTROL VARIABLES ---
 # Merging with the 'israel_panel' dataset to add socioeconomic and geographic indicators.

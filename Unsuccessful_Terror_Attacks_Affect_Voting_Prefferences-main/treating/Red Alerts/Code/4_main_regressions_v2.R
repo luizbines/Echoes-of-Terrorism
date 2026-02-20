@@ -35,6 +35,17 @@ parties_percentages_panel = parties_percentages_panel %>%
 
 
 
+# Alert distribution tables
+
+  # 6 days before election
+parties_percentages_panel %>% filter(year_election == 2015 & temporal_distance == 6) %>% select(number_of_red_alerts) %>% table
+
+
+  # 149-250 days before election
+parties_percentages_panel %>% filter(year_election == 2015 & temporal_distance > 6) %>% select(number_of_red_alerts) %>% table
+
+
+
 ##### REGRESSIONS #####
 
 
@@ -193,7 +204,7 @@ modelsummary(
                                      'Yes',
                                      'Yes',
                                      'NRA 2015',
-                                     summary(reg_1_likud)$nobs
+                                     summary(reg_2_likud)$nobs
                                    ),
                                    
                                    '3' = c(
@@ -225,7 +236,7 @@ modelsummary(
                                      'Yes',
                                      'Yes',
                                      'NRA 2015',
-                                     summary(reg_1_right_wing)$nobs
+                                     summary(reg_2_right_wing)$nobs
                                    ),
                                    
                                    '7' = c(
@@ -241,7 +252,7 @@ modelsummary(
                                      'Yes',
                                      'Yes',
                                      'NRA 2015',
-                                     summary(reg_1_turnout)$nobs
+                                     summary(reg_2_turnout)$nobs
                                    )
              )
 )

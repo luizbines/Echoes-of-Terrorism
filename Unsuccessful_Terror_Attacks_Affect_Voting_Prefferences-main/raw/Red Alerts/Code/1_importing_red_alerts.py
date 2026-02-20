@@ -11,7 +11,7 @@ from bs4 import BeautifulSoup
 import json
 
 # Working directory
-wd = 'C:/Users/luizb/Desktop/Dissertation'
+wd = '/home/luiz/Documentos/GitHub/Echoes-of-Terrorism/Unsuccessful_Terror_Attacks_Affect_Voting_Prefferences-main/'
 os.chdir(wd)
 
 # Start and end dates
@@ -68,7 +68,7 @@ merged_df = pd.concat(dfs, ignore_index=True)
 
 
 # Define the new directory where you want to save the CSV
-new_directory = 'C:/Users/luizb/Desktop/Dissertation/raw/Red Alerts/Output'
+new_directory = '/home/luiz/Documentos/GitHub/Echoes-of-Terrorism/Unsuccessful_Terror_Attacks_Affect_Voting_Prefferences-main/raw/Red Alerts/Output'
 
 # Ensure the new directory exists, if not, create it
 if not os.path.exists(new_directory):

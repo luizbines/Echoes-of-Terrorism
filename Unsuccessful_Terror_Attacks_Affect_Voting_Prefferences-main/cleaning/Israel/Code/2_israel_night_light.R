@@ -9,7 +9,7 @@ library(dplyr)
 
 
 # Directory
-wd = 'C:/Users/luizb/Desktop/Dissertation/Dissertation/Red-Alerts-and-Votes/'
+wd = '/home/luiz/Documentos/GitHub/Echoes-of-Terrorism/Unsuccessful_Terror_Attacks_Affect_Voting_Prefferences-main/'
 setwd(wd);
 
 
@@ -27,7 +27,13 @@ israel_panel = read.csv('cleaning/Israel/Output/1_israel_panel.csv')
 israel = aggregate(israel, by = "SEMEL_YISHUV")
 
 
-# assigning night light values to each observation
+
+
+# Aligning the map's CRS with the satelite CRS
+israel <- terra::project(israel, crs(light_2006))
+
+
+# Assigning night light values to each observation
 ntl_city_values_2006 <-terra::extract(light_2006, israel, fun = mean, na.rm = TRUE)
 ntl_city_values_2009 <-terra::extract(light_2009, israel, fun = mean, na.rm = TRUE)
 ntl_city_values_2013 <- terra::extract(light_2013, israel, fun = mean, na.rm = TRUE)

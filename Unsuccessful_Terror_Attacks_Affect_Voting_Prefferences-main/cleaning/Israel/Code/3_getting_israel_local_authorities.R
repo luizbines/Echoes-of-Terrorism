@@ -1,6 +1,10 @@
 library(pdftools)
 library(tidyverse)
 
+# wd
+wd = '/home/luiz/Documentos/GitHub/Echoes-of-Terrorism/Unsuccessful_Terror_Attacks_Affect_Voting_Prefferences-main/'
+setwd(wd);
+
 # 1. Load the PDF with positional metadata (x, y coordinates)
 # Ensure the file path matches your project structure
 pdf_dat <- pdf_data("raw/Israel/reshimalefishem.pdf")
@@ -47,4 +51,4 @@ df_final <- map_dfr(pdf_dat, process_page) %>%
   distinct(SEMEL_YISHUV, .keep_all = TRUE)
 
 # 4. Saving
-write_csv(df_final, "cleaning/Israel/3.israel_localities_mapping.csv")
+write_csv(df_final, "cleaning/Israel/Output/3.israel_localities_mapping.csv")

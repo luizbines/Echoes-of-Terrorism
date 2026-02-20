@@ -3,15 +3,17 @@
 # March, 2024
 # This code creates a panel of israel demographics for the years 2006, 2008, 2009 and
 # 2011 to 2022
+# Additionally, it adds the socio-economic index to the panel, which is used as a control variable in the analysis.
 
 
 # Library
 library(sf)
 library(dplyr)
 library(readxl)
+library(readxl)
 
 # Directory
-wd = 'C:/Users/luizb/Desktop/Dissertation/Dissertation/Red-Alerts-and-Votes/'
+wd = '/home/luiz/Documentos/GitHub/Echoes-of-Terrorism/Unsuccessful_Terror_Attacks_Affect_Voting_Prefferences-main/'
 setwd(wd);
 
 
@@ -19,6 +21,8 @@ rm(list = ls())
 
 
 ##### IMPORTING #####
+
+# Demographic variables
 
 israel_2008 = st_read("raw/Israel/Demographics/statisticalareas_demography2008.gdb") %>%
   as.data.frame() %>%
@@ -413,7 +417,6 @@ israel_2009 = read_xls('raw/Israel/Demographics/2009_data.xls') %>%
   )
 
 
-
 # Merging
 
 israel = israel %>% 
@@ -432,6 +435,27 @@ israel = israel %>%
     density = Pop_Total/Shape_Area
   )
 
+
+
+### Adding socioeconomic index
+# Importing
+sci <- read_xlsx(
+  "raw/Israel/socioeconomic_index.xlsx", 
+  col_names = c("SEMEL_YISHUV", "locality_name", "locality_type", 
+                "population", "sci_index_value", "sci_index_cluster")
+) %>% 
+  na.omit() %>% 
+  # eliminating 1st row (variable names)
+  slice(-1) %>%
+  # locality number as integer
+  mutate(SEMEL_YISHUV = as.integer(SEMEL_YISHUV),
+          sci_index_value = as.numeric(sci_index_value),
+          sci_index_cluster = as.integer(sci_index_cluster)
+) %>%
+  select(SEMEL_YISHUV,sci_index_value,sci_index_cluster)
+
+# Merging wit israel dataframe
+israel = merge(israel, sci, by = "SEMEL_YISHUV", all.x = TRUE)
 
 write.csv(israel, file = 'cleaning/Israel/Output/1_israel_panel.csv', row.names = F)
 

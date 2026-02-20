@@ -116,6 +116,8 @@ parties_percentages = parties_percentages %>%
                             'year',
                             'Religion_yishuv_Code',
                             'ntl',
+                            'sci_index_value',
+                            'sci_index_cluster',
                             'density',
                             'Shape_Area',
                             'Pop_Total'

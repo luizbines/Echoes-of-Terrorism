@@ -125,3 +125,4 @@ walk(all_vars, ~ {
   file_name <- paste0("Trends/treating/Israel/output/plots/trend_", .x, ".pdf")
   ggsave(filename = file_name, plot = plot, width = 10, height = 6)
 })
+

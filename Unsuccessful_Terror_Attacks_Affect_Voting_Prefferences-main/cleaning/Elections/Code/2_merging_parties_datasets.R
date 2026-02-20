@@ -6,6 +6,9 @@ library(dplyr)
 library(stringr)
 library(purrr)
 
+wd = '/home/luiz/Documentos/GitHub/Echoes-of-Terrorism/Unsuccessful_Terror_Attacks_Affect_Voting_Prefferences-main/'
+setwd(wd);
+
 # --- 1. SETTINGS ---
 folder_path <- "cleaning/Elections/Output/Evolution/"
 files <- list.files(path = folder_path, pattern = "^Party_.*\\.csv$", full.names = TRUE)

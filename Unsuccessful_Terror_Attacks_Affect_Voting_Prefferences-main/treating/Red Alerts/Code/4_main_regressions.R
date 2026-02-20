@@ -151,7 +151,7 @@ reg_2_coalition =
         data = parties_percentages_panel %>% filter(Religion_yishuv_Code != 2),
         cluster = 'SEMEL_YISHUV')
 
-# Likud, Right Wing, turnout
+# Likud, Right Wing, turnout, coalition
 modelsummary(
   list(
     reg_1_likud, 
@@ -163,7 +163,7 @@ modelsummary(
     reg_1_turnout,
     reg_2_turnout
     ),
-             output = 'treating/Red Alerts/Output/Figures/4_likud_right_wing_turnout_temporal_results.tex',
+            output = 'treating/Red Alerts/Output/Figures/4_likud_right_wing_turnout_temporal_results.tex',
              # output = 'latex_tabular',
              coef_map = c('year_election::2015:temporal_group::temporal_distance == 6' = 'Red Alert 6 Days Before * 2015 Election',
                           'year_election::2015:temporal_group::temporal_distance > 149' = 'Red Alert 149+ Days Before * 2015 Election',

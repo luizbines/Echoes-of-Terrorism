@@ -15,7 +15,7 @@ import time
 
 
 # Working directory
-wd = 'C:/Users/luizb/Desktop/Dissertation'
+wd = '/home/luiz/Documentos/GitHub/Echoes-of-Terrorism/Unsuccessful_Terror_Attacks_Affect_Voting_Prefferences-main/'
 os.chdir(wd)
 
 # Specify the URL of the website

@@ -14,12 +14,12 @@ library(purrr)
 library(modelsummary)
 
 # Directory
-wd <- 'C:/Users/luizb/Desktop/Echoes-of-Terrorism/'
+wd <- '/home/luiz/Documentos/GitHub/Echoes-of-Terrorism/'
 setwd(wd);
 
 
 # Importing
-trends <-  read.csv('Trends/cleaning/Red Alerts/output/trends_alerts_data.csv', 
+trends <-  read.csv('Trends/cleaning/Red Alerts/output/trends_alerts_data_v2.csv', 
                     fileEncoding = "UTF-8") %>% 
   mutate(across(-c(District), as.numeric))
 
@@ -44,117 +44,106 @@ trends <- trends %>%
   ) %>% 
   # Translating vars
   rename(
+    # Security & Practical
+    shelter = מקלט,
+    siren = אזעקה,
+    protected_space = מרחב.מוגן,
+    home_front_command = פיקוד.העורף,
+    code_red = צבע.אדום,
+
+    # Health & Medical
+    mda = מד.א,
+    hospitals = בתי.חולים,
+    emergency = חירום,
+    panic_attack = התקף.חרדה,
+
+    # General & Political
     peace = שלום,
     war = מלחמה,
-    siren = אזעקה,
+    elections = בחירות,
     terrorism = טרור,
     ceasefire = הפסקת.אש,
-    hamas = חמאס,
-    elections = בחירות,
-    likud = ליכוד,
     netanyahu = נתניהו,
-    government = ממשלה   
+    hamas = חמאס,
+    likud = ליכוד,
+    government = ממשלה,
+    
+    # Ideological Indicators
+    annexation = סיפוח,
+    sovereignty = ריבונות,
+    settlements = התנחלויות,
+    palestinian_state = מדינה.פלסטינית
   )
 
+# --- Define Groups for Tables ---
+groups <- list(
+  security = c("shelter", "siren", "protected_space", 
+               "home_front_command", "code_red"),
+  health = c("emergency", "hospitals", "mda", "panic_attack"),
+  conflict = c("peace", "war", "terrorism", "ceasefire", "hamas"),
+  politics = c("elections", "likud", "netanyahu", "government"),
+  ideology = c("annexation", "sovereignty", "settlements", "palestinian_state")
+)
 
-# Regressions
+all_vars <- unlist(groups)
 
-# War related
-  # Peace
-peace_reg = feols(peace ~ alert + lag_alert_1 + lag_alert_2 | District + as.factor(year), 
-      data = trends, se = 'standard')
+# --- Datasets and Paths ---
+specs <- list(
+  "full" = trends,
+  "restricted" = trends %>% filter(year == 2014 | (year == 2015 & month <= 3))
+)
 
-  # War
-war_reg = feols(war ~ alert + lag_alert_1 + lag_alert_2 | District + as.factor(year), 
-      data = trends, se = 'standard')
-
-  # Siren
-siren_reg = feols (siren ~ alert + lag_alert_1 + lag_alert_2 | District + as.factor(year), 
-       data = trends, se = 'standard')
-
-  # Terrorism
-terrorism_reg = feols(terrorism ~ alert + lag_alert_1 + lag_alert_2 | District + as.factor(year), 
-      data = trends, se = 'standard')
-
-  # Ceasefire
-ceasefire_reg = feols(ceasefire ~ alert + lag_alert_1 + lag_alert_2 | District + as.factor(year), 
-      data = trends, se = 'standard')
-
-  # Hamas
-hamas_reg = feols(hamas ~ alert + lag_alert_1 + lag_alert_2 | District + as.factor(year), 
-      data = trends, se = 'standard')
-
-
-# Elections related
-
-  # Elections
-elections_reg = feols(elections ~ alert + lag_alert_1 + lag_alert_2 | District + as.factor(year), 
-      data = trends, se = 'standard')
-
-# Likud related
-  # likud
-likud_reg = feols(likud ~ alert + lag_alert_1 + lag_alert_2 | District + as.factor(year), 
-                  data = trends, se = 'standard')
-
-  # netanyahu
-netanyahu_reg = feols(netanyahu ~ alert + lag_alert_1 + lag_alert_2 | District + as.factor(year), 
-                      data = trends, se = 'standard')
-
-  # government
-government_reg = feols(government ~ alert + lag_alert_1 + lag_alert_2 | District + as.factor(year), 
-                       data = trends, se = 'standard')
-
-
-# Reg table
-modelsummary(
-  list(
-    'Peace' = peace_reg, 'War' = war_reg, 'Siren' = siren_reg, 
-    'Terrorism' = terrorism_reg, 'Ceasefire' = ceasefire_reg, 
-    'Hamas' = hamas_reg,
-    'Elections' = elections_reg, 'Likud' = likud_reg, 'Netanyahu' = netanyahu_reg,
-    'Government' = government_reg
-  ),
-  output = 'Trends/treating/Israel/output/trends_table.tex',
-  # output = 'latex_tabular',
-  coef_map = c('alert' = 'Red Alert',
-               'lag_alert_1' = 'Red Alert - lag 1',
-               'lag_alert_2' = 'Red Alert - lag 2'),
-  stars = T, 
-  names = c("Peace", "War", "Siren", "Terrorism", "Ceasefire", "Hamas", 
-            "Elections", "Likud", "Netanyahu", "Government"),
-  gof_map = c("nobs", "r.squared")
-  )
-
-
-
-
-# Plotting
-vars_to_plot <- c("peace", "war", "elections", "siren",
-                  "terrorism", "ceasefire", "netanyahu",
-                  "hamas","likud","government")
-
-# Plotting 
-walk(vars_to_plot, ~ {
-  plot <- ggplot(trends, aes(x = date, y = .data[[.x]])) +
-    geom_line(color = "gray30", alpha = 1, size = 1) + 
-    # geom_smooth(method = "lm", se = FALSE, color = "black", size = 1) +  
-    geom_point(data = trends[trends$alert > 0,], 
-               aes(x = date, y = .data[[.x]], color = alert), size = 3) +  
-    
-    labs(x = "Date", y = paste("Searches for", toupper(.x), "(0-100)")
-         # , 
-         # title = paste("Trend evolution -", toupper(.x))
-         ) +
-    
-    theme_minimal() +
-    facet_wrap(~ District, scales = "free_y") +
-    
-    scale_color_viridis_c(option = "plasma", direction = -1, 
-                          name = "Proportion of population exposed to Red Alerts") +  
-    theme(legend.position = "bottom") +  
-    guides(size = "none")
+# --- Run Regressions, Tables and Plots ---
+iwalk(specs, function(df, sample_name) {
   
-  file_name <- paste0("Trends/treating/Israel/output/trend_", .x, ".pdf")
+  # Define o subdiretório e o sufixo
+  subfolder <- ifelse(sample_name == "full", "", paste0(sample_name, "/"))
+  suffix <- ifelse(sample_name == "full", "", paste0("_", sample_name))
   
-  ggsave(filename = file_name, plot = plot, width = 10, height = 6)
+  # --- Function to Run Regressions ---
+  run_feols <- function(var) {
+    fml <- as.formula(paste(var, "~ alert + lag_alert_1 + lag_alert_2 | District + as.factor(year)"))
+    feols(fml, data = df, cluster = 'District')
+  }
+  
+  # Run all regressions
+  all_regs <- map(set_names(all_vars), run_feols)
+  
+  # --- Generate Tables ---
+  walk2(groups, names(groups), ~ {
+    
+    # Extract the relevant models for the current group
+    model_list <- all_regs[.x]
+    
+    # Set names for the models in the list (for table output)
+    names(model_list) <- toupper(gsub("_", " ", names(model_list)))
+    
+    modelsummary(
+      model_list,
+      output = paste0('Trends/treating/Israel/output/tables/', subfolder, 'reg_table_', .y, suffix, '.tex'),
+      coef_map = c('alert' = 'Red Alert',
+                   'lag_alert_1' = 'Red Alert - lag 1',
+                   'lag_alert_2' = 'Red Alert - lag 2'),
+      stars = TRUE,
+      gof_map = c("nobs", "r.squared")
+    )
+  })
+  
+  # --- Generate Plots ---
+  walk(all_vars, ~ {
+    plot <- ggplot(df, aes(x = date, y = .data[[.x]])) +
+      geom_line(color = "gray30", alpha = 0.5, size = 0.7) + 
+      geom_point(data = df[df$alert > 0,], 
+                 aes(x = date, y = .data[[.x]], color = alert), size = 2) +  
+      labs(x = "Date", y = paste("Searches for", toupper(.x), "(0-100)")) +
+      theme_minimal() +
+      facet_wrap(~ District, scales = "free_y") +
+      scale_color_viridis_c(option = "plasma", direction = -1, 
+                            name = "Alert Exposure") +  
+      theme(legend.position = "bottom",
+            strip.text = element_text(size = 8))
+    
+    file_name <- paste0("Trends/treating/Israel/output/plots/", subfolder, "trend_", .x, suffix, ".pdf")
+    ggsave(filename = file_name, plot = plot, width = 10, height = 6)
+  })
 })

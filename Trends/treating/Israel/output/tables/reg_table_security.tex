@@ -5,22 +5,22 @@ entry=none,label=none,
 note{}={+ p \num{< 0.1}, * p \num{< 0.05}, ** p \num{< 0.01}, *** p \num{< 0.001}},
 ]                     %% tabularray outer close
 {                     %% tabularray inner open
-colspec={Q[]Q[]Q[]Q[]Q[]Q[]Q[]Q[]Q[]Q[]},
-hline{2}={1-10}{solid, black, 0.05em},
-hline{8}={1-10}{solid, black, 0.05em},
-hline{1}={1-10}{solid, black, 0.1em},
-hline{10}={1-10}{solid, black, 0.1em},
-column{2-10}={}{halign=c},
+colspec={Q[]Q[]Q[]Q[]Q[]Q[]},
+hline{2}={1-6}{solid, black, 0.05em},
+hline{8}={1-6}{solid, black, 0.05em},
+hline{1}={1-6}{solid, black, 0.1em},
+hline{10}={1-6}{solid, black, 0.1em},
+column{2-6}={}{halign=c},
 column{1}={}{halign=l},
 }                     %% tabularray inner close
-& shelter & emergency & hospitals & siren & protected\_space & home\_front\_command & code\_red & panic\_attack & mda \\
-Red Alert & \num{12.361} & \num{7.154}+ & \num{1.105} & \num{33.358}*** & \num{26.926}** & \num{33.090}*** & \num{34.473}*** & \num{1.345} & \num{-1.204} \\
-& (\num{8.190}) & (\num{3.369}) & (\num{4.750}) & (\num{2.806}) & (\num{6.095}) & (\num{4.771}) & (\num{4.111}) & (\num{2.749}) & (\num{0.912}) \\
-Red Alert - lag 1 & \num{3.418}* & \num{2.231} & \num{-6.216} & \num{-2.648}** & \num{-2.525}* & \num{-6.166}** & \num{-0.309} & \num{-6.823}** & \num{-2.042}+ \\
-& (\num{1.097}) & (\num{1.505}) & (\num{3.691}) & (\num{0.600}) & (\num{0.972}) & (\num{1.305}) & (\num{0.677}) & (\num{1.332}) & (\num{0.799}) \\
-Red Alert - lag 2 & \num{9.384}* & \num{2.640} & \num{7.162} & \num{-2.018} & \num{-0.243} & \num{0.436} & \num{-2.159}* & \num{-0.762} & \num{2.707} \\
-& (\num{3.508}) & (\num{1.944}) & (\num{5.866}) & (\num{1.018}) & (\num{0.733}) & (\num{0.968}) & (\num{0.539}) & (\num{2.003}) & (\num{2.127}) \\
-Num.Obs. & \num{648} & \num{648} & \num{648} & \num{648} & \num{648} & \num{648} & \num{648} & \num{648} & \num{648} \\
-R2 & \num{0.295} & \num{0.399} & \num{0.509} & \num{0.343} & \num{0.238} & \num{0.415} & \num{0.326} & \num{0.638} & \num{0.282} \\
+& SHELTER & SIREN & PROTECTED SPACE & HOME FRONT COMMAND & CODE RED \\
+Red Alert & \num{12.361} & \num{33.358}*** & \num{26.926}** & \num{33.090}*** & \num{34.473}*** \\
+& (\num{8.190}) & (\num{2.806}) & (\num{6.095}) & (\num{4.771}) & (\num{4.111}) \\
+Red Alert - lag 1 & \num{3.418}* & \num{-2.648}** & \num{-2.525}* & \num{-6.166}** & \num{-0.309} \\
+& (\num{1.097}) & (\num{0.600}) & (\num{0.972}) & (\num{1.305}) & (\num{0.677}) \\
+Red Alert - lag 2 & \num{9.384}* & \num{-2.018} & \num{-0.243} & \num{0.436} & \num{-2.159}* \\
+& (\num{3.508}) & (\num{1.018}) & (\num{0.733}) & (\num{0.968}) & (\num{0.539}) \\
+Num.Obs. & \num{648} & \num{648} & \num{648} & \num{648} & \num{648} \\
+R2 & \num{0.295} & \num{0.343} & \num{0.238} & \num{0.415} & \num{0.326} \\
 \end{talltblr}
 \end{table}

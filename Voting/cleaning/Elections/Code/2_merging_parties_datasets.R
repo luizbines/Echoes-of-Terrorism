@@ -10,7 +10,7 @@ wd = '/home/luiz/Documentos/GitHub/Echoes-of-Terrorism/Voting/'
 setwd(wd);
 
 # --- 1. SETTINGS ---
-folder_path <- "cleaning/Elections/Output/Evolution/"
+folder_path <- "cleaning/Elections/Output/Parties/"
 files <- list.files(path = folder_path, pattern = "^Party_.*\\.csv$", full.names = TRUE)
 
 # --- 2. DYNAMIC READING AND PIVOTING FUNCTION ---
@@ -63,5 +63,5 @@ master_evolution_panel <- list_of_dfs %>%
 # Export the master panel
 dir.create("cleaning/Elections/Output/Final", recursive = TRUE, showWarnings = FALSE)
 write.csv(master_evolution_panel, 
-          "cleaning/Elections/Output/Final/parties_percentages.csv", 
+          "cleaning/Elections/Output/parties_percentages.csv", 
           row.names = FALSE, fileEncoding = "UTF-8")

@@ -33,6 +33,8 @@ parties_percentages_panel = parties_percentages_panel %>%
   mutate(year = as.integer(year)) %>% 
   rename(year_election = year)
 
+# Removing observations with missing voting data (only 28 observations, from 2006 and 2009 elections)
+parties_percentages_panel = parties_percentages_panel %>% filter(!is.na(likud_percentage))
 
 
 ##### REGRESSIONS #####
@@ -71,7 +73,7 @@ reg_2_likud =
                            i(year_election, alerts_149_plus,
                              ref = '2013'
                              )  +
-          density + Pop_Total + sci_index_value | 
+          Pop_Total + ntl | 
           as.factor(SEMEL_YISHUV) + as.factor(year_election),
         data = parties_percentages_panel %>% filter(Religion_yishuv_Code != 2),
         cluster = 'SEMEL_YISHUV')
@@ -105,7 +107,7 @@ reg_2_right_wing =
                            i(year_election, alerts_149_plus,
                              ref = '2013'
                              ) +
-          density + Pop_Total + sci_index_value | 
+          Pop_Total + ntl | 
           as.factor(SEMEL_YISHUV) + as.factor(year_election),
         data = parties_percentages_panel %>% filter(Religion_yishuv_Code != 2),
         cluster = 'SEMEL_YISHUV')
@@ -138,7 +140,7 @@ reg_2_turnout =
                            i(year_election, alerts_149_plus,
                              ref = '2013'
                              ) +
-          density + Pop_Total + sci_index_value | 
+          Pop_Total + ntl | 
           as.factor(SEMEL_YISHUV) + as.factor(year_election),
         data = parties_percentages_panel %>% filter(Religion_yishuv_Code != 2),
         cluster = 'SEMEL_YISHUV')
@@ -166,7 +168,7 @@ reg_2_coalition =
                            i(year_election, alerts_149_plus,
                              ref = '2013'
                              ) +
-          density + Pop_Total + sci_index_value | 
+          Pop_Total + ntl | 
           as.factor(SEMEL_YISHUV) + as.factor(year_election),
         data = parties_percentages_panel %>% filter(Religion_yishuv_Code != 2),
         cluster = 'SEMEL_YISHUV')
@@ -183,7 +185,7 @@ modelsummary(
     reg_1_turnout,
     reg_2_turnout
     ),
-            output = 'treating/Red Alerts/Output/Figures/Robustness/intensity_regressions.tex',
+            output = 'treating/Red Alerts/Output/Figures/Robustness/Robustness_intensity_regressions.tex',
             #  output = 'latex_tabular',
              coef_map = c('year_election::2015:alerts_6_days' = 'Red Alert 6 Days Before * 2015 Election',
                           'year_election::2015:alerts_149_plus' = 'Red Alert 149+ Days Before * 2015 Election',
@@ -264,6 +266,3 @@ modelsummary(
                                    )
              )
 )
-
-
-

@@ -32,6 +32,10 @@ parties_percentages_panel = parties_percentages_panel %>%
   mutate(year = as.integer(year)) %>% 
   rename(year_election = year)
 
+# Removing observations with missing voting data (only 28 observations, from 2006 and 2009 elections)
+parties_percentages_panel = parties_percentages_panel %>% filter(!is.na(likud_percentage))
+
+
 # 1. Custom dataset where we keep arab cities
 parties_percentages_panel_ARAB = parties_percentages_panel
 
@@ -67,7 +71,7 @@ reg_2_likud_ARAB =
   feols(likud_percentage ~ i(year_election, temporal_group,
                              ref = '2013', 
                              ref2 = 'no_red_alert') +
-          density + Pop_Total + ntl | 
+          Pop_Total + ntl | 
           as.factor(SEMEL_YISHUV) + as.factor(year_election),
         data = parties_percentages_panel_ARAB,
         cluster = 'SEMEL_YISHUV')
@@ -95,7 +99,7 @@ reg_2_right_wing_ARAB =
   feols(right_wing_percentage ~ i(year_election, temporal_group,
                                   ref = '2013', 
                                   ref2 = 'no_red_alert') +
-          density + Pop_Total + ntl | 
+          Pop_Total + ntl | 
           as.factor(SEMEL_YISHUV) + as.factor(year_election),
         data = parties_percentages_panel_ARAB,
         cluster = 'SEMEL_YISHUV')
@@ -122,7 +126,7 @@ reg_2_turnout_ARAB =
   feols(turnout_percentage ~ i(year_election, temporal_group,
                                ref = '2013', 
                                ref2 = 'no_red_alert') +
-          density + Pop_Total + ntl | 
+          Pop_Total + ntl | 
           as.factor(SEMEL_YISHUV) + as.factor(year_election),
         data = parties_percentages_panel_ARAB,
         cluster = 'SEMEL_YISHUV')
@@ -144,7 +148,7 @@ reg_2_coalition_ARAB =
   feols(coalition_2015_percentage ~ i(year_election, temporal_group,
                                       ref = '2013', 
                                       ref2 = 'no_red_alert') +
-          density + Pop_Total + ntl | 
+          Pop_Total + ntl | 
           as.factor(SEMEL_YISHUV) + as.factor(year_election),
         data = parties_percentages_panel_ARAB,
         cluster = 'SEMEL_YISHUV')
@@ -166,8 +170,6 @@ reg_1_likud_DISTANCE =
         data = parties_percentages_panel_DISTANCES,
         cluster = 'SEMEL_YISHUV')
 
-summary(reg_1_likud)
-
 
 # CONTROL VARIABLES + FIXED EFFECTS
 reg_2_likud_DISTANCE = 
@@ -175,7 +177,7 @@ reg_2_likud_DISTANCE =
   feols(likud_percentage ~ i(year_election, temporal_group,
                              ref = '2013', 
                              ref2 = 'no_red_alert') +
-          density + Pop_Total + ntl | 
+          Pop_Total + ntl | 
           as.factor(SEMEL_YISHUV) + as.factor(year_election),
         data = parties_percentages_panel_DISTANCES,
         cluster = 'SEMEL_YISHUV')
@@ -203,7 +205,7 @@ reg_2_right_wing_DISTANCE =
   feols(right_wing_percentage ~ i(year_election, temporal_group,
                                   ref = '2013', 
                                   ref2 = 'no_red_alert') +
-          density + Pop_Total + ntl | 
+          Pop_Total + ntl | 
           as.factor(SEMEL_YISHUV) + as.factor(year_election),
         data = parties_percentages_panel_DISTANCES,
         cluster = 'SEMEL_YISHUV')
@@ -230,7 +232,7 @@ reg_2_turnout_DISTANCE =
   feols(turnout_percentage ~ i(year_election, temporal_group,
                                ref = '2013', 
                                ref2 = 'no_red_alert') +
-          density + Pop_Total + ntl | 
+          Pop_Total + ntl | 
           as.factor(SEMEL_YISHUV) + as.factor(year_election),
         data = parties_percentages_panel_DISTANCES,
         cluster = 'SEMEL_YISHUV')
@@ -252,7 +254,7 @@ reg_2_coalition_DISTANCE =
   feols(coalition_2015_percentage ~ i(year_election, temporal_group,
                                       ref = '2013', 
                                       ref2 = 'no_red_alert') +
-          density + Pop_Total + ntl | 
+          Pop_Total + ntl | 
           as.factor(SEMEL_YISHUV) + as.factor(year_election),
         data = parties_percentages_panel_DISTANCES,
         cluster = 'SEMEL_YISHUV')
@@ -275,7 +277,7 @@ modelsummary(
     reg_1_turnout_ARAB,
     reg_2_turnout_ARAB
   ),
-  output = 'treating/Red Alerts/Output/Figures/Robustness/ARAB_CITIES_regressions.tex',
+  output = 'treating/Red Alerts/Output/Figures/Robustness/Robustness_ARAB_CITIES_regressions.tex',
   # output = 'latex_tabular',
   coef_map = c('year_election::2015:temporal_group::temporal_distance == 6' = 'Red Alert 6 Days Before * 2015 Election',
                'year_election::2015:temporal_group::temporal_distance > 149' = 'Red Alert 149+ Days Before * 2015 Election',
@@ -371,7 +373,7 @@ modelsummary(
     reg_1_turnout_DISTANCE,
     reg_2_turnout_DISTANCE
   ),
-  output = 'treating/Red Alerts/Output/Figures/Robustness/DIFFERENT_DISTANCE_regressions.tex',
+  output = 'treating/Red Alerts/Output/Figures/Robustness/Robustness_DIFFERENT_DISTANCE_regressions.tex',
   # output = 'latex_tabular',
   coef_map = c('year_election::2015:temporal_group::temporal_distance == 6' = 'Red Alert 6 Days Before * 2015 Election',
                'year_election::2015:temporal_group::temporal_distance > 149' = 'Red Alert 149+ Days Before * 2015 Election',
@@ -453,8 +455,3 @@ modelsummary(
   )
   )
 )
-
-
-
-
-

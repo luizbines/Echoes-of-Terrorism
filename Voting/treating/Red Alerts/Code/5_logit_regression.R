@@ -93,7 +93,7 @@ model_4 <- feglm(future_red_alert_within_year ~ quantity_of_alarms | factor(year
 modelsummary(list(model_1, model_2, model_3, model_4), 
              stars = TRUE,
              # output = 'latex_tabular',
-             output = 'treating/Red Alerts/Output/Figures/5_logit_probability_of_alert.tex',
+             output = 'treating/Red Alerts/Output/Tables/5_logit_probability_of_alert.tex',
              # coef_rename = c("quantity_of_alarms" = "Quantity of Previous Red Alerts")
              coef_map = c('quantity_of_alarms' = 'Quantity of Previous Red Alerts',
                           'quantity_of_alarms:year::2015' = 'Quantity of Previous Red Alerts * 2015',

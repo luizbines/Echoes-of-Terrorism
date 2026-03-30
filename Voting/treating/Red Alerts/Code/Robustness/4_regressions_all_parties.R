@@ -24,6 +24,10 @@ parties_percentages_panel = parties_percentages_panel %>%
   rename(year_election = year)
 
 
+# Removing observations with missing voting data (only 28 observations, from 2006 and 2009 elections)
+parties_percentages_panel = parties_percentages_panel %>% filter(!is.na(likud_percentage))
+
+
 # 1. Prepare the Data ---------------------------------------------------------
 
 # list of 2013 parties that also ran in 2015 (or joined/merged into a party that ran in 2015)
@@ -75,7 +79,7 @@ all_party_vars <- grep("_percentage", names(data_reg), value = TRUE)
 regs_ctrl <- feols(.[all_party_vars] ~ i(year_election, temporal_group, 
                                          ref = '2013', 
                                          ref2 = 'no_red_alert') + 
-                     density + Pop_Total + ntl | 
+                     Pop_Total + ntl | 
                      as.factor(SEMEL_YISHUV) + as.factor(year_election), 
                    data = data_reg, 
                    cluster = ~SEMEL_YISHUV)
@@ -98,7 +102,7 @@ for(i in seq_along(all_party_vars)){
 # 5. Export Vertical Table ----------------------------------------------------
 modelsummary(
   combined_models,
-  output = 'treating/Red Alerts/Output/Figures/all_parties_results.tex',
+  output = 'treating/Red Alerts/Output/Figures/Robustness/Robustness_all_parties_results.tex',
   shape = model ~ term, 
   stars = TRUE,
   title = 'Differences-in-Differences Estimates: Red Alert Impact on Political Parties',
@@ -111,7 +115,7 @@ modelsummary(
     'year_election::2006:temporal_group::temporal_distance > 149' = '2006: 149+ Days Before'
   ),
   notes = "Standard errors, clustered at the locality level, are reported in parentheses. 
-  All models incorporate locality and year fixed effects, along with controls for demographic density, population size, and nighttime luminosity. 
+  All models incorporate locality and year fixed effects, along with controls for population size, and nighttime luminosity. 
   The sample is restricted to parties that contested both the 2013 and 2015 elections, including those that merged or demerged during this period. We exclude Yisrael Beiteinu because of its joint list with Likud in 2013.",
   gof_omit = 'IC|Log|Adj|Within|Pseudo|FE'
 )

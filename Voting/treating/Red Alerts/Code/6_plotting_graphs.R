@@ -20,11 +20,16 @@ setwd(wd);
 
 ##### IMPORTING #####
 
-election_percentages = read.csv('treating/Red Alerts/Output/3_election_percentages.csv')
+election_percentages = read.csv('treating/Red Alerts/Output/2_parties_percentages_panel.csv')
 
 
 # filtering years
-election_percentages = election_percentages %>% filter(year <= 2015)
+election_percentages = election_percentages %>%
+  filter(year <= 2015) %>%
+  mutate(
+    year = as.integer(year),
+  ) %>%
+  rename(year_election = year)
 
 
 
@@ -32,7 +37,7 @@ election_percentages = election_percentages %>% filter(year <= 2015)
 
 reg_1_likud = feols(likud_percentage ~ i(year_election, temporal_group, ref = '2013', ref2 = 'no_red_alert')| 
                       as.factor(SEMEL_YISHUV) + as.factor(year_election),
-                           data = election_percentages %>% filter(Religion_yishuv_Code != 2),
+                    data = election_percentages %>% filter(Religion_yishuv_Code != 2),
                     cluster = ~SEMEL_YISHUV)
 
 
@@ -110,6 +115,93 @@ ggplot(coef_data_likud, aes(x = year_position, y = estimate, color = temporal_gr
 ggsave('treating/Red Alerts/Output/Figures/6_event_study_likud.pdf', 
        width = 8.5,
        height = 5.5)
+
+
+
+##### 2015 COALITION #####
+
+reg_1_coalition = feols(coalition_2015_percentage ~ i(year_election, temporal_group, ref = '2013', ref2 = 'no_red_alert')| 
+                          as.factor(SEMEL_YISHUV) + as.factor(year_election),
+                        data = election_percentages %>% filter(Religion_yishuv_Code != 2),
+                        cluster = ~SEMEL_YISHUV)
+
+
+
+# Creating a data frame from the regression results
+coef_data_coalition <- as.data.frame(coeftable(reg_1_coalition)) %>%
+  rownames_to_column(var = "term") %>%
+  filter(grepl("year_election::", term)) %>%
+  mutate(term = gsub("year_election::", "", term),
+         year_election = sub(":temporal_group::.*", "", term) %>% as.numeric(),
+         temporal_group = gsub(".*:temporal_group::", "", term)) %>% 
+  rename(estimate = Estimate, std_error = `Std. Error`) %>%
+  mutate(
+    ci_lower = estimate - 1.96 * std_error,
+    ci_upper = estimate + 1.96 * std_error
+  )
+
+
+# Adding the refference period (2013) to the dataframe
+coef_data_coalition <- coef_data_coalition %>%
+  bind_rows(data.frame(
+    term = "Reference (2013)",
+    year_election = 2013,
+    estimate = 0,
+    std_error = 0,
+    ci_lower = 0,
+    ci_upper = 0,
+    temporal_group = c("temporal_distance == 6", "temporal_distance > 149")
+  ))
+
+
+# Setting uniform spacing in the x axis
+coef_data_coalition <- coef_data_coalition %>%
+  arrange(year_election) %>%
+  mutate(year_position = as.numeric(factor(year_election, levels = unique(year_election)))) 
+
+
+# Plotting
+ggplot(coef_data_coalition, aes(x = year_position, y = estimate, color = temporal_group)) +
+  geom_hline(yintercept = 0) +
+  geom_vline(xintercept = 3, linetype = 'dashed') +  # Mark the reference year position
+  geom_point(size = 4) +
+  # Including Confidence Intervals (except for the reference year position)
+  geom_errorbar(data = subset(coef_data_coalition, year_position != 3), 
+                aes(ymin = ci_lower, ymax = ci_upper), width = 0.2) +
+  scale_x_continuous(
+    breaks = coef_data_coalition$year_position,
+    labels = coef_data_coalition$year_election  # Use the actual years as labels
+  ) +  # Sets uniform positions with actual year labels
+  labs(
+    x = "Election Year",
+    y = "Difference in 2015 Coalition's Average Vote Share",
+    color = "Temporal Group"
+  ) +
+  theme_bw() +
+  theme(
+    legend.position = "right", 
+    strip.background = element_blank(), 
+    strip.text = element_text(size = 12),
+    panel.spacing = unit(1, "lines"),
+    panel.grid.minor.x = element_blank()   # Remove minor vertical grid lines
+  ) +
+  facet_wrap(~ temporal_group, 
+             scales = "free_x",
+             labeller = labeller(temporal_group = c(
+               "temporal_distance == 6" = "Panel 1: Red Alert 6 Days Before Election",
+               "temporal_distance > 149" = "Panel 2: Red Alert 149+ Days Before Election"
+             )), 
+             ncol = 1) + # Stack panels vertically
+  scale_color_manual(values = c("temporal_distance == 6" = "blue", "temporal_distance > 149" = "red"), 
+                     labels = c("temporal_distance == 6" = "6 Days", "temporal_distance > 149" = "More than 149 Days")) +  
+  guides(color = guide_none()) + 
+  scale_y_continuous(labels = scales::percent)
+
+
+ggsave('treating/Red Alerts/Output/Figures/6_event_study_coalition.pdf', 
+       width = 8.5,
+       height = 5.5)
+
 
 
 

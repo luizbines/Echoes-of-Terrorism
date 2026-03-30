@@ -242,5 +242,5 @@ for (p in all_entities_to_export) {
     arrange(SEMEL_YISHUV) %>%
     rename_with(~str_remove(., paste0(p, "_")), contains(p))
   
-  write.csv(df_export, paste0("cleaning/Elections/Output/Evolution/Party_", p, ".csv"), row.names = F)
+  write.csv(df_export, paste0("cleaning/Elections/Output/Parties/Party_", p, ".csv"), row.names = F)
 }

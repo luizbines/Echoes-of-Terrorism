@@ -15,15 +15,15 @@ library(cowplot)
 
 
 # Directory
-wd = 'C:/Users/luizb/Desktop/Echoes-of-Terrorism/Voting/'
+wd = '/home/luiz/Documentos/GitHub/Echoes-of-Terrorism/Voting/'
 setwd(wd);
 
 
 #### Importing ####
 
-likud_percentage = read.csv('treating/Red Alerts/Output/2_likud_percentage_panel.csv')
+likud_percentage = read.csv('treating/Red Alerts/Output/2_parties_percentages_panel.csv')
 
-gaza_sf = read_sf('raw/Israel/gaza/gaza.shp') %>% 
+gaza_sf = read_sf('raw/Israel/Gaza/gaza.shp') %>% 
   summarise(geometry = st_union(geometry))
 
 st_crs(gaza_sf) = 4326
@@ -47,18 +47,14 @@ israel = israel %>%
     Shape_Area = sum(Shape_Area),
     Religion_Yishuv = first(Religion_Yishuv),
     .groups = "drop"
-    
   ) 
-
-
 
 israel = st_transform(israel, st_crs(gaza_sf))
 st_crs(israel) = st_crs(gaza_sf)
 
-
 israel <- st_make_valid(israel)
 
-
+# Getting distance between each israeli locality and gaza
 distance = st_distance(israel, gaza_sf) %>% 
   set_units("km")
 
@@ -70,7 +66,7 @@ israel = israel %>%
 rm(distance)
 
 
-# Creating sample dataset to plot
+# Merging dataset to be plotted
 cities <- merge(likud_percentage %>% filter(year == 2013) %>%
                        select('SEMEL_YISHUV', 'treated', 'loc', 'temporal_group'),
                      israel %>% as.data.frame() %>%
@@ -131,56 +127,9 @@ ggplot() +
 
 
 
-ggsave('treating/Red Alerts/Output/Figures/6_israel_ranges.pdf', width = 8.27 , height = 11.69, units = "in", dpi = 300)
+ggsave('treating/Red Alerts/Output/Figures/7_israel_ranges.pdf', width = 8.27 , height = 11.69, units = "in", dpi = 300)
 
 
-# # treatment map
-# ggplot() + 
-#   geom_sf(data = israel$Shape, color = 'lightgrey')+
-#   # geom_sf(data = israel[israel$distance > 75 & israel$distance < 150,]$Shape, fill = 'lightgreen', lwd = .1) +
-#   # geom_sf(data = israel[israel$distance < 75,]$Shape, fill = 'lightgrey', lwd = .1) +
-#   # geom_sf(data = israel[israel$distance > 150,]$Shape, fill = 'lightgrey', lwd = .1) +
-#   # geom_sf(data = israel[st_intersects(israel,buffer_75, sparse = F) %>% unlist,]$Shape,
-#   #         color = 'lightgrey') + 
-#   geom_sf(data = cities[cities$treated == T,]$Shape, aes(fill = 'Treatment Group', color = 'Treatment Group'), lwd = 0) +
-#   geom_sf(data = cities[cities$treated == F,]$Shape, aes(fill = 'Control Group', color = 'Control Group'), lwd = 0) +
-#   geom_sf(data = buffer_75, fill = NA, color = 'orange', lwd = 1, linetype = "dashed") +
-#   geom_sf(data = buffer_150, fill = NA, color = "orange", lwd = 1, linetype = "dashed") +
-#   geom_sf(data = gaza_sf, fill = "orange", lwd = .1) +
-#   xlim(min_long, max_long + 0.3) +
-#   scale_fill_manual(values = c("Treatment Group" = "red", "Control Group" = "blue"),
-#                     guide = guide_legend(title = "Localities:")) +
-#   scale_color_manual(values = c('Treatment Group' = 'red', 'Control Group' = 'blue')) +
-#   guides(color = 'none') +
-#   theme_minimal()
-# 
-# ggsave('treating/Red Alerts/Output/Figures/israel_attacks.pdf', width = 8.27 , height = 11.69, units = "in", dpi = 300)
-
-
-
-# # temporal distance map
-# ggplot() + 
-#   geom_sf(data = israel$Shape, color = 'white')+
-#   # geom_sf(data = israel[israel$distance > 75 & israel$distance < 150,]$Shape, fill = 'lightgreen', lwd = .1) +
-#   # geom_sf(data = israel[israel$distance < 75 | israel$distance > 150,]$Shape, fill = 'lightgrey', lwd = .1) +
-#   # geom_sf(data = israel[st_intersects(israel,buffer_150, sparse = F) %>% unlist,]$Shape,
-#           # color = 'white') +
-#   geom_sf(data = cities[!is.na(cities$temporal_group),]$Shape, aes(fill = cities[!is.na(cities$temporal_group),]$temporal_group,
-#                                                                       color = cities[!is.na(cities$temporal_group),]$temporal_group), lwd = 0) +
-#   geom_sf(data = buffer_75, fill = NA, color = 'orange', lwd = 1, linetype = "dashed") +
-#   geom_sf(data = buffer_150, fill = NA, color = "orange", lwd = 1, linetype = "dashed") +
-#   geom_sf(data = gaza_sf, fill = "orange", lwd = .1) +
-#   xlim(min_long, max_long + 0.3) +
-#   guides(color = 'none') +
-#   guides(fill = guide_legend(title = "Days between last Red Alert and 2015 election:")) + 
-#   scale_fill_manual(values = c("blue", "red",'yellow'),
-#                     labels = c("No Red Alerts","6 days", "204-232 days")) +
-#   scale_color_manual(values = c('blue', 'red','yellow')) +
-#   theme_minimal()
-# 
-# 
-# ggsave('treating/Red Alerts/Output/Figures/israel_temporal_groups.pdf',width = 8.27 , height = 11.69, units = "in", dpi = 300)
-# 
 
 # filtering out arab cities
 cities_no_arabs = cities %>% 
@@ -218,7 +167,7 @@ ggplot() +
   # )
 
 
-ggsave('treating/Red Alerts/Output/Figures/6_israel_ranges_temporal_groups.pdf',
+ggsave('treating/Red Alerts/Output/Figures/7_israel_ranges_temporal_groups.pdf',
        width = 8.27 ,
        height = 11.69,
        units = "in",

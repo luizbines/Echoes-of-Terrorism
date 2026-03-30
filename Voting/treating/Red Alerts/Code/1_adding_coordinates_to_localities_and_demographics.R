@@ -44,7 +44,7 @@ cities_coordinates = read.csv('raw/Israel/all_cities_coordinates.csv', row.names
 rocket_alerts = read.csv('cleaning/Red Alerts/Output/rocket_alerts.csv')
 all_rocket_alerts = read.csv('cleaning/Red Alerts/Output/all.rocket_alerts.csv')
 
-parties_percentages = read_csv('cleaning/Elections/Output/Final/parties_percentages.csv')
+parties_percentages = read_csv('cleaning/Elections/Output/parties_percentages.csv')
 
 ### SFs ###
 gaza_sf = read_sf('raw/Israel/Gaza/gaza.shp') %>% 
@@ -101,8 +101,6 @@ israel <- israel %>%
     .groups = "drop"
   )
 
-
-
 #### Assigning distances from Israel Shapefile to the Gaza Strip ####
 israel = israel %>%
   mutate(
@@ -146,7 +144,7 @@ israel_demographics = israel_demographics %>%
   merge(cities_coordinates %>% select(-location),
         by = 'loc',
         all.x = T,
-        all.y = F) %>% select(-SHEM_YISHUV)
+        all.y = F)
 
 
 # NAs
@@ -160,9 +158,18 @@ rocket_alerts = rocket_alerts[!is.na(rocket_alerts$lat),]
 all_rocket_alerts = all_rocket_alerts[!is.na(all_rocket_alerts$lat),]
 
 
+# Getting centroids of the shapefile to assign coordinates to parties_percentages
+israel <- israel %>% 
+  mutate(
+    centroid = st_centroid(Shape),
+    long = st_coordinates(centroid)[, 1],
+    lat = st_coordinates(centroid)[, 2]
+  ) %>% 
+  select(-centroid)
+
 # Merging electoral localities with Israel dataset (shapefile)
 parties_percentages = parties_percentages %>% 
-  merge(israel %>% select(SEMEL_YISHUV,Shape,distance,SHEM_YISHUV, SHEM_YISHUV_ENGLISH),
+  merge(israel %>% select(SEMEL_YISHUV,Shape,distance,SHEM_YISHUV, SHEM_YISHUV_ENGLISH, long, lat),
         by = 'SEMEL_YISHUV',
         all.x = T,
         all.y = F)
@@ -178,11 +185,10 @@ parties_percentages %>%
 # Removing NAs
 parties_percentages = parties_percentages %>% filter(!is.na(parties_percentages$distance))
 
-# Filtering Red Alerts based on distance from the Gaza Strip
+# Keeping only localities located 75km to 150km from Gaza
 parties_percentages = parties_percentages %>% 
   filter(distance >= 75) %>% 
   filter(distance <= 150)
-
 
 
 # Keeping only relevant variables

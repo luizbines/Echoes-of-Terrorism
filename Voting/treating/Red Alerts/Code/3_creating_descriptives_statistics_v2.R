@@ -1,10 +1,10 @@
-#### CREATING DESCRIPTIVE STATISTICS TABLE (ROBUST VERSION) #####
+#### CREATING DESCRIPTIVE STATISTICS TABLE #####
 
 # Libraries
 library(dplyr)
 library(tidyr)
-library(fixest)       # For fast regressions with clusters
-library(modelsummary)  # For automatic and elegant tables
+library(fixest)      
+library(modelsummary) 
 library(kableExtra)
 
 # Directory
@@ -15,7 +15,7 @@ setwd(wd)
 parties_percentages_panel = read.csv('treating/Red Alerts/Output/2_parties_percentages_panel.csv')
 
 df_clean <- parties_percentages_panel %>%
-  filter(year == 2013) %>% # Focus on 2013 baseline
+  filter(year == 2013) %>% # 2013 baseline
   filter(Religion_yishuv_Code != 2) %>%
   mutate(group = case_when(
     temporal_group == 'no_red_alert' ~ 'Control',
@@ -84,7 +84,7 @@ add_stars <- function(p_value) {
 # Apply to all variables
 final_stats <- lapply(var_list, get_stats) %>% bind_rows()
 
-## 4. FORMATTING FOR LATEX / OVERLEAF ##
+## 4. FORMATTING FOR LATEX ##
 # Create alternating rows: one for statistic, another for SE/SD
 
 table_rows <- final_stats %>%
@@ -137,4 +137,4 @@ final_kable <- kable(table_latex,
 print(final_kable)
 
 # Save .tex file for Overleaf
-writeLines(as.character(final_kable), "treating/Red Alerts/Output/Figures/3_descriptives_table_v2.tex")
+writeLines(as.character(final_kable), "treating/Red Alerts/Output/Tables/3_descriptives_table.tex")

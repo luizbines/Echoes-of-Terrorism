@@ -20,7 +20,7 @@ setwd(wd);
 
 ##### IMPORTING #####
 
-election_percentages = read.csv('treating/Red Alerts/Output/2_parties_percentages_panel.csv')
+election_percentages = read.csv('treating/Red Alerts/Output/Datasets/2_parties_percentages_panel.csv')
 
 
 # filtering years

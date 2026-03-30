@@ -19,7 +19,7 @@ wd = '/home/luiz/Documentos/GitHub//Echoes-of-Terrorism/Voting/'
 setwd(wd);
 
 ##### IMPORTING #####
-election_percentages = read.csv('treating/Red Alerts/Output/2_parties_percentages_panel.csv') %>% 
+election_percentages = read.csv('treating/Red Alerts/Output/Datasets/2_parties_percentages_panel.csv') %>% 
   mutate(
     year_election = year
   )

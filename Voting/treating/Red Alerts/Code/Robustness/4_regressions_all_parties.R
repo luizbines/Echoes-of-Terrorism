@@ -14,7 +14,7 @@ wd = '/home/luiz/Documentos/GitHub/Echoes-of-Terrorism/Voting/'
 setwd(wd);
 
 # Importing
-parties_percentages_panel = read_csv('treating/Red Alerts/Output/2_parties_percentages_panel.csv')
+parties_percentages_panel = read_csv('treating/Red Alerts/Output/Datasets/2_parties_percentages_panel.csv')
 
 
 # filtering years
@@ -102,7 +102,7 @@ for(i in seq_along(all_party_vars)){
 # 5. Export Vertical Table ----------------------------------------------------
 modelsummary(
   combined_models,
-  output = 'treating/Red Alerts/Output/Figures/Robustness/Robustness_all_parties_results.tex',
+  output = 'treating/Red Alerts/Output/Tables/Robustness/Robustness_all_parties_results.tex',
   shape = model ~ term, 
   stars = TRUE,
   title = 'Differences-in-Differences Estimates: Red Alert Impact on Political Parties',

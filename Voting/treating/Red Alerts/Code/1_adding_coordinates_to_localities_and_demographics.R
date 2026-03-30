@@ -249,9 +249,9 @@ rocket_alerts = rocket_alerts %>%
 
 
 ##### EXPORTING #####
-write.csv(rocket_alerts, 'treating/Red Alerts/Output/1_red_alerts_with_coordinates_and_electoral_localities.csv',
+write.csv(rocket_alerts, 'treating/Red Alerts/Output/Datasets/1_red_alerts_with_coordinates_and_electoral_localities.csv',
           row.names = F)
-write.csv(all_rocket_alerts, 'treating/Red Alerts/Output/1_ALL_red_alerts_with_coordinates_and_electoral_localities.csv',
+write.csv(all_rocket_alerts, 'treating/Red Alerts/Output/Datasets/1_ALL_red_alerts_with_coordinates_and_electoral_localities.csv',
           row.names = F)
-write_csv(parties_percentages, 'treating/Red Alerts/Output/1_parties_percentages_with_coordinates.csv')
-write.csv(israel_demographics, 'treating/Red Alerts/Output/1_israel_demographics.csv')
+write_csv(parties_percentages, 'treating/Red Alerts/Output/Datasets/1_parties_percentages_with_coordinates.csv')
+write.csv(israel_demographics, 'treating/Red Alerts/Output/Datasets/1_israel_demographics.csv')

@@ -17,7 +17,7 @@ wd = '/home/luiz/Documentos/GitHub/Echoes-of-Terrorism/Voting/'
 setwd(wd);
 
 # Importing
-all_years_cities_grid = read.csv('treating/Red Alerts/Output/2_all_years_cities_grid.csv')
+all_years_cities_grid = read.csv('treating/Red Alerts/Output/Datasets/2_all_years_cities_grid.csv')
 
 
 

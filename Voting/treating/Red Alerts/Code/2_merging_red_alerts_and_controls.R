@@ -29,12 +29,12 @@ setwd(wd);
 
 ##### IMPORTING #####
 
-parties_percentages = read_csv('treating/Red Alerts/Output/1_parties_percentages_with_coordinates.csv')
+parties_percentages = read_csv('treating/Red Alerts/Output/Datasets/1_parties_percentages_with_coordinates.csv')
 
 israel_panel = read.csv('cleaning/Israel/Output/2_israel_panel_lights.csv')
 
-red_alerts = read.csv('treating/Red Alerts/Output/1_red_alerts_with_coordinates_and_electoral_localities.csv')
-all_red_alerts = read.csv('treating/Red Alerts/Output/1_ALL_red_alerts_with_coordinates_and_electoral_localities.csv')
+red_alerts = read.csv('treating/Red Alerts/Output/Datasets/1_red_alerts_with_coordinates_and_electoral_localities.csv')
+all_red_alerts = read.csv('treating/Red Alerts/Output/Datasets/1_ALL_red_alerts_with_coordinates_and_electoral_localities.csv')
 
 ##### PROCESSING #####
 
@@ -179,9 +179,8 @@ all_years_cities_grid <- expand.grid(SEMEL_YISHUV = unique(parties_percentages$S
 
 ##### EXPORTING #####
 
-write.csv(parties_percentages, 'treating/Red Alerts/Output/2_parties_percentages_panel.csv',
+write.csv(parties_percentages, 'treating/Red Alerts/Output/Datasets/2_parties_percentages_panel.csv',
           row.names = F)
 
-# write.csv(cities_grid, 'treating/Red Alerts/Output/2_cities_grid.csv', row.names = F)
-write.csv(all_years_cities_grid, 'treating/Red Alerts/Output/2_all_years_cities_grid.csv', row.names = F)
+write.csv(all_years_cities_grid, 'treating/Red Alerts/Output/Datasets/2_all_years_cities_grid.csv', row.names = F)
 

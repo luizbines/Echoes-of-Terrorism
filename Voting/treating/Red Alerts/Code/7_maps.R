@@ -21,7 +21,7 @@ setwd(wd);
 
 #### Importing ####
 
-likud_percentage = read.csv('treating/Red Alerts/Output/2_parties_percentages_panel.csv')
+likud_percentage = read.csv('treating/Red Alerts/Output/Datasets/2_parties_percentages_panel.csv')
 
 gaza_sf = read_sf('raw/Israel/Gaza/gaza.shp') %>% 
   summarise(geometry = st_union(geometry))

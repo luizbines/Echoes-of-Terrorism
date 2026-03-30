@@ -12,7 +12,7 @@ wd = '/home/luiz/Documentos/GitHub/Echoes-of-Terrorism/Voting/'
 setwd(wd)
 
 ## 1. DATA IMPORT AND CLEANING ##
-parties_percentages_panel = read.csv('treating/Red Alerts/Output/2_parties_percentages_panel.csv')
+parties_percentages_panel = read.csv('treating/Red Alerts/Output/Datasets/2_parties_percentages_panel.csv')
 
 df_clean <- parties_percentages_panel %>%
   filter(year == 2013) %>% # 2013 baseline

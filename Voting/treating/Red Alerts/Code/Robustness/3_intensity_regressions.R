@@ -22,7 +22,7 @@ setwd(wd);
 
 ##### IMPORTING #####
 
-parties_percentages_panel = read_csv('treating/Red Alerts/Output/2_parties_percentages_panel.csv')
+parties_percentages_panel = read_csv('treating/Red Alerts/Output/Datasets/2_parties_percentages_panel.csv')
 
 
 ### FILTERING ###

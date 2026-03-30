@@ -21,7 +21,7 @@ setwd(wd);
 ##### IMPORTING #####
 
 
-parties_percentages_panel = read_csv('treating/Red Alerts/Output/2_parties_percentages_panel.csv')
+parties_percentages_panel = read_csv('treating/Red Alerts/Output/Datasets/2_parties_percentages_panel.csv')
 
 
 ### FILTERING ###
@@ -277,7 +277,7 @@ modelsummary(
     reg_1_turnout_ARAB,
     reg_2_turnout_ARAB
   ),
-  output = 'treating/Red Alerts/Output/Figures/Robustness/Robustness_ARAB_CITIES_regressions.tex',
+  output = 'treating/Red Alerts/Output/Tables/Robustness/Robustness_ARAB_CITIES_regressions.tex',
   # output = 'latex_tabular',
   coef_map = c('year_election::2015:temporal_group::temporal_distance == 6' = 'Red Alert 6 Days Before * 2015 Election',
                'year_election::2015:temporal_group::temporal_distance > 149' = 'Red Alert 149+ Days Before * 2015 Election',
@@ -299,7 +299,7 @@ modelsummary(
     'No',
     'Yes',
     'NRA 2015',
-    summary(reg_1_likud)$nobs
+    summary(reg_1_likud_ARAB)$nobs
   ),
   
   '2' = c(
@@ -307,7 +307,7 @@ modelsummary(
     'Yes',
     'Yes',
     'NRA 2015',
-    summary(reg_1_likud)$nobs
+    summary(reg_1_likud_ARAB)$nobs
   ),
   
   '3' = c(
@@ -315,7 +315,7 @@ modelsummary(
     'No',
     'Yes',
     'NRA 2015',
-    summary(reg_1_coalition)$nobs
+    summary(reg_1_coalition_ARAB)$nobs
   ),
   
   '4' = c(
@@ -323,7 +323,7 @@ modelsummary(
     'Yes',
     'Yes',
     'NRA 2015',
-    summary(reg_2_coalition)$nobs
+    summary(reg_2_coalition_ARAB)$nobs
   ),
   
   '5' = c(
@@ -331,7 +331,7 @@ modelsummary(
     'No',
     'Yes',
     'NRA 2015',
-    summary(reg_1_right_wing)$nobs
+    summary(reg_1_right_wing_ARAB)$nobs
   ),
   
   '6' = c(
@@ -339,7 +339,7 @@ modelsummary(
     'Yes',
     'Yes',
     'NRA 2015',
-    summary(reg_1_right_wing)$nobs
+    summary(reg_1_right_wing_ARAB)$nobs
   ),
   
   '7' = c(
@@ -347,7 +347,7 @@ modelsummary(
     'No',
     'Yes',
     'NRA 2015',
-    summary(reg_1_turnout)$nobs
+    summary(reg_1_turnout_ARAB)$nobs
   ),
   
   '8' = c(
@@ -355,7 +355,7 @@ modelsummary(
     'Yes',
     'Yes',
     'NRA 2015',
-    summary(reg_1_turnout)$nobs
+    summary(reg_1_turnout_ARAB)$nobs
   )
   )
 )
@@ -373,7 +373,7 @@ modelsummary(
     reg_1_turnout_DISTANCE,
     reg_2_turnout_DISTANCE
   ),
-  output = 'treating/Red Alerts/Output/Figures/Robustness/Robustness_DIFFERENT_DISTANCE_regressions.tex',
+  output = 'treating/Red Alerts/Output/Tables/Robustness/Robustness_DIFFERENT_DISTANCE_regressions.tex',
   # output = 'latex_tabular',
   coef_map = c('year_election::2015:temporal_group::temporal_distance == 6' = 'Red Alert 6 Days Before * 2015 Election',
                'year_election::2015:temporal_group::temporal_distance > 149' = 'Red Alert 149+ Days Before * 2015 Election',
@@ -395,7 +395,7 @@ modelsummary(
     'No',
     'Yes',
     'NRA 2015',
-    summary(reg_1_likud)$nobs
+    summary(reg_1_likud_DISTANCE)$nobs
   ),
   
   '2' = c(
@@ -403,7 +403,7 @@ modelsummary(
     'Yes',
     'Yes',
     'NRA 2015',
-    summary(reg_1_likud)$nobs
+    summary(reg_1_likud_DISTANCE)$nobs
   ),
   
   '3' = c(
@@ -411,7 +411,7 @@ modelsummary(
     'No',
     'Yes',
     'NRA 2015',
-    summary(reg_1_coalition)$nobs
+    summary(reg_1_coalition_DISTANCE)$nobs
   ),
   
   '4' = c(
@@ -419,7 +419,7 @@ modelsummary(
     'Yes',
     'Yes',
     'NRA 2015',
-    summary(reg_2_coalition)$nobs
+    summary(reg_2_coalition_DISTANCE)$nobs
   ),
   
   '5' = c(
@@ -427,7 +427,7 @@ modelsummary(
     'No',
     'Yes',
     'NRA 2015',
-    summary(reg_1_right_wing)$nobs
+    summary(reg_1_right_wing_DISTANCE)$nobs
   ),
   
   '6' = c(
@@ -435,7 +435,7 @@ modelsummary(
     'Yes',
     'Yes',
     'NRA 2015',
-    summary(reg_1_right_wing)$nobs
+    summary(reg_1_right_wing_DISTANCE)$nobs
   ),
   
   '7' = c(
@@ -443,7 +443,7 @@ modelsummary(
     'No',
     'Yes',
     'NRA 2015',
-    summary(reg_1_turnout)$nobs
+    summary(reg_1_turnout_DISTANCE)$nobs
   ),
   
   '8' = c(
@@ -451,7 +451,7 @@ modelsummary(
     'Yes',
     'Yes',
     'NRA 2015',
-    summary(reg_1_turnout)$nobs
+    summary(reg_1_turnout_DISTANCE)$nobs
   )
   )
 )

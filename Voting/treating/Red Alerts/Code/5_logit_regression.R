@@ -16,10 +16,22 @@ library(modelsummary)
 wd = '/home/luiz/Documentos/GitHub/Echoes-of-Terrorism/Voting/'
 setwd(wd);
 
+
+# Function to save tables in correct latex format:
+save_tabular <- function(table, filename) {
+  tex <- as.character(table)
+  
+  # Clean table wrappers
+  tex <- gsub("\\\\begin\\{table\\}.*?\n", "", tex)
+  tex <- gsub("\\\\end\\{table\\}.*?", "", tex)
+  tex <- gsub("\\\\centering\n?", "", tex)
+  
+  # Store the corrected file
+  cat(tex, file = filename)
+}
+
 # Importing
 all_years_cities_grid = read.csv('treating/Red Alerts/Output/Datasets/2_all_years_cities_grid.csv')
-
-
 
 # Cleaning
 all_years_cities_grid <- all_years_cities_grid %>%
@@ -90,10 +102,10 @@ model_4 <- feglm(future_red_alert_within_year ~ quantity_of_alarms | factor(year
                  cluster = ~SEMEL_YISHUV)
 
 # Results Table
-modelsummary(list(model_1, model_2, model_3, model_4), 
+logit_model = modelsummary(list(model_1, model_2, model_3, model_4), 
              stars = TRUE,
-             # output = 'latex_tabular',
-             output = 'treating/Red Alerts/Output/Tables/5_logit_probability_of_alert.tex',
+             output = 'latex',
+             # output = 'treating/Red Alerts/Output/Tables/5_logit_probability_of_alert.tex',
              # coef_rename = c("quantity_of_alarms" = "Quantity of Previous Red Alerts")
              coef_map = c('quantity_of_alarms' = 'Quantity of Previous Red Alerts',
                           'quantity_of_alarms:year::2015' = 'Quantity of Previous Red Alerts * 2015',
@@ -136,7 +148,8 @@ modelsummary(list(model_1, model_2, model_3, model_4),
 
 
 
-
+# Saving
+save_tabular(logit_model ,'treating/Red Alerts/Output/Tables/5_logit_probability_of_alert.tex')
 
 #### Plotting ####
 

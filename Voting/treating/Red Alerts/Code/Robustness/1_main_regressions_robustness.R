@@ -18,9 +18,21 @@ library(tidyverse)
 wd = '/home/luiz/Documentos/GitHub/Echoes-of-Terrorism/Voting/'
 setwd(wd);
 
+
+# Function to save tables in correct latex format:
+save_tabular <- function(table, filename) {
+  tex <- as.character(table)
+  
+  # Clean table wrappers
+  tex <- gsub("\\\\begin\\{table\\}.*?\n", "", tex)
+  tex <- gsub("\\\\end\\{table\\}.*?", "", tex)
+  tex <- gsub("\\\\centering\n?", "", tex)
+  
+  # Store the corrected file
+  cat(tex, file = filename)
+}
+
 ##### IMPORTING #####
-
-
 parties_percentages_panel = read_csv('treating/Red Alerts/Output/Datasets/2_parties_percentages_panel.csv')
 
 
@@ -266,7 +278,7 @@ reg_2_coalition_DISTANCE =
 
 # 1. For ARAB CITIES robustness
 # Likud, Right Wing, Coalition, turnout
-modelsummary(
+arab_model = modelsummary(
   list(
     reg_1_likud_ARAB, 
     reg_2_likud_ARAB,
@@ -277,8 +289,8 @@ modelsummary(
     reg_1_turnout_ARAB,
     reg_2_turnout_ARAB
   ),
-  output = 'treating/Red Alerts/Output/Tables/Robustness/Robustness_ARAB_CITIES_regressions.tex',
-  # output = 'latex_tabular',
+  # output = 'treating/Red Alerts/Output/Tables/Robustness/Robustness_ARAB_CITIES_regressions.tex',
+  output = 'latex',
   coef_map = c('year_election::2015:temporal_group::temporal_distance == 6' = 'Red Alert 6 Days Before * 2015 Election',
                'year_election::2015:temporal_group::temporal_distance > 149' = 'Red Alert 149+ Days Before * 2015 Election',
                'year_election::2009:temporal_group::temporal_distance == 6' = 'Red Alert 6 Days Before * 2009 Election',
@@ -360,9 +372,11 @@ modelsummary(
   )
 )
 
+save_tabular(arab_model, 'treating/Red Alerts/Output/Tables/Robustness/Robustness_ARAB_CITIES_regressions.tex')
+
 # 2. For CUSTOM DISTANCE robustness
 # Likud, Right Wing, Coalition, turnout
-modelsummary(
+distance_model = modelsummary(
   list(
     reg_1_likud_DISTANCE, 
     reg_2_likud_DISTANCE,
@@ -373,8 +387,8 @@ modelsummary(
     reg_1_turnout_DISTANCE,
     reg_2_turnout_DISTANCE
   ),
-  output = 'treating/Red Alerts/Output/Tables/Robustness/Robustness_DIFFERENT_DISTANCE_regressions.tex',
-  # output = 'latex_tabular',
+  # output = 'treating/Red Alerts/Output/Tables/Robustness/Robustness_DIFFERENT_DISTANCE_regressions.tex',
+  output = 'latex',
   coef_map = c('year_election::2015:temporal_group::temporal_distance == 6' = 'Red Alert 6 Days Before * 2015 Election',
                'year_election::2015:temporal_group::temporal_distance > 149' = 'Red Alert 149+ Days Before * 2015 Election',
                'year_election::2009:temporal_group::temporal_distance == 6' = 'Red Alert 6 Days Before * 2009 Election',
@@ -455,3 +469,6 @@ modelsummary(
   )
   )
 )
+
+# Saving
+save_tabular(distance_model, 'treating/Red Alerts/Output/Tables/Robustness/Robustness_DIFFERENT_DISTANCE_regressions.tex')

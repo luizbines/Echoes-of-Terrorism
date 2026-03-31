@@ -20,6 +20,21 @@ library(tidyverse)
 wd = '/home/luiz/Documentos/GitHub/Echoes-of-Terrorism/Voting/'
 setwd(wd)
 
+
+# Function to save tables in correct latex format:
+save_tabular <- function(table, filename) {
+  tex <- as.character(table)
+  
+  # Clean table wrappers
+  tex <- gsub("\\\\begin\\{table\\}.*?\n", "", tex)
+  tex <- gsub("\\\\end\\{table\\}.*?", "", tex)
+  tex <- gsub("\\\\centering\n?", "", tex)
+  
+  # Store the corrected file
+  cat(tex, file = filename)
+}
+
+
 ##### IMPORTING #####
 
 parties_percentages_panel = read_csv(
@@ -214,7 +229,7 @@ reg_2_coalition =
   )
 
 # Likud, Right Wing, turnout, coalition
-modelsummary(
+main_model = modelsummary(
   list(
     reg_1_likud,
     reg_2_likud,
@@ -225,8 +240,8 @@ modelsummary(
     reg_1_turnout,
     reg_2_turnout
   ),
-  output = 'treating/Red Alerts/Output/Tables/4_main_results.tex',
-  # output = 'latex_tabular',
+  # output = 'treating/Red Alerts/Output/Tables/4_main_results.tex',
+  output = 'latex',
   coef_map = c(
     'year_election::2015:temporal_group::temporal_distance == 6' = 'Red Alert 6 Days Before * 2015 Election',
     'year_election::2015:temporal_group::temporal_distance > 149' = 'Red Alert 149+ Days Before * 2015 Election',
@@ -313,6 +328,10 @@ modelsummary(
 )
 
 
+
+# Saving
+save_tabular(main_model, 'treating/Red Alerts/Output/Tables/4_main_results.tex')
+
 #### ROBUSTNESS: CONLEY STANDARD ERRORS ####
 
 # Altering standard errors to Conley spatial standard errors for the main models with control variables and fixed effects
@@ -341,7 +360,7 @@ mod_turn_3 = summary(reg_2_turnout, vcov = conley(3) ~ lat + long)
 mod_turn_10 = summary(reg_2_turnout, vcov = conley(10) ~ lat + long)
 mod_turn_20 = summary(reg_2_turnout, vcov = conley(20) ~ lat + long)
 
-# 5. GERANDO A TABELA EM PAINÉIS
+# Generating panel table
 conley_panels = panelsummary(
   list(reg_2_likud, mod_likud_2, mod_likud_3, mod_likud_10, mod_likud_20),
   list(reg_2_coalition, mod_coal_2, mod_coal_3, mod_coal_10, mod_coal_20),

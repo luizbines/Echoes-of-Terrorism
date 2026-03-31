@@ -13,6 +13,21 @@ library(Hmisc)
 wd = '/home/luiz/Documentos/GitHub/Echoes-of-Terrorism/Voting/'
 setwd(wd);
 
+
+# Function to save tables in correct latex format:
+save_tabular <- function(table, filename) {
+  tex <- as.character(table)
+  
+  # Clean table wrappers
+  tex <- gsub("\\\\begin\\{table\\}.*?\n", "", tex)
+  tex <- gsub("\\\\end\\{table\\}.*?", "", tex)
+  tex <- gsub("\\\\centering\n?", "", tex)
+  
+  # Store the corrected file
+  cat(tex, file = filename)
+}
+
+
 # Importing
 parties_percentages_panel = read_csv('treating/Red Alerts/Output/Datasets/2_parties_percentages_panel.csv')
 
@@ -100,9 +115,10 @@ for(i in seq_along(all_party_vars)){
 }
 
 # 5. Export Vertical Table ----------------------------------------------------
-modelsummary(
+all_parties_model = modelsummary(
   combined_models,
-  output = 'treating/Red Alerts/Output/Tables/Robustness/Robustness_all_parties_results.tex',
+  # output = 'treating/Red Alerts/Output/Tables/Robustness/Robustness_all_parties_results.tex',
+  output = 'latex',
   shape = model ~ term, 
   stars = TRUE,
   title = 'Differences-in-Differences Estimates: Red Alert Impact on Political Parties',
@@ -120,3 +136,5 @@ modelsummary(
   gof_omit = 'IC|Log|Adj|Within|Pseudo|FE'
 )
 
+# Saving
+save_tabular(all_parties_model, 'treating/Red Alerts/Output/Tables/Robustness/Robustness_all_parties_results.tex')

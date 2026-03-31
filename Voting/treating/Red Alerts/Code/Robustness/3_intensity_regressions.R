@@ -20,6 +20,20 @@ library(tidyverse)
 wd = '/home/luiz/Documentos/GitHub/Echoes-of-Terrorism/Voting/'
 setwd(wd);
 
+# Function to save tables in correct latex format:
+save_tabular <- function(table, filename) {
+  tex <- as.character(table)
+  
+  # Clean table wrappers
+  tex <- gsub("\\\\begin\\{table\\}.*?\n", "", tex)
+  tex <- gsub("\\\\end\\{table\\}.*?", "", tex)
+  tex <- gsub("\\\\centering\n?", "", tex)
+  
+  # Store the corrected file
+  cat(tex, file = filename)
+}
+
+
 ##### IMPORTING #####
 
 parties_percentages_panel = read_csv('treating/Red Alerts/Output/Datasets/2_parties_percentages_panel.csv')
@@ -174,7 +188,7 @@ reg_2_coalition =
         cluster = 'SEMEL_YISHUV')
 
 # Likud, Right Wing, turnout, coalition
-modelsummary(
+intensity_model = modelsummary(
   list(
     reg_1_likud, 
     reg_2_likud,
@@ -185,8 +199,8 @@ modelsummary(
     reg_1_turnout,
     reg_2_turnout
     ),
-            output = 'treating/Red Alerts/Output/Figures/Robustness/Robustness_intensity_regressions.tex',
-            #  output = 'latex_tabular',
+            # output = 'treating/Red Alerts/Output/Tables/Robustness/Robustness_intensity_regressions.tex',
+             output = 'latex',
              coef_map = c('year_election::2015:alerts_6_days' = 'Red Alert 6 Days Before * 2015 Election',
                           'year_election::2015:alerts_149_plus' = 'Red Alert 149+ Days Before * 2015 Election',
                           'year_election::2009:alerts_6_days' = 'Red Alert 6 Days Before * 2009 Election',
@@ -266,3 +280,5 @@ modelsummary(
                                    )
              )
 )
+
+save_tabular(intensity_model, 'treating/Red Alerts/Output/Tables/Robustness/Robustness_intensity_regressions.tex')

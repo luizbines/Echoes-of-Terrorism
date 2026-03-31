@@ -127,11 +127,7 @@ final_kable <- kable(table_latex,
                      # caption = "Descriptive Statistics by Groups of Interest for 2013",
                      align = "lccc",
                      escape = FALSE,
-                     table.envir = NULL) %>%
-  kable_styling(latex_options = c("hold_position"))
-  # %>%
-  # add_footnote("Standard deviations (Control) and standard errors (Treatment differences), clustered at the locality level, are reported in parentheses below the estimates. Significance levels: *** p<0.01, ** p<0.05, * p<0.10. Diff. Treat 149d: Difference in means between localities whose last red alert was more than 149 days before the 2015 election and the Control group. Diff. Treat 6d: Difference in means between localities whose last red alert was exactly 6 days before the 2015 election and the Control group.", 
-  #              notation = "none")
+                     table.envir = NULL) 
 
 # Display in console to copy
 print(final_kable)

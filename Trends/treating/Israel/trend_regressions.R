@@ -18,6 +18,20 @@ wd <- '/home/luiz/Documentos/GitHub/Echoes-of-Terrorism/'
 setwd(wd);
 
 
+# Function to save tables in correct latex format:
+save_tabular <- function(table, filename) {
+  tex <- as.character(table)
+  
+  # Clean table wrappers
+  tex <- gsub("\\\\begin\\{table\\}.*?\n", "", tex)
+  tex <- gsub("\\\\end\\{table\\}.*?", "", tex)
+  tex <- gsub("\\\\centering\n?", "", tex)
+  
+  # Store the corrected file
+  cat(tex, file = filename)
+}
+
+
 # Importing
 trends <-  read.csv('Trends/cleaning/Red Alerts/output/trends_alerts_data_v2.csv', 
                     fileEncoding = "UTF-8") %>% 
@@ -96,7 +110,7 @@ specs <- list(
 # --- Run Regressions, Tables and Plots ---
 iwalk(specs, function(df, sample_name) {
   
-  # Define o subdiretório e o sufixo
+  # Define subdirectory and suffix
   subfolder <- ifelse(sample_name == "full", "", paste0(sample_name, "/"))
   suffix <- ifelse(sample_name == "full", "", paste0("_", sample_name))
   
@@ -118,15 +132,18 @@ iwalk(specs, function(df, sample_name) {
     # Set names for the models in the list (for table output)
     names(model_list) <- toupper(gsub("_", " ", names(model_list)))
     
-    modelsummary(
+    tab_tex <- modelsummary(
       model_list,
-      output = paste0('Trends/treating/Israel/output/tables/', subfolder, 'reg_table_', .y, suffix, '.tex'),
+      output = 'latex',
       coef_map = c('alert' = 'Red Alert',
                    'lag_alert_1' = 'Red Alert - lag 1',
                    'lag_alert_2' = 'Red Alert - lag 2'),
       stars = TRUE,
       gof_map = c("nobs", "r.squared")
     )
+    
+    save_tabular(tab_tex, 
+                 filename =  paste0('Trends/treating/Israel/output/tables/', subfolder, 'reg_table_', .y, suffix, '.tex'))
   })
   
   # --- Generate Plots ---

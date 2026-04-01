@@ -37,8 +37,8 @@ df_clean <- parties_percentages_panel %>%
   )
 
 # 2. VARIABLE DEFINITION
-var_list <- c("likud", "right_wing", "turnout", "sci_index_value", "pop", "density", "area", "dist")
-var_labels <- c("Likud (\\%)", "Right Wing (\\%)", "Turnout (\\%)", "Socioeconomic Index", 
+var_list <- c("likud", "right_wing", "turnout", "sci_index_value", "ntl", "pop", "density", "area", "dist")
+var_labels <- c("Likud (\\%)", "Right Wing (\\%)", "Turnout (\\%)", "2015 Socioeconomic Index", "Nighttime Lights (0-63)",
                 "Population", "Density", "Area (km2)", "Dist. Gaza (km)")
 
 ## 3. STATISTICS CALCULATION WITH CLUSTER (SEMEL_YISHUV) ##

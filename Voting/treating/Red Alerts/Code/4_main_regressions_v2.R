@@ -278,7 +278,7 @@ main_model = modelsummary(
     ),
 
     '3' = c(
-      '2015 Coalition (excluding Likud)',
+      '2015 Coalition',
       'No',
       'Yes',
       'NRA 2015',
@@ -286,7 +286,7 @@ main_model = modelsummary(
     ),
 
     '4' = c(
-      '2015 Coalition (excluding Likud)',
+      '2015 Coalition',
       'Yes',
       'Yes',
       'NRA 2015',
@@ -294,7 +294,7 @@ main_model = modelsummary(
     ),
 
     '5' = c(
-      'Right Wing (excluding Likud)',
+      'Right Wing',
       'No',
       'Yes',
       'NRA 2015',
@@ -302,7 +302,7 @@ main_model = modelsummary(
     ),
 
     '6' = c(
-      'Right Wing (excluding Likud)',
+      'Right Wing',
       'Yes',
       'Yes',
       'NRA 2015',
@@ -366,7 +366,7 @@ conley_panels = panelsummary(
   list(reg_2_coalition, mod_coal_2, mod_coal_3, mod_coal_10, mod_coal_20),
   list(reg_2_right_wing, mod_rw_2, mod_rw_3, mod_rw_10, mod_rw_20),
   list(reg_2_turnout, mod_turn_2, mod_turn_3, mod_turn_10, mod_turn_20),
-  panel_labels = c("Panel A: Likud", "Panel B: Coalition", "Panel C: Right-Wing", "Panel D: Turnout"),
+  panel_labels = c("Panel A: Likud", "Panel B: 2015 Coalition", "Panel C: Right-Wing", "Panel D: Turnout"),
   coef_map = c(
     'year_election::2015:temporal_group::temporal_distance == 6' = '6 days before elections',
     'year_election::2015:temporal_group::temporal_distance > 149' = '149+ days before elections'
@@ -378,7 +378,7 @@ conley_panels = panelsummary(
 )
 
 # Exportando
-writeLines(conley_panels, 'treating/Red Alerts/Output/Figures/Robustness/Robustness_conley_SEs.tex')
+writeLines(conley_panels, 'treating/Red Alerts/Output/Tables/Robustness/Robustness_conley_SEs.tex')
 
 #### HETEROGENEITIES ####
 

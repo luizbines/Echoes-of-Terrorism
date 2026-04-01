@@ -1,9 +1,6 @@
 \begin{talltblr}[         %% tabularray outer open
-caption={Differences-in-Differences Estimates: Red Alert Impact on Political Parties},
+entry=none,label=none,
 note{}={+ p \num{< 0.1}, * p \num{< 0.05}, ** p \num{< 0.01}, *** p \num{< 0.001}},
-note{ }={Standard errors, clustered at the locality level, are reported in parentheses. 
-  All models incorporate locality and year fixed effects, along with controls for population size, and nighttime luminosity. 
-  The sample is restricted to parties that contested both the 2013 and 2015 elections, including those that merged or demerged during this period. We exclude Yisrael Beiteinu because of its joint list with Likud in 2013.},
 ]                     %% tabularray outer close
 {                     %% tabularray inner open
 colspec={Q[]Q[]Q[]Q[]Q[]Q[]Q[]},
@@ -18,7 +15,7 @@ Likud & \num{0.026}** & \num{0.003} & \num{0.006} & \num{0.012} & \num{0.015} & 
 & (\num{0.009}) & (\num{0.007}) & (\num{0.009}) & (\num{0.008}) & (\num{0.011}) & (\num{0.010}) \\
 Yesh Atid & \num{0.017}** & \num{-0.021}** & \num{0.017} & \num{-0.041}** & \num{0.013} & \num{-0.038}** \\
 & (\num{0.007}) & (\num{0.008}) & (\num{0.011}) & (\num{0.014}) & (\num{0.011}) & (\num{0.014}) \\
-Zionist Union & \num{-0.016} & \num{0.025}* & \num{-0.028}** & \num{-0.008} & \num{-0.008} & \num{0.004} \\
+Zionist Union & \num{-0.016} & \num{0.024}* & \num{-0.028}** & \num{-0.008} & \num{-0.009} & \num{0.004} \\
 & (\num{0.012}) & (\num{0.012}) & (\num{0.009}) & (\num{0.009}) & (\num{0.010}) & (\num{0.010}) \\
 Shas & \num{-0.006} & \num{-0.002} & \num{-0.005} & \num{-0.003} & \num{-0.008}* & \num{-0.002} \\
 & (\num{0.005}) & (\num{0.003}) & (\num{0.003}) & (\num{0.003}) & (\num{0.004}) & (\num{0.003}) \\
@@ -27,7 +24,7 @@ Joint List & \num{-0.000} & \num{-0.001} & \num{-0.001} & \num{-0.000} & \num{0.
 Meretz & \num{-0.005} & \num{-0.001} & \num{0.014}** & \num{-0.014}** & \num{0.014}* & \num{-0.011}* \\
 & (\num{0.004}) & (\num{0.004}) & (\num{0.004}) & (\num{0.005}) & (\num{0.006}) & (\num{0.005}) \\
 Habait Hayehudi & \num{-0.007} & \num{-0.009} & \num{-0.021}* & \num{-0.005} & \num{-0.017}** & \num{0.003} \\
-& (\num{0.005}) & (\num{0.006}) & (\num{0.008}) & (\num{0.010}) & (\num{0.006}) & (\num{0.008}) \\
+& (\num{0.005}) & (\num{0.006}) & (\num{0.008}) & (\num{0.010}) & (\num{0.007}) & (\num{0.008}) \\
 Aleh Yarok & \num{0.002} & \num{-0.001} & \num{0.002}+ & \num{0.001} & \num{0.004}* & \num{0.001} \\
 & (\num{0.002}) & (\num{0.002}) & (\num{0.001}) & (\num{0.001}) & (\num{0.002}) & (\num{0.002}) \\
 Democratura & \num{0.000}+ & \num{-0.001} & \num{0.000} & \num{-0.001} & \num{0.000} & \num{-0.001} \\
@@ -42,9 +39,9 @@ Or Party & \num{0.000}* & \num{0.000} & \num{0.000} & \num{0.000} & \num{0.000} 
 & (\num{0.000}) & (\num{0.000}) & (\num{0.000}) & (\num{0.000}) & (\num{0.000}) & (\num{0.000}) \\
 Pirate Party & \num{0.001} & \num{0.001} & \num{0.001} & \num{0.001} & \num{0.001} & \num{0.001} \\
 & (\num{0.001}) & (\num{0.001}) & (\num{0.001}) & (\num{0.001}) & (\num{0.001}) & (\num{0.001}) \\
-The Greens & \num{-0.000} & \num{-0.001}* & \num{-0.001} & \num{-0.001} & \num{-0.006}** & \num{0.003} \\
+The Greens & \num{-0.000} & \num{-0.001}+ & \num{-0.001} & \num{-0.001} & \num{-0.006}** & \num{0.003} \\
 & (\num{0.001}) & (\num{0.001}) & (\num{0.001}) & (\num{0.001}) & (\num{0.002}) & (\num{0.003}) \\
-Yahad & \num{-0.006}* & \num{0.004} & \num{0.023}*** & \num{0.020}** & \num{0.012}*** & \num{0.007}+ \\
+Yahad & \num{-0.007}* & \num{0.004} & \num{0.023}*** & \num{0.020}** & \num{0.012}*** & \num{0.007}+ \\
 & (\num{0.003}) & (\num{0.004}) & (\num{0.006}) & (\num{0.007}) & (\num{0.003}) & (\num{0.004}) \\
 Yahadut Hatora & \num{-0.000} & \num{-0.000} & \num{0.005} & \num{0.001} & \num{0.007} & \num{0.005} \\
 & (\num{0.001}) & (\num{0.001}) & (\num{0.004}) & (\num{0.001}) & (\num{0.007}) & (\num{0.003}) \\

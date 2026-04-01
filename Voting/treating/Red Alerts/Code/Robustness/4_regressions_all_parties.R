@@ -121,7 +121,6 @@ all_parties_model = modelsummary(
   output = 'latex',
   shape = model ~ term, 
   stars = TRUE,
-  title = 'Differences-in-Differences Estimates: Red Alert Impact on Political Parties',
   coef_map = c(
     'year_election::2015:temporal_group::temporal_distance == 6' = '2015: 6 Days Before',
     'year_election::2015:temporal_group::temporal_distance > 149' = '2015: 149+ Days Before',
@@ -130,9 +129,6 @@ all_parties_model = modelsummary(
     'year_election::2006:temporal_group::temporal_distance == 6' = '2006: 6 Days Before',
     'year_election::2006:temporal_group::temporal_distance > 149' = '2006: 149+ Days Before'
   ),
-  notes = "Standard errors, clustered at the locality level, are reported in parentheses. 
-  All models incorporate locality and year fixed effects, along with controls for population size, and nighttime luminosity. 
-  The sample is restricted to parties that contested both the 2013 and 2015 elections, including those that merged or demerged during this period. We exclude Yisrael Beiteinu because of its joint list with Likud in 2013.",
   gof_omit = 'IC|Log|Adj|Within|Pseudo|FE'
 )
 

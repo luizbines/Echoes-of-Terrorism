@@ -31,7 +31,7 @@ setwd(wd);
 
 parties_percentages = read_csv('treating/Red Alerts/Output/Datasets/1_parties_percentages_with_coordinates.csv')
 
-israel_panel = read.csv('cleaning/Israel/Output/2_israel_panel_lights.csv')
+israel_panel = read.csv('cleaning/Israel/Output/3_israel_panel_west_bank.csv')
 
 red_alerts = read.csv('treating/Red Alerts/Output/Datasets/1_red_alerts_with_coordinates_and_electoral_localities.csv')
 all_red_alerts = read.csv('treating/Red Alerts/Output/Datasets/1_ALL_red_alerts_with_coordinates_and_electoral_localities.csv')
@@ -108,6 +108,9 @@ parties_percentages = parties_percentages %>%
                             'year',
                             'Religion_yishuv_Code',
                             'ntl',
+                            'within_west_bank',
+                            'intersecting_west_bank',
+                            'centroid_within_west_bank',
                             'sci_index_value',
                             'sci_index_cluster',
                             'density',

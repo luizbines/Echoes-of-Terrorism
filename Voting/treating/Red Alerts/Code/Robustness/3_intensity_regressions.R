@@ -232,7 +232,7 @@ intensity_model = modelsummary(
                                    ),
                                    
                                    '3' = c(
-                                           '2015 Coalition (excluding Likud)',
+                                           '2015 Coalition',
                                            'No',
                                            'Yes',
                                            'NRA 2015',
@@ -240,7 +240,7 @@ intensity_model = modelsummary(
                                            ),
                                    
                                    '4' = c(
-                                     '2015 Coalition (excluding Likud)',
+                                     '2015 Coalition',
                                      'Yes',
                                      'Yes',
                                      'NRA 2015',
@@ -248,7 +248,7 @@ intensity_model = modelsummary(
                                    ),
                                    
                                    '5' = c(
-                                     'Right Wing (excluding Likud)',
+                                     'Right Wing',
                                      'No',
                                      'Yes',
                                      'NRA 2015',
@@ -256,7 +256,7 @@ intensity_model = modelsummary(
                                    ),
                                    
                                    '6' = c(
-                                     'Right Wing (excluding Likud)',
+                                     'Right Wing',
                                      'Yes',
                                      'Yes',
                                      'NRA 2015',

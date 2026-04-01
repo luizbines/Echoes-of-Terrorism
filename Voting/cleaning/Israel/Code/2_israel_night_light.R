@@ -27,17 +27,26 @@ israel_panel = read.csv('cleaning/Israel/Output/1_israel_panel.csv')
 israel = aggregate(israel, by = "SEMEL_YISHUV")
 
 
-
-
 # Aligning the map's CRS with the satelite CRS
 israel <- terra::project(israel, crs(light_2006))
 
+israel <- project(israel, crs(light_2006))
 
-# Assigning night light values to each observation
-ntl_city_values_2006 <-terra::extract(light_2006, israel, fun = mean, na.rm = TRUE)
-ntl_city_values_2009 <-terra::extract(light_2009, israel, fun = mean, na.rm = TRUE)
-ntl_city_values_2013 <- terra::extract(light_2013, israel, fun = mean, na.rm = TRUE)
-ntl_city_values_2015 <- terra::extract(light_2015, israel, fun = mean, na.rm = TRUE)
+light_crop_2006 <- terra::crop(light_2006, terra::ext(israel))
+light_crop_2009 <- terra::crop(light_2009, terra::ext(israel))
+light_crop_2013 <- terra::crop(light_2013, terra::ext(israel))
+light_crop_2015 <- terra::crop(light_2015, terra::ext(israel))
+
+ntl_city_values_2006 <- terra::extract(light_crop_2006, israel, fun = mean, na.rm = TRUE)
+ntl_city_values_2009 <- terra::extract(light_crop_2009, israel, fun = mean, na.rm = TRUE)
+ntl_city_values_2013 <- terra::extract(light_crop_2013, israel, fun = mean, na.rm = TRUE)
+ntl_city_values_2015 <- terra::extract(light_crop_2015, israel, fun = mean, na.rm = TRUE)
+
+# # Assigning night light values to each observation
+# ntl_city_values_2006 <-terra::extract(light_2006, israel, fun = mean, na.rm = TRUE)
+# ntl_city_values_2009 <-terra::extract(light_2009, israel, fun = mean, na.rm = TRUE)
+# ntl_city_values_2013 <- terra::extract(light_2013, israel, fun = mean, na.rm = TRUE)
+# ntl_city_values_2015 <- terra::extract(light_2015, israel, fun = mean, na.rm = TRUE)
 
 
 israel$ntl_2006 <- ntl_city_values_2006[, 2]

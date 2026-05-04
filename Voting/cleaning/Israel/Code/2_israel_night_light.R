@@ -15,10 +15,10 @@ setwd(wd);
 
 ##### IMPORTING #####
 
-light_2006 = rast('raw/Israel/Harmonized_DN_NTL_2006_calDMSP.tif')
-light_2009 = rast('raw/Israel/Harmonized_DN_NTL_2009_calDMSP.tif')
-light_2013 = rast('raw/Israel/Harmonized_DN_NTL_2013_calDMSP.tif')
-light_2015 = rast('raw/Israel/Harmonized_DN_NTL_2015_simVIIRS.tif')
+light_2006 = rast('raw/Israel/night_lights/Harmonized_DN_NTL_2006_calDMSP.tif')
+light_2009 = rast('raw/Israel/night_lights/Harmonized_DN_NTL_2009_calDMSP.tif')
+light_2013 = rast('raw/Israel/night_lights/Harmonized_DN_NTL_2013_calDMSP.tif')
+light_2015 = rast('raw/Israel/night_lights/Harmonized_DN_NTL_2015_simVIIRS.tif')
 
 israel = vect('raw/Israel/Demographics/statisticalareas_demography2013.gdb/')
 israel_panel = read.csv('cleaning/Israel/Output/1_israel_panel.csv')

@@ -45,7 +45,7 @@ trends <- trends %>%
     lag_alert_1 = lag(alert, 1),
     lag_alert_2 = lag(alert, 2),
     
-    # to avoid losing observations, we assume (correctly) that there were no alerts
+    # to avoid incorrectly losing observations, we assume (correctly) that there were no alerts
     # on the 2 previous days before collection
     lag_alert_1 = ifelse(is.na(lag_alert_1), 0, lag_alert_1),
     lag_alert_2 = ifelse(is.na(lag_alert_2), 0, lag_alert_2)
@@ -132,6 +132,12 @@ iwalk(specs, function(df, sample_name) {
     # Set names for the models in the list (for table output)
     names(model_list) <- toupper(gsub("_", " ", names(model_list)))
     
+    gm <- data.frame(
+      raw = c("nobs", "r.squared", "FE: District", "FE: as.factor(year)"),
+      clean = c("Num. Obs.", "R2", "District FE", "Year FE"),
+      fmt = c(0, 3, 0, 0)
+    )
+    
     tab_tex <- modelsummary(
       model_list,
       output = 'latex',
@@ -139,7 +145,7 @@ iwalk(specs, function(df, sample_name) {
                    'lag_alert_1' = 'Red Alert - lag 1',
                    'lag_alert_2' = 'Red Alert - lag 2'),
       stars = TRUE,
-      gof_map = c("nobs", "r.squared")
+      gof_map = gm
     )
     
     save_tabular(tab_tex, 

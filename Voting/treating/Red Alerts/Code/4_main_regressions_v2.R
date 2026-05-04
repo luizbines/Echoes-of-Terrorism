@@ -251,7 +251,6 @@ main_model = modelsummary(
     'year_election::2006:temporal_group::temporal_distance > 149' = 'Red Alert 149+ Days Before * 2006 Election'
   ),
   stars = T,
-  notes = 'NRA 2015 stands for No Red Alerts until the 2015 Election.',
   gof_omit = '',
   add_rows = data.frame(
     'VARIABLES' = c(

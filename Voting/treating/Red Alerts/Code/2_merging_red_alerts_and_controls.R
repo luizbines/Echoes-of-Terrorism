@@ -31,7 +31,7 @@ setwd(wd);
 
 parties_percentages = read_csv('treating/Red Alerts/Output/Datasets/1_parties_percentages_with_coordinates.csv')
 
-israel_panel = read.csv('cleaning/Israel/Output/3_israel_panel_west_bank.csv')
+israel_panel = read.csv('cleaning/Israel/Output/4_israel_panel_SEI.csv')
 
 red_alerts = read.csv('treating/Red Alerts/Output/Datasets/1_red_alerts_with_coordinates_and_electoral_localities.csv')
 all_red_alerts = read.csv('treating/Red Alerts/Output/Datasets/1_ALL_red_alerts_with_coordinates_and_electoral_localities.csv')
@@ -115,7 +115,8 @@ parties_percentages = parties_percentages %>%
                             'sci_index_cluster',
                             'density',
                             'Shape_Area',
-                            'Pop_Total'
+                            'Pop_Total',
+                            'SEI'
     ),
     by.x = c('year_x', 'SEMEL_YISHUV'),
     by.y = c('year', 'SEMEL_YISHUV'),

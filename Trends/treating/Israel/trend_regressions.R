@@ -58,20 +58,15 @@ trends <- trends %>%
   ) %>% 
   # Translating vars
   rename(
-    # Security & Practical
     shelter = מקלט,
     siren = אזעקה,
     protected_space = מרחב.מוגן,
     home_front_command = פיקוד.העורף,
     code_red = צבע.אדום,
-
-    # Health & Medical
     mda = מד.א,
     hospitals = בתי.חולים,
     emergency = חירום,
     panic_attack = התקף.חרדה,
-
-    # General & Political
     peace = שלום,
     war = מלחמה,
     elections = בחירות,
@@ -81,8 +76,6 @@ trends <- trends %>%
     hamas = חמאס,
     likud = ליכוד,
     government = ממשלה,
-    
-    # Ideological Indicators
     annexation = סיפוח,
     sovereignty = ריבונות,
     settlements = התנחלויות,

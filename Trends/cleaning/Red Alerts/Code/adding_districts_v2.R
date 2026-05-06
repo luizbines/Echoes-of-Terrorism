@@ -27,7 +27,7 @@ il_districts <- read_sf('Trends/raw/Israel/il_shp/il.shp') %>%
 
 gaza_sf = read_sf('Unsuccessful_Terror_Attacks_Affect_Voting_Prefferences-main/raw/Israel/Gaza/gaza.shp')[1,1]
 
-trends <- read.csv('Trends/raw/Google Trends/trends_israel.csv')
+trends <- read.csv('Trends/raw/Google Trends/Output/trends_israel.csv')
 
 israel_demographics <- read.csv('Unsuccessful_Terror_Attacks_Affect_Voting_Prefferences-main/treating/Red Alerts/Output/1_israel_demographics.csv') %>%
   select(SEMEL_YISHUV,Pop_Total, year, lat, long)

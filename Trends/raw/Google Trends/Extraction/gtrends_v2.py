@@ -5,7 +5,7 @@ import os
 from pytrends.request import TrendReq
 
 # 1. Set the Working Directory
-path = "/home/luiz/Documentos/GitHub/Echoes-of-Terrorism/Trends/raw/Google Trends"
+path = "/home/luiz/Documentos/GitHub/Echoes-of-Terrorism/Trends/raw/Google Trends/Output"
 try:
     os.chdir(path)
     print(f"Working directory set to: {os.getcwd()}")
@@ -17,7 +17,7 @@ pytrends = TrendReq(hl='he-IL', tz=180)
 
 # Full list of keywords (22 total)
 keywords_hebrew = [
-    # Security & Practical
+
     'מקלט',           # shelter
     'חירום',          # emergency
     'בתי חולים',      # hospitals
@@ -27,8 +27,6 @@ keywords_hebrew = [
     'צבע אדום',       # Code Red
     'התקף חרדה',      # panic attack
     'מד"א',           # MDA (Magen David Adom)
-    
-    # General & Political
     'שלום',           # peace
     'מלחמה',          # war
     'בחירות',         # elections
@@ -38,8 +36,6 @@ keywords_hebrew = [
     'חמאס',           # Hamas
     'ליכוד',          # Likud
     'ממשלה',          # government
-    
-    # Ideological Shift
     'סיפוח',          # annexation
     'ריבונות',        # sovereignty
     'התנחלויות',      # settlements

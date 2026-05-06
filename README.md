@@ -81,8 +81,10 @@ python3 -m pip install pytrends pandas numpy
 **Notes for reviewers**
 - The repository is organized to make replication straightforward: master runner → two module runners → category/subfolder → scripts. Output locations are local to module subfolders, simplifying artifact inspection.
 - The extraction stage requires a VPN connected to Israel, network access and Python dependencies; run this stage only when you can obtain remote data.
+- The file `/Voting/raw/Red Alerts/area_codes.csv` is a dictionary that translates the old identification system used by the Home Front Command into Israeli localities. This was collected in July 2024 from their website before removal. An identical table can still be found at `https://www.mivzaklive.co.il/%D7%94%D7%AA%D7%A8%D7%90%D7%AA-%D7%A6%D7%91%D7%A2-%D7%90%D7%93%D7%95%D7%9D-%D7%9E%D7%A1%D7%A4%D7%A8%D7%99-%D7%A4%D7%95%D7%9C%D7%99%D7%92%D7%95%D7%A0%D7%99%D7%9D-%D7%95%D7%96%D7%9E%D7%A0%D7%99-%D7%94`.
+- The file `/Voting/raw/Israel/all_cities_coordinates.csv` contains all relevant Israeli locality coordinates (manually collected)
 
 **Contact / Maintenance**
 - Maintainer: Luiz Bines (github repository: `https://github.com/luizbines/Echoes-of-Terrorism`).
 ---
-_Last updated: 2026-05-06_
+_Last updated: 2026_

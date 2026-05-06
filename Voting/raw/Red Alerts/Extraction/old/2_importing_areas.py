@@ -1,6 +1,6 @@
 # IMPORTS A TABLE FROM A ISRAELI NEWS WEBSITE THAT TRANSLATES ALL AREA CODES INTO CITIES 
 # LUIZ BINES - luizbines@gmail.com 
-# 2023
+# 2026
 
 import requests
 from bs4 import BeautifulSoup

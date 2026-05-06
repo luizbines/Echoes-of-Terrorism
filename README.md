@@ -5,7 +5,7 @@
 **Quick Start**
 - From the repository root run the master runner in one of three modes:
   - `simple` (default): runs the main processing pipelines (raw → cleaning → treating) without performing any web scraping
-  - `extraction`: it is necessary to use a VPN connected to Israel. runs Extraction first, which scrapes the necessary raw data, then raw → cleaning → treating
+  - `extraction`: it is necessary to use a VPN connected to Israel. Runs Extraction first, which scrapes the necessary raw data, then raw → cleaning → treating
   - `dry-run` (alias `dry`): lists the scripts that would run (safe preview)
 
 Usage examples:

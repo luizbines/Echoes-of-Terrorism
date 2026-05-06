@@ -25,7 +25,7 @@ terror_attacks = read.csv('raw/Red Alerts/Output/red_alerts.csv')
 
 # Area-to-city dictionary
 # אזור ההתגוננות 
-alarm_areas = read.csv('raw/Red Alerts/Output/area_codes.csv', header = F, skip = 1)[,-2] 
+alarm_areas = read.csv('raw/Red Alerts/area_codes.csv', header = F, skip = 1)[,-2] 
 
 
 

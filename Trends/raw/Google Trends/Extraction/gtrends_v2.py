@@ -5,17 +5,29 @@ import os
 from pytrends.request import TrendReq
 import sys
 
-# 1. Set the Working Directory - dynamic from environment or fallback
-base_wd = os.environ.get('R_PROJECT_DIR', os.getcwd())
-if not os.path.isdir(os.path.join(base_wd, 'raw')) and not os.path.isdir(os.path.join(base_wd, 'cleaning')):
-    # If we're not in the correct directory, look for it one level up
-    base_wd = os.path.dirname(base_wd)
-if os.path.basename(base_wd) in ['Voting', 'Trends']:
-    # We got the subdirectory, ensure we use Trends
-    base_wd = os.path.dirname(base_wd)
-    base_wd = os.path.join(base_wd, 'Trends')
 
-path = os.path.join(base_wd, "raw", "Google Trends", "Output")
+def resolve_project_root(start_dir=None):
+    current_dir = os.path.abspath(start_dir or os.getcwd())
+    while True:
+        if os.path.isdir(os.path.join(current_dir, 'Voting')) and os.path.isdir(os.path.join(current_dir, 'Trends')):
+            return current_dir
+        parent_dir = os.path.dirname(current_dir)
+        if parent_dir == current_dir:
+            break
+        current_dir = parent_dir
+    raise RuntimeError(f"Could not determine project root from start_dir={start_dir or os.getcwd()}")
+
+
+# 1. Set the Working Directory - dynamic from environment or fallback
+base_wd = os.environ.get('R_PROJECT_ROOT')
+if base_wd and os.path.isdir(base_wd):
+    base_wd = os.path.abspath(base_wd)
+    if not (os.path.isdir(os.path.join(base_wd, 'Voting')) and os.path.isdir(os.path.join(base_wd, 'Trends'))):
+        base_wd = resolve_project_root()
+else:
+    base_wd = resolve_project_root()
+
+path = os.path.join(base_wd, "Trends", "raw", "Google Trends", "Output")
 try:
     os.chdir(path)
     print(f"Working directory set to: {os.getcwd()}")

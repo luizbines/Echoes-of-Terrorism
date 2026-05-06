@@ -29,12 +29,34 @@ library(lwgeom)
 library(stringi)
 library(stringdist)
 
-# Get the base path from environment or parent script
-if (!exists("base_path")) {
-  base_path <- Sys.getenv("R_PROJECT_DIR")
-  if (base_path == "") {
-    base_path <- getwd()
+# Resolve the Voting root from the environment or by walking upward from the current directory
+resolve_voting_root <- function(start_dir = getwd()) {
+  current_dir <- normalizePath(start_dir, winslash = "/", mustWork = FALSE)
+  repeat {
+    if (dir.exists(file.path(current_dir, "raw")) &&
+        dir.exists(file.path(current_dir, "cleaning")) &&
+        dir.exists(file.path(current_dir, "treating"))) {
+      return(current_dir)
+    }
+    parent_dir <- dirname(current_dir)
+    if (identical(parent_dir, current_dir)) {
+      break
+    }
+    current_dir <- parent_dir
   }
+  stop("ERROR: Could not determine Voting directory path from start_dir=", start_dir)
+}
+
+base_path <- Sys.getenv("R_MODULE_ROOT")
+if (nzchar(base_path) && dir.exists(base_path)) {
+  base_path <- normalizePath(base_path, winslash = "/", mustWork = FALSE)
+  if (!dir.exists(file.path(base_path, "raw")) ||
+      !dir.exists(file.path(base_path, "cleaning")) ||
+      !dir.exists(file.path(base_path, "treating"))) {
+    base_path <- resolve_voting_root()
+  }
+} else {
+  base_path <- resolve_voting_root()
 }
 setwd(base_path)
 

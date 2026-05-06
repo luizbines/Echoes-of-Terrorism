@@ -14,32 +14,50 @@ library(lubridate)
 
 
 # Directory
-# Get the base path from environment or parent script
-if (!exists("base_path")) {
-  base_path <- Sys.getenv("R_PROJECT_DIR")
-  if (base_path == "") {
-    base_path <- getwd()
+# Resolve the project root from the environment or by walking upward from the current directory
+resolve_project_root <- function(start_dir = getwd()) {
+  current_dir <- normalizePath(start_dir, winslash = "/", mustWork = FALSE)
+  repeat {
+    if (dir.exists(file.path(current_dir, "Voting")) && dir.exists(file.path(current_dir, "Trends"))) {
+      return(current_dir)
+    }
+    parent_dir <- dirname(current_dir)
+    if (identical(parent_dir, current_dir)) {
+      break
+    }
+    current_dir <- parent_dir
   }
+  stop("ERROR: Could not determine project root from start_dir=", start_dir)
+}
+
+base_path <- Sys.getenv("R_PROJECT_ROOT")
+if (nzchar(base_path) && dir.exists(base_path)) {
+  base_path <- normalizePath(base_path, winslash = "/", mustWork = FALSE)
+  if (!dir.exists(file.path(base_path, "Voting")) || !dir.exists(file.path(base_path, "Trends"))) {
+    base_path <- resolve_project_root()
+  }
+} else {
+  base_path <- resolve_project_root()
 }
 setwd(base_path);
 
 
 # Importing
-red_alerts <- read.csv('Unsuccessful_Terror_Attacks_Affect_Voting_Prefferences-main/treating/Red Alerts/Output/1_ALL_red_alerts_with_coordinates_and_electoral_localities.csv')[,-1]
+red_alerts <- read.csv('Voting/treating/Red Alerts/Output/Datasets/1_ALL_red_alerts_with_coordinates_and_electoral_localities.csv')[,-1]
 
 il_districts <- read_sf('Trends/raw/Israel/il_shp/il.shp') %>% 
   select(name,geometry) %>% 
   rename(district = name)
 
-gaza_sf = read_sf('Unsuccessful_Terror_Attacks_Affect_Voting_Prefferences-main/raw/Israel/Gaza/gaza.shp')[1,1]
+gaza_sf = read_sf('Voting/raw/Israel/Gaza/gaza.shp')[1,1]
 
 trends <- read.csv('Trends/raw/Google Trends/Output/trends_israel.csv')
 
-israel_demographics <- read.csv('Unsuccessful_Terror_Attacks_Affect_Voting_Prefferences-main/treating/Red Alerts/Output/1_israel_demographics.csv') %>%
+israel_demographics <- read.csv('Voting/treating/Red Alerts/Output/Datasets/1_israel_demographics.csv') %>%
   select(SEMEL_YISHUV,Pop_Total, year, lat, long)
 
 
-israel_geometry = st_read("Unsuccessful_Terror_Attacks_Affect_Voting_Prefferences-main/raw/Israel/Demographics/statisticalareas_demography2013.gdb")
+israel_geometry = st_read("Voting/raw/Israel/Demographics/statisticalareas_demography2013.gdb")
 
 
 # Cleaning Israel Shapefile

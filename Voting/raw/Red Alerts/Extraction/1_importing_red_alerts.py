@@ -12,15 +12,26 @@ from bs4 import BeautifulSoup
 import json
 import sys
 
+def resolve_voting_root(start_dir=None):
+    current_dir = os.path.abspath(start_dir or os.getcwd())
+    while True:
+        if all(os.path.isdir(os.path.join(current_dir, folder)) for folder in ('raw', 'cleaning', 'treating')):
+            return current_dir
+        parent_dir = os.path.dirname(current_dir)
+        if parent_dir == current_dir:
+            break
+        current_dir = parent_dir
+    raise RuntimeError(f"Could not determine Voting directory from start_dir={start_dir or os.getcwd()}")
+
+
 # Working directory - dynamic from environment or fallback
-wd = os.environ.get('R_PROJECT_DIR', os.getcwd())
-if not os.path.isdir(os.path.join(wd, 'raw')) and not os.path.isdir(os.path.join(wd, 'cleaning')):
-    # If we're not in the correct directory, look for it one level up
-    wd = os.path.dirname(wd)
-if os.path.basename(wd) in ['Voting', 'Trends']:
-    # We got the subdirectory, ensure we use Voting
-    wd = os.path.dirname(wd)
-    wd = os.path.join(wd, 'Voting')
+wd = os.environ.get('R_MODULE_ROOT')
+if wd and os.path.isdir(wd):
+    wd = os.path.abspath(wd)
+    if not (os.path.isdir(os.path.join(wd, 'raw')) and os.path.isdir(os.path.join(wd, 'cleaning')) and os.path.isdir(os.path.join(wd, 'treating'))):
+        wd = resolve_voting_root()
+else:
+    wd = resolve_voting_root()
 os.chdir(wd)
 
 # Start and end dates

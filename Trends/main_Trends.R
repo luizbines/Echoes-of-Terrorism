@@ -1,20 +1,34 @@
 # Main script to run all processing scripts in the correct order for Trends
 
-# Get dynamic path from environment variable or calculate it
-base_path <- Sys.getenv("R_PROJECT_DIR")
-if (base_path == "") {
-  # Fallback: try to get from command line argument or use current directory
-  base_path <- getwd()
-  if (!dir.exists(file.path(base_path, "raw")) && !dir.exists(file.path(base_path, "cleaning"))) {
-    # If we're not in the trends directory, look for it one level up
-    base_path <- dirname(getwd())
+resolve_project_root <- function(start_dir = getwd()) {
+  current_dir <- normalizePath(start_dir, winslash = "/", mustWork = FALSE)
+  repeat {
+    if (dir.exists(file.path(current_dir, "Voting")) && dir.exists(file.path(current_dir, "Trends"))) {
+      return(current_dir)
+    }
+    parent_dir <- dirname(current_dir)
+    if (identical(parent_dir, current_dir)) {
+      break
+    }
+    current_dir <- parent_dir
   }
+  stop("ERROR: Could not determine project root from start_dir=", start_dir)
 }
+
+project_root <- Sys.getenv("R_PROJECT_ROOT")
+if (nzchar(project_root) && dir.exists(project_root)) {
+  project_root <- normalizePath(project_root, winslash = "/", mustWork = FALSE)
+} else {
+  project_root <- resolve_project_root()
+}
+base_path <- file.path(project_root, "Trends")
 
 # Verify we're in the right directory
 if (!dir.exists(file.path(base_path, "raw")) && !dir.exists(file.path(base_path, "cleaning"))) {
   stop("ERROR: Could not determine Trends directory path. base_path=", base_path)
 }
+
+Sys.setenv(R_PROJECT_ROOT = project_root, R_MODULE_ROOT = base_path)
 
 # run mode: "simple" (default), "extraction" or "dry-run" (alias: "dry")
 args <- commandArgs(trailingOnly = TRUE)
@@ -58,7 +72,7 @@ run_scripts_from_dir <- function(dir_path) {
     # protect runner functions and important variables in case sourced scripts clear the workspace
     saved_run <- if (exists("run_scripts_from_dir", envir = .GlobalEnv, inherits = FALSE)) get("run_scripts_from_dir", envir = .GlobalEnv) else NULL
     saved_process <- if (exists("process_category", envir = .GlobalEnv, inherits = FALSE)) get("process_category", envir = .GlobalEnv) else NULL
-    saved_base_path <- if (exists("base_path", envir = .GlobalEnv, inherits = FALSE)) get("base_path", envir = .GlobalEnv) else NULL
+    saved_module_root <- if (exists("module_root", envir = .GlobalEnv, inherits = FALSE)) get("module_root", envir = .GlobalEnv) else NULL
     saved_run_mode <- if (exists("run_mode", envir = .GlobalEnv, inherits = FALSE)) get("run_mode", envir = .GlobalEnv) else NULL
     saved_dry_run <- if (exists("dry_run", envir = .GlobalEnv, inherits = FALSE)) get("dry_run", envir = .GlobalEnv) else NULL
 
@@ -90,8 +104,8 @@ run_scripts_from_dir <- function(dir_path) {
     if (!is.null(saved_process) && !exists("process_category", envir = .GlobalEnv, inherits = FALSE)) {
       assign("process_category", saved_process, envir = .GlobalEnv)
     }
-    if (!is.null(saved_base_path) && !exists("base_path", envir = .GlobalEnv, inherits = FALSE)) {
-      assign("base_path", saved_base_path, envir = .GlobalEnv)
+    if (!is.null(saved_module_root) && !exists("module_root", envir = .GlobalEnv, inherits = FALSE)) {
+      assign("module_root", saved_module_root, envir = .GlobalEnv)
     }
     if (!is.null(saved_run_mode) && !exists("run_mode", envir = .GlobalEnv, inherits = FALSE)) {
       assign("run_mode", saved_run_mode, envir = .GlobalEnv)

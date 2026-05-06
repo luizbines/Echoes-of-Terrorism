@@ -12,10 +12,17 @@ import pandas as pd
 import json
 from selenium.webdriver.common.keys import Keys
 import time
+import sys
 
-
-# Working directory
-wd = '/home/luiz/Documentos/GitHub/Echoes-of-Terrorism/Voting/'
+# Working directory - dynamic from environment or fallback
+wd = os.environ.get('R_PROJECT_DIR', os.getcwd())
+if not os.path.isdir(os.path.join(wd, 'raw')) and not os.path.isdir(os.path.join(wd, 'cleaning')):
+    # If we're not in the correct directory, look for it one level up
+    wd = os.path.dirname(wd)
+if os.path.basename(wd) in ['Voting', 'Trends']:
+    # We got the subdirectory, ensure we use Voting
+    wd = os.path.dirname(wd)
+    wd = os.path.join(wd, 'Voting')
 os.chdir(wd)
 
 # Specify the URL of the website

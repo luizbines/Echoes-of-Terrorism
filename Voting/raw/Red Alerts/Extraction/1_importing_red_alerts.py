@@ -10,9 +10,17 @@ import pandas as pd
 from datetime import datetime, timedelta
 from bs4 import BeautifulSoup
 import json
+import sys
 
-# Working directory
-wd = '/home/luiz/Documentos/GitHub/Echoes-of-Terrorism/Voting/'
+# Working directory - dynamic from environment or fallback
+wd = os.environ.get('R_PROJECT_DIR', os.getcwd())
+if not os.path.isdir(os.path.join(wd, 'raw')) and not os.path.isdir(os.path.join(wd, 'cleaning')):
+    # If we're not in the correct directory, look for it one level up
+    wd = os.path.dirname(wd)
+if os.path.basename(wd) in ['Voting', 'Trends']:
+    # We got the subdirectory, ensure we use Voting
+    wd = os.path.dirname(wd)
+    wd = os.path.join(wd, 'Voting')
 os.chdir(wd)
 
 # Start and end dates
@@ -68,8 +76,8 @@ for link_key, json_text in content_text.items():
 merged_df = pd.concat(dfs, ignore_index=True)
 
 
-# Define the new directory where you want to save the CSV
-new_directory = '/home/luiz/Documentos/GitHub/Echoes-of-Terrorism/Voting/raw/Red Alerts/Output'
+# Define the new directory where you want to save the CSV - dynamic
+new_directory = os.path.join(wd, 'raw', 'Red Alerts', 'Output')
 
 # Ensure the new directory exists, if not, create it
 if not os.path.exists(new_directory):

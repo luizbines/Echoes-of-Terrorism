@@ -1,6 +1,20 @@
 # Main script to run all processing scripts in the correct order for Trends
 
-base_path <- "/home/luiz/Documentos/GitHub/Echoes-of-Terrorism/Trends"
+# Get dynamic path from environment variable or calculate it
+base_path <- Sys.getenv("R_PROJECT_DIR")
+if (base_path == "") {
+  # Fallback: try to get from command line argument or use current directory
+  base_path <- getwd()
+  if (!dir.exists(file.path(base_path, "raw")) && !dir.exists(file.path(base_path, "cleaning"))) {
+    # If we're not in the trends directory, look for it one level up
+    base_path <- dirname(getwd())
+  }
+}
+
+# Verify we're in the right directory
+if (!dir.exists(file.path(base_path, "raw")) && !dir.exists(file.path(base_path, "cleaning"))) {
+  stop("ERROR: Could not determine Trends directory path. base_path=", base_path)
+}
 
 # run mode: "simple" (default), "extraction" or "dry-run" (alias: "dry")
 args <- commandArgs(trailingOnly = TRUE)

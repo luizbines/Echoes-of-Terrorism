@@ -5,9 +5,14 @@ library(sf)
 library(dplyr)
 library(readxl)
 
-# Set the working directory for the project
-wd = '/home/luiz/Documentos/GitHub/Echoes-of-Terrorism/Voting/'
-setwd(wd);
+# Get the base path from environment or parent script
+if (!exists("base_path")) {
+  base_path <- Sys.getenv("R_PROJECT_DIR")
+  if (base_path == "") {
+    base_path <- getwd()
+  }
+}
+setwd(base_path)
 
 # Read the panel used in the analysis
 israel_panel = read.csv('cleaning/Israel/Output/3_israel_panel_west_bank.csv')

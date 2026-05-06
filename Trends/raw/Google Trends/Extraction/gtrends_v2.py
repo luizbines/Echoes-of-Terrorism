@@ -3,9 +3,19 @@ import time
 import random
 import os
 from pytrends.request import TrendReq
+import sys
 
-# 1. Set the Working Directory
-path = "/home/luiz/Documentos/GitHub/Echoes-of-Terrorism/Trends/raw/Google Trends/Output"
+# 1. Set the Working Directory - dynamic from environment or fallback
+base_wd = os.environ.get('R_PROJECT_DIR', os.getcwd())
+if not os.path.isdir(os.path.join(base_wd, 'raw')) and not os.path.isdir(os.path.join(base_wd, 'cleaning')):
+    # If we're not in the correct directory, look for it one level up
+    base_wd = os.path.dirname(base_wd)
+if os.path.basename(base_wd) in ['Voting', 'Trends']:
+    # We got the subdirectory, ensure we use Trends
+    base_wd = os.path.dirname(base_wd)
+    base_wd = os.path.join(base_wd, 'Trends')
+
+path = os.path.join(base_wd, "raw", "Google Trends", "Output")
 try:
     os.chdir(path)
     print(f"Working directory set to: {os.getcwd()}")

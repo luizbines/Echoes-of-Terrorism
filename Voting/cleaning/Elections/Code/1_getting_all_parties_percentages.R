@@ -8,9 +8,14 @@ library(dplyr)
 library(readxl)
 library(stringr)
 
-# Set the working directory
-wd = '/home/luiz/Documentos/GitHub/Echoes-of-Terrorism/Voting/'
-setwd(wd)
+# Get the base path from environment or parent script
+if (!exists("base_path")) {
+  base_path <- Sys.getenv("R_PROJECT_DIR")
+  if (base_path == "") {
+    base_path <- getwd()
+  }
+}
+setwd(base_path)
 
 # --- 1. THE COMPLETE 2015 PARTY LIST ---
 parties_2015_list <- c(

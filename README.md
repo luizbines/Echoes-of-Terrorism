@@ -11,13 +11,27 @@
 Usage examples:
 
 ```bash
-Rscript main.R simple
-Rscript main.R extraction
-Rscript main.R dry-run
+Rscript master.R simple
+Rscript master.R extraction
+Rscript master.R dry-run
 ```
 
+**Dynamic Paths**
+- All scripts use **dynamic paths** — no hardcoded directory paths. The `master.R` script automatically detects the project root and passes it to all child scripts via the `R_PROJECT_DIR` environment variable.
+- You can run the master script from any working directory:
+
+```bash
+# From project root:
+cd /path/to/Echoes-of-Terrorism && Rscript master.R simple
+
+# Or from anywhere:
+Rscript /path/to/Echoes-of-Terrorism/master.R simple
+```
+
+- Individual scripts also work standalone and auto-detect the project structure.
+
 **High-level execution order**
-- `main.R` (root) — runs `Voting/main_Voting.R` then `Trends/main_Trends.R` in the same mode
+- `master.R` (root) — runs `Voting/main_Voting.R` then `Trends/main_Trends.R` in the same mode
 - Each module main script executes these categories (in order): `raw`, `cleaning`, `treating`.
 - For `extraction` and `dry-run` the pipeline includes an `Extraction` stage before `raw`.
 - Within each category the sub-folders are processed in the order: `Red Alerts`, `Israel`, `Elections` (if present).
@@ -25,7 +39,7 @@ Rscript main.R dry-run
 
 **Repository map (short)**
 
-- `main.R` — Master runner (root). Calls:
+- `master.R` — Master runner (root). Calls:
   - `Voting/main_Voting.R` — Voting pipeline runner (supports modes)
   - `Trends/main_Trends.R` — Trends pipeline runner (supports modes)
 
@@ -73,7 +87,7 @@ python3 -m pip install pytrends pandas numpy
 - Use `dry-run` to review the exact execution order before running.
 
 **Logging & warnings**
-- The master `main.R` suppresses child-process stderr by default to avoid flooding the terminal with child warnings. Individual scripts may still print key messages to stdout. If you want full logs, edit `main.R` to redirect `stderr` to a file instead of `/dev/null`.
+- The master `master.R` suppresses child-process stderr by default to avoid flooding the terminal with child warnings. Individual scripts may still print key messages to stdout. If you want full logs, edit `master.R` to redirect `stderr` to a file instead of `/dev/null`.
 
 **Common developer tasks**
 - To include archived scripts, move them out of `Old/` into the active `Code/` directory.

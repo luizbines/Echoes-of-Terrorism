@@ -83,6 +83,6 @@ python3 -m pip install pytrends pandas numpy
 - The extraction stage requires a VPN connected to Israel, network access and Python dependencies; run this stage only when you can obtain remote data.
 
 **Contact / Maintenance**
-- Maintainer: Luiz Bines (github repository).
+- Maintainer: Luiz Bines (github repository: `https://github.com/luizbines/Echoes-of-Terrorism`).
 ---
 _Last updated: 2026-05-06_

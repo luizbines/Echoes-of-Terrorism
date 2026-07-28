@@ -1,7 +1,6 @@
 # Add SEI to the Israel panel and backfill 2013 using each locality's SEI trend.
 
 # Load packages
-library(sf)
 library(dplyr)
 library(readxl)
 

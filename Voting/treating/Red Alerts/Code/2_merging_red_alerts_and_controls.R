@@ -4,23 +4,9 @@
 # 2024
 
 # Library
-library(tidyr)
 library(dplyr)
-library(stringr)
-library(readxl)
-library(ggplot2)
-library(sf)
-library(fixest)
-library(modelsummary)
-library(geosphere)
+library(readr)
 library(lubridate)
-library(scales)
-library(units)
-library(stringi)
-library(stringdist)
-library(purrr)
-library(kableExtra)
-library(tidyverse)
 
 # Resolve the Voting root from the environment or by walking upward from the current directory
 resolve_voting_root <- function(start_dir = getwd()) {

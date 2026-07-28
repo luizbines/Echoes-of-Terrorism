@@ -2,9 +2,7 @@
 
 # Libraries
 library(dplyr)
-library(tidyr)
-library(fixest)      
-library(modelsummary) 
+library(fixest)
 library(kableExtra)
 
 # Get the base path from environment or parent script

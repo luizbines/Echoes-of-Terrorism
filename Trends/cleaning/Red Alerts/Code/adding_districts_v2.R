@@ -166,7 +166,7 @@ districts_alerts <- red_alerts %>%
   group_by(district, year, month) %>%
   summarise(
     # alerts are calculated as the ratio of the district population that was affected
-    alert = sum(alert * Pop_Total) / Pop_Total_District
+    alert = sum(alert * Pop_Total) / first(Pop_Total_District)
   ) %>% 
   # one observation per district-day
   distinct(district, month, year, alert)

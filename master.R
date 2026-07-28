@@ -1,5 +1,6 @@
 # Master script to run both main_Voting.R and main_Trends.R in the same mode
 # All paths are determined dynamically based on the location of this script
+options(warn = -1)
 
 # Get the directory containing this master script
 master_dir <- dirname(sub("--file=", "", commandArgs(trailingOnly = FALSE)[grep("--file=", commandArgs(trailingOnly = FALSE))]))
@@ -32,6 +33,33 @@ cat("║  Project Root: ", PROJECT_ROOT, "\n", sep = "")
 cat("║  Mode: ", toupper(run_mode), "\n", sep = "")
 cat("╚════════════════════════════════════════════════════════════════╝\n")
 cat("\n")
+
+# Check and install missing dependencies automatically
+check_and_install_packages <- function(project_root) {
+  r_files <- list.files(project_root, pattern = "\\.(R|r)$", recursive = TRUE, full.names = TRUE)
+  r_files <- r_files[!grepl("/\\.venv/", r_files)]
+  
+  pkgs <- c()
+  for (f in r_files) {
+    lines <- readLines(f, warn = FALSE)
+    matches <- regmatches(lines, regexec("^\\s*(?:library|require)\\s*\\(\\s*[\"']?([a-zA-Z0-9.]+)", lines))
+    found <- unlist(lapply(matches, function(m) if (length(m) > 1) m[2] else NULL))
+    pkgs <- c(pkgs, found)
+  }
+  pkgs <- unique(pkgs)
+  
+  installed <- rownames(installed.packages())
+  missing <- setdiff(pkgs, installed)
+  
+  if (length(missing) > 0) {
+    cat("Installing missing R package(s):", paste(missing, collapse = ", "), "\n")
+    install.packages(missing, repos = "https://cloud.r-project.org")
+  }
+}
+
+if (!identical(run_mode, "dry-run")) {
+  check_and_install_packages(PROJECT_ROOT)
+}
 
 # Define paths dynamically
 voting_main <- file.path(VOTING_DIR, "main_Voting.R")

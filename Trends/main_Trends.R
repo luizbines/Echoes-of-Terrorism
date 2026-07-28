@@ -1,4 +1,5 @@
 # Main script to run all processing scripts in the correct order for Trends
+options(warn = -1)
 
 resolve_project_root <- function(start_dir = getwd()) {
   current_dir <- normalizePath(start_dir, winslash = "/", mustWork = FALSE)
@@ -78,12 +79,9 @@ run_scripts_from_dir <- function(dir_path) {
 
     if (grepl("\\.R$", script_path, ignore.case = TRUE)) {
       tryCatch(
-        source(script_path, chdir = TRUE),
+        suppressWarnings(suppressMessages(source(script_path, chdir = TRUE))),
         error = function(e) {
           cat("ERROR in", script_path, ":", conditionMessage(e), "\n")
-        },
-        warning = function(w) {
-          cat("WARNING in", script_path, ":", conditionMessage(w), "\n")
         }
       )
     } else if (grepl("\\.py$", script_path, ignore.case = TRUE)) {

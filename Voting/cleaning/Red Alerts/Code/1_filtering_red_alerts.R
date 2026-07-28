@@ -7,10 +7,6 @@
 library(tidyr)
 library(dplyr)
 library(stringr)
-library(readxl)
-library(sf)
-library(modelsummary)
-library(lubridate)
 
 # Resolve the Voting root from the environment or by walking upward from the current directory
 resolve_voting_root <- function(start_dir = getwd()) {

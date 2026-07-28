@@ -3,16 +3,11 @@
 # 2024
 
 # Library
-library(tidyr)
 library(dplyr)
-library(readxl)
-library(kableExtra)
-library(fixest)
-library(modelsummary)
-library(knitr)
-library(broom)
 library(tibble)
 library(ggplot2)
+library(scales)
+library(fixest)
 
 # Get the base path from environment or parent script
 resolve_voting_root <- function(start_dir = getwd()) {

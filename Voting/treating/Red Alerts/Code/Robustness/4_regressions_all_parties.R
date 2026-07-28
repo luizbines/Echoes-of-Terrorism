@@ -2,10 +2,11 @@
 # AUTOMATED REGRESSION FOR ALL PARTY PERCENTAGES
 ################################################################################
 
-library(tidyverse)
+library(dplyr)
+library(stringr)
+library(readr)
 library(fixest)
 library(modelsummary)
-library(Hmisc)
 
 # Get the base path from environment or parent script
 resolve_voting_root <- function(start_dir = getwd()) {

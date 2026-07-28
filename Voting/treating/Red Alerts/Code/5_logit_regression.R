@@ -6,9 +6,8 @@
 # Library
 library(dplyr)
 library(lubridate)
-library(zoo)
-library(tidyverse)
-library(glmnet)
+library(ggplot2)
+library(scales)
 library(fixest)
 library(modelsummary)
 

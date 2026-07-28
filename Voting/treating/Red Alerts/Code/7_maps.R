@@ -5,12 +5,9 @@
 
 # Library
 library(dplyr)
-library(tidyverse)
 library(ggplot2)
 library(sf)
 library(units)
-library(patchwork)
-library(cowplot)
 
 # Get the base path from environment or parent script
 resolve_voting_root <- function(start_dir = getwd()) {

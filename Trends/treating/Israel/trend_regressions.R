@@ -5,9 +5,6 @@
 
 # Library
 library(dplyr)
-library(sf)
-library(tidyr)
-library(data.table)
 library(fixest)
 library(ggplot2)
 library(purrr)

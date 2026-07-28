@@ -10,7 +10,6 @@
 library(sf)
 library(dplyr)
 library(readxl)
-library(readxl)
 
 # Resolve the Voting root from the environment or by walking upward from the current directory
 resolve_voting_root <- function(start_dir = getwd()) {
@@ -55,11 +54,11 @@ israel_2008 = st_read("raw/Israel/Demographics/statisticalareas_demography2008.g
   as.data.frame() %>%
   group_by(SEMEL_YISHUV) %>%
   summarise(
-    SEMEL_YISHUV = unique(SEMEL_YISHUV),
-    SHEM_YISHUV = unique(Shem_Yishuv),
-    SHEM_YISHUV_ENGLISH = unique(Shem_Yishuv_English),
-    Religion_yishuv_Code = unique(Religion_Yishuv_Code),
-    Religion_yishuv_Txt = unique(Religion_Yishuv_Txt),
+    SEMEL_YISHUV = first(SEMEL_YISHUV),
+    SHEM_YISHUV = first(Shem_Yishuv),
+    SHEM_YISHUV_ENGLISH = first(Shem_Yishuv_English),
+    Religion_yishuv_Code = first(Religion_Yishuv_Code),
+    Religion_yishuv_Txt = first(Religion_Yishuv_Txt),
     Pop_Total = sum(Pop_Total, na.rm = T),
     Male_Total = sum(Male_Total, na.rm = T),
     Female_Total = sum(Female_Total, na.rm = T),
@@ -82,11 +81,11 @@ israel_2011 = st_read("raw/Israel/Demographics/statisticalareas_demography2011.g
   as.data.frame() %>%
   group_by(SEMEL_YISHUV) %>%
   summarise(
-    SEMEL_YISHUV = unique(SEMEL_YISHUV),
-    SHEM_YISHUV = unique(Shem_Yishuv),
-    SHEM_YISHUV_ENGLISH = unique(Shem_Yishuv_English),
-    Religion_yishuv_Code = unique(Religion_yishuv_code),
-    Religion_yishuv_Txt = unique(Religion_Yishuv_Txt),
+    SEMEL_YISHUV = first(SEMEL_YISHUV),
+    SHEM_YISHUV = first(Shem_Yishuv),
+    SHEM_YISHUV_ENGLISH = first(Shem_Yishuv_English),
+    Religion_yishuv_Code = first(Religion_yishuv_code),
+    Religion_yishuv_Txt = first(Religion_Yishuv_Txt),
     Pop_Total = sum(Pop_Total, na.rm = T),
     Male_Total = sum(Male_Total, na.rm = T),
     Female_Total = sum(Female_Total, na.rm = T),
@@ -105,11 +104,11 @@ israel_2012 = st_read("raw/Israel/Demographics/statisticalareas_demography2012.g
   as.data.frame() %>%
   group_by(SEMEL_YISHUV) %>%
   summarise(
-    SEMEL_YISHUV = unique(SEMEL_YISHUV),
-    SHEM_YISHUV = unique(SHEM_YISHUV),
-    SHEM_YISHUV_ENGLISH = unique(SHEM_YISHUV_ENGLISH),
-    Religion_yishuv_Code = unique(Religion_Yishuv),
-    Religion_yishuv_Txt = unique(Religion_Txt),
+    SEMEL_YISHUV = first(SEMEL_YISHUV),
+    SHEM_YISHUV = first(SHEM_YISHUV),
+    SHEM_YISHUV_ENGLISH = first(SHEM_YISHUV_ENGLISH),
+    Religion_yishuv_Code = first(Religion_Yishuv),
+    Religion_yishuv_Txt = first(Religion_Txt),
     Pop_Total = sum(Pop_Total, na.rm = T),
     Male_Total = sum(Male_Total, na.rm = T),
     Female_Total = sum(Female_Total, na.rm = T),
@@ -127,11 +126,11 @@ israel_2013 = st_read("raw/Israel/Demographics/statisticalareas_demography2013.g
   as.data.frame() %>%
   group_by(SEMEL_YISHUV) %>%
   summarise(
-    SEMEL_YISHUV = unique(SEMEL_YISHUV),
-    SHEM_YISHUV = unique(SHEM_YISHUV),
-    SHEM_YISHUV_ENGLISH = unique(SHEM_YISHUV_ENGLISH),
-    Religion_yishuv_Code = unique(Religion_Yishuv),
-    Religion_yishuv_Txt = unique(Religion_Txt),
+    SEMEL_YISHUV = first(SEMEL_YISHUV),
+    SHEM_YISHUV = first(SHEM_YISHUV),
+    SHEM_YISHUV_ENGLISH = first(SHEM_YISHUV_ENGLISH),
+    Religion_yishuv_Code = first(Religion_Yishuv),
+    Religion_yishuv_Txt = first(Religion_Txt),
     Pop_Total = sum(Pop_Total, na.rm = T),
     Male_Total = sum(Male_Total, na.rm = T),
     Female_Total = sum(Female_Total, na.rm = T),
@@ -151,11 +150,11 @@ israel_2014 = st_read("raw/Israel/Demographics/statisticalareas_demography2014.g
   as.data.frame() %>%
   group_by(SEMEL_YISHUV) %>%
   summarise(
-    SEMEL_YISHUV = unique(SEMEL_YISHUV),
-    SHEM_YISHUV = unique(SHEM_YISHUV),
-    SHEM_YISHUV_ENGLISH = unique(SHEM_YISHUV_ENGLISH),
-    Religion_yishuv_Code = unique(Religion_Yishuv),
-    Religion_yishuv_Txt = unique(Religion_Txt),
+    SEMEL_YISHUV = first(SEMEL_YISHUV),
+    SHEM_YISHUV = first(SHEM_YISHUV),
+    SHEM_YISHUV_ENGLISH = first(SHEM_YISHUV_ENGLISH),
+    Religion_yishuv_Code = first(Religion_Yishuv),
+    Religion_yishuv_Txt = first(Religion_Txt),
     Pop_Total = sum(Pop_Total, na.rm = T),
     Male_Total = sum(Male_Total, na.rm = T),
     Female_Total = sum(Female_Total, na.rm = T),
@@ -173,11 +172,11 @@ israel_2015 = st_read("raw/Israel/Demographics/statisticalareas_demography2015.g
   as.data.frame() %>%
   group_by(SEMEL_YISHUV) %>%
   summarise(
-    SEMEL_YISHUV = unique(SEMEL_YISHUV),
-    SHEM_YISHUV = unique(Shem_Yishuv),
-    SHEM_YISHUV_ENGLISH = unique(SHEM_Yishuv_English),
-    Religion_yishuv_Code = unique(Religion_yishuv_Code),
-    Religion_yishuv_Txt = unique(Religion_yishuv_Txt),
+    SEMEL_YISHUV = first(SEMEL_YISHUV),
+    SHEM_YISHUV = first(Shem_Yishuv),
+    SHEM_YISHUV_ENGLISH = first(SHEM_Yishuv_English),
+    Religion_yishuv_Code = first(Religion_yishuv_Code),
+    Religion_yishuv_Txt = first(Religion_yishuv_Txt),
     Pop_Total = sum(Pop_Total, na.rm = T),
     Male_Total = sum(Male_Total, na.rm = T),
     Female_Total = sum(Female_Total, na.rm = T),
@@ -196,11 +195,11 @@ israel_2016 = st_read("raw/Israel/Demographics/statisticalareas_demography2016.g
   as.data.frame() %>%
   group_by(SEMEL_YISHUV) %>%
   summarise(
-    SEMEL_YISHUV = unique(SEMEL_YISHUV),
-    SHEM_YISHUV = unique(SHEM_YISHUV),
-    SHEM_YISHUV_ENGLISH = unique(SHEM_YISHUV_ENGLISH),
-    Religion_yishuv_Code = unique(Religion_yishuv_Code),
-    Religion_yishuv_Txt = unique(Religion_yishuv_Txt),
+    SEMEL_YISHUV = first(SEMEL_YISHUV),
+    SHEM_YISHUV = first(SHEM_YISHUV),
+    SHEM_YISHUV_ENGLISH = first(SHEM_YISHUV_ENGLISH),
+    Religion_yishuv_Code = first(Religion_yishuv_Code),
+    Religion_yishuv_Txt = first(Religion_yishuv_Txt),
     Pop_Total = sum(Pop_Total, na.rm = T),
     Male_Total = sum(Male_Total, na.rm = T),
     Female_Total = sum(Female_Total, na.rm = T),
@@ -219,11 +218,11 @@ israel_2017 = st_read("raw/Israel/Demographics/statisticalareas_demography2017.g
   as.data.frame() %>%
   group_by(SEMEL_YISHUV) %>%
   summarise(
-    SEMEL_YISHUV = unique(SEMEL_YISHUV),
-    SHEM_YISHUV = unique(SHEM_YISHUV),
-    SHEM_YISHUV_ENGLISH = unique(SHEM_YISHUV_ENGLISH),
-    Religion_yishuv_Code = unique(Religion_yishuv_Code),
-    Religion_yishuv_Txt = unique(Religion_yishuv_Txt),
+    SEMEL_YISHUV = first(SEMEL_YISHUV),
+    SHEM_YISHUV = first(SHEM_YISHUV),
+    SHEM_YISHUV_ENGLISH = first(SHEM_YISHUV_ENGLISH),
+    Religion_yishuv_Code = first(Religion_yishuv_Code),
+    Religion_yishuv_Txt = first(Religion_yishuv_Txt),
     Pop_Total = sum(Pop_Total, na.rm = T),
     Male_Total = sum(Male_Total, na.rm = T),
     Female_Total = sum(Female_Total, na.rm = T),
@@ -242,11 +241,11 @@ israel_2018 = st_read("raw/Israel/Demographics/statisticalareas_demography2018.g
   as.data.frame() %>%
   group_by(SEMEL_YISHUV) %>%
   summarise(
-    SEMEL_YISHUV = unique(SEMEL_YISHUV),
-    SHEM_YISHUV = unique(SHEM_YISHUV),
-    SHEM_YISHUV_ENGLISH = unique(SHEM_YISHUV_ENGLISH),
-    Religion_yishuv_Code = unique(Religion_yishuv_Code),
-    Religion_yishuv_Txt = unique(Religion_yishuv_Txt),
+    SEMEL_YISHUV = first(SEMEL_YISHUV),
+    SHEM_YISHUV = first(SHEM_YISHUV),
+    SHEM_YISHUV_ENGLISH = first(SHEM_YISHUV_ENGLISH),
+    Religion_yishuv_Code = first(Religion_yishuv_Code),
+    Religion_yishuv_Txt = first(Religion_yishuv_Txt),
     Pop_Total = sum(Pop_Total, na.rm = T),
     Male_Total = sum(Male_Total, na.rm = T),
     Female_Total = sum(Female_Total, na.rm = T),
@@ -266,11 +265,11 @@ israel_2019 = st_read("raw/Israel/Demographics/statisticalareas_demography2019.g
   as.data.frame() %>%
   group_by(SEMEL_YISHUV) %>%
   summarise(
-    SEMEL_YISHUV = unique(SEMEL_YISHUV),
-    SHEM_YISHUV = unique(SHEM_YISHUV),
-    SHEM_YISHUV_ENGLISH = unique(SHEM_YISHUV_ENGLISH),
-    Religion_yishuv_Code = unique(Religion_yishuv_Code),
-    Religion_yishuv_Txt = unique(Religion_yishuv_Txt),
+    SEMEL_YISHUV = first(SEMEL_YISHUV),
+    SHEM_YISHUV = first(SHEM_YISHUV),
+    SHEM_YISHUV_ENGLISH = first(SHEM_YISHUV_ENGLISH),
+    Religion_yishuv_Code = first(Religion_yishuv_Code),
+    Religion_yishuv_Txt = first(Religion_yishuv_Txt),
     Pop_Total = sum(Pop_Total, na.rm = T),
     Male_Total = sum(Male_Total, na.rm = T),
     Female_Total = sum(Female_Total, na.rm = T),
@@ -289,11 +288,11 @@ israel_2020 = st_read("raw/Israel/Demographics/statisticalareas_demography2020.g
   as.data.frame() %>%
   group_by(SEMEL_YISHUV) %>%
   summarise(
-    SEMEL_YISHUV = unique(SEMEL_YISHUV),
-    SHEM_YISHUV = unique(SHEM_YISHUV),
-    SHEM_YISHUV_ENGLISH = unique(SHEM_YISHUV_ENGLISH),
-    Religion_yishuv_Code = unique(Religion_yishuv_Code),
-    Religion_yishuv_Txt = unique(Religion_yishuv_Txt),
+    SEMEL_YISHUV = first(SEMEL_YISHUV),
+    SHEM_YISHUV = first(SHEM_YISHUV),
+    SHEM_YISHUV_ENGLISH = first(SHEM_YISHUV_ENGLISH),
+    Religion_yishuv_Code = first(Religion_yishuv_Code),
+    Religion_yishuv_Txt = first(Religion_yishuv_Txt),
     Pop_Total = sum(Pop_Total, na.rm = T),
     Male_Total = sum(Male_Total, na.rm = T),
     Female_Total = sum(Female_Total, na.rm = T),
@@ -312,11 +311,11 @@ israel_2021 = st_read("raw/Israel/Demographics/statisticalareas_demography2021.g
   as.data.frame() %>%
   group_by(SEMEL_YISHUV) %>%
   summarise(
-    SEMEL_YISHUV = unique(SEMEL_YISHUV),
-    SHEM_YISHUV = unique(SHEM_YISHUV),
-    SHEM_YISHUV_ENGLISH = unique(SHEM_YISHUV_ENGLISH),
-    Religion_yishuv_Code = unique(Religion_yishuv_Code),
-    Religion_yishuv_Txt = unique(Religion_yishuv_Txt),
+    SEMEL_YISHUV = first(SEMEL_YISHUV),
+    SHEM_YISHUV = first(SHEM_YISHUV),
+    SHEM_YISHUV_ENGLISH = first(SHEM_YISHUV_ENGLISH),
+    Religion_yishuv_Code = first(Religion_yishuv_Code),
+    Religion_yishuv_Txt = first(Religion_yishuv_Txt),
     Pop_Total = sum(Pop_Total, na.rm = T),
     Male_Total = sum(Male_Total, na.rm = T),
     Female_Total = sum(Female_Total, na.rm = T),
@@ -335,11 +334,11 @@ israel_2022 = st_read("raw/Israel/Demographics/statisticalareas_demography2022.g
   as.data.frame() %>%
   group_by(SEMEL_YESHUV) %>%
   summarise(
-    SEMEL_YISHUV = unique(SEMEL_YESHUV),
-    SHEM_YISHUV = unique(Shem_Yishuv),
-    SHEM_YISHUV_ENGLISH = unique(Shem_Yishuv_English),
-    Religion_yishuv_Code = unique(Religion_yishuv_code),
-    Religion_yishuv_Txt = unique(Religion_Yishuv_Txt),
+    SEMEL_YISHUV = first(SEMEL_YESHUV),
+    SHEM_YISHUV = first(Shem_Yishuv),
+    SHEM_YISHUV_ENGLISH = first(Shem_Yishuv_English),
+    Religion_yishuv_Code = first(Religion_yishuv_code),
+    Religion_yishuv_Txt = first(Religion_Yishuv_Txt),
     Pop_Total = sum(Pop_Total, na.rm = T),
     Male_Total = sum(Male_Total, na.rm = T),
     Female_Total = sum(Female_Total, na.rm = T),
@@ -466,8 +465,9 @@ israel = israel %>%
 
 ### Adding socioeconomic index
 # Importing
+sci_path <- if (file.exists("raw/Israel/socioeconomic_index.xlsx")) "raw/Israel/socioeconomic_index.xlsx" else "raw/Israel/SEI/SEI_2015.xlsx"
 sci <- read_xlsx(
-  "raw/Israel/socioeconomic_index.xlsx", 
+  sci_path, 
   col_names = c("SEMEL_YISHUV", "locality_name", "locality_type", 
                 "population", "sci_index_value", "sci_index_cluster")
 ) %>% 

@@ -2,16 +2,10 @@
 # This script replicates the main regressions from 4_main_regressions.R
 
 # Libraries
-library(tidyr)
 library(dplyr)
-library(readxl)
-library(kableExtra)
+library(readr)
 library(fixest)
 library(modelsummary)
-library(knitr)
-library(broom)
-library(panelsummary)
-library(tidyverse)
 
 # Get the base path from environment or parent script
 resolve_voting_root <- function(start_dir = getwd()) {

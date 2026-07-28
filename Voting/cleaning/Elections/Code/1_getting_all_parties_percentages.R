@@ -3,7 +3,6 @@
 # GENERATES INDIVIDUAL CSV FILES PER PARTY + THE 2015 COALITION BLOCK + ESTIMATED TURNOUT
 
 # Load necessary libraries
-library(tidyr)
 library(dplyr)
 library(readxl)
 library(stringr)

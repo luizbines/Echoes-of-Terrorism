@@ -62,8 +62,6 @@ Rscript /path/to/Echoes-of-Terrorism/master.R simple
   - `treating/Israel/trend_regressions.R` — regressions and tables
   - `Output/` and `cleaning/output/` contain CSVs and derived datasets
 
-- `old/`, `.../Old/`, `.../old/` — archived scripts and intermediate outputs. They are intentionally not executed by default.
-
 **Scripts & languages**
 - R scripts: executed with `Rscript` via `source()` when run inside a runner
 - Python scripts: executed with `python3` (runner will call `python3 <script>`) — ensure required Python packages are installed
@@ -88,9 +86,6 @@ python3 -m pip install pytrends pandas numpy
 
 **Logging & warnings**
 - The master `master.R` suppresses child-process stderr by default to avoid flooding the terminal with child warnings. Individual scripts may still print key messages to stdout. If you want full logs, edit `master.R` to redirect `stderr` to a file instead of `/dev/null`.
-
-**Common developer tasks**
-- To include archived scripts, move them out of `Old/` into the active `Code/` directory.
 
 **Notes for reviewers**
 - The repository is organized to make replication straightforward: master runner → two module runners → category/subfolder → scripts. Output locations are local to module subfolders, simplifying artifact inspection.
